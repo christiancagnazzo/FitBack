@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
       fontFamily: 'Montserrat',
     },
     headerText: {
-      fontSize: 48,
+      fontSize: 40,
       fontFamily : 'BebasNeue',
       color: colors.red,
     },
@@ -44,10 +44,11 @@ const styles = StyleSheet.create({
     },
     headerBar: {
       backgroundColor: colors.darkGray,
+    
     },
     container: {
       backgroundColor: colors.darkGray,
-      flex:1
+      
     },
     container2: {
       flex:1,
@@ -95,6 +96,13 @@ const styles = StyleSheet.create({
       marginRight: 25,
       justifyContent: 'center',
       alignItems: "center",
+    },
+    exerciseBoxAndText: {
+      alignItems: 'center',
+    },
+    backButton: {
+      color: colors.darkGray,
+      fontFamily: 'Montserrat',
     }
   });
 

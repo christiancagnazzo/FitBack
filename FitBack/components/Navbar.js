@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
 
+
 function Navbar() {
     return (
         <View style={[styles.horizontalFlex, styles.headerBar]}>
@@ -16,9 +17,8 @@ function Navbar() {
   }
 
 function MyMenu(props) {
-  const size = 48;
   return (
-    props.hidden ? <Ionicons name="menu" size={size} color="black" style={styles.hide}/> : <Ionicons name="menu" size={size} color={colors.gray}/>
+    <Ionicons name="menu" size={38}color={colors.gray} style={{borderWidth: 0, borderColor: "red",alignSelf: 'center', width:50, height: 50}}/>
   )
 }
 
@@ -26,4 +26,4 @@ function MyMenu(props) {
 
 
 
-export {Navbar}
+export {Navbar, MyMenu}

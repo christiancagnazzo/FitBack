@@ -3,19 +3,20 @@ import { Button, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import {colors, styles} from '../styles.js'
 import { MontSerratText } from '../App.js';
 import {LinearGradient} from 'expo-linear-gradient';
-
+import { useNavigation } from '@react-navigation/native';
 
 function Homepage() {
+    const navigation = useNavigation();
     return (
         
         <View>
         <View style={styles.homepage}>
         <MontSerratText style={[styles.titleText, {marginBottom: 10}]} text={"Welcome back John!"}/>
-            <HomepageButton title="Your exercises"/>
+            <HomepageButton navigation={navigation} title="Your exercises"/>
             <HomepageButton title="Suggested exercises"/>
             <HomepageButton title="All exercises"/>
         </View>
-            <TodaysTrainingComponent/>
+            <TodaysTrainingComponent navigation= {navigation}/>
         </View>
         
     );
@@ -30,7 +31,7 @@ function TodaysTrainingComponent(props) {
         </View>
         <View>
         <ScrollView horizontal={true}>
-            <ExerciseBox/>
+            <ExerciseBox text={"Push-ups"} navigation={props.navigation}/>
             <ExerciseBox/>
             <ExerciseBox/>
             <ExerciseBox/>
@@ -61,7 +62,7 @@ function MyButton(props) {
 function HomepageButton(props) {
     return (
         <View>
-            <TouchableOpacity style={styles.homepageButton}>
+            <TouchableOpacity style={styles.homepageButton} onPress={() => props.navigation.navigate('Profile')}>
                 <MontSerratText style={styles.HomeButtonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
         </View>
@@ -69,11 +70,12 @@ function HomepageButton(props) {
     )
 }
 
-function ExerciseBox() {
+function ExerciseBox(props) {
     return (
-        <View style={[styles.exerciseBox, {marginVertical: 30,marginHorizontal:20}]}>
-            
-        </View>
+        <TouchableOpacity style={styles.exerciseBoxAndText} onPress={() => {props.navigation.navigate("ExerciseDetails", {text: props.text})}}>
+        <View style={[styles.exerciseBox, {marginTop:20, marginBottom: 10, marginHorizontal:20}]}/>
+        <MontSerratText text={props.text}></MontSerratText>
+        </TouchableOpacity>
     )
 }
 
