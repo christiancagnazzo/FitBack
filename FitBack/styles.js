@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
       fontFamily: 'Montserrat',
     },
     headerText: {
-      fontSize: 48,
+      fontSize: 40,
       fontFamily : 'BebasNeue',
       color: colors.red,
     },
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
       alignSelf:'stretch'
     },
     homepage: {
-      marginTop: 30,
       flexDirection: "column",
       alignItems: 'center',
     },

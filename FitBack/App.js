@@ -2,9 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import {styles} from './styles.js'
 import { Homepage } from './components/Homepage.js';
-import { Navbar, MyStatusBar } from './components/Navbar.js';
+import { Navbar, MyStatusBar, MyMenu } from './components/Navbar.js';
 import { useFonts } from 'expo-font';
 import { LinearGradient } from 'expo-linear-gradient';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   const [loaded] = useFonts({
@@ -20,16 +24,28 @@ export default function App() {
 
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="light" />
-      <Navbar/>
-      <SafeAreaView style={styles.container2}>
-        <LinearGradient colors={['#D3D3D3','#FFFFFF']}>
-          <Homepage />
-        </LinearGradient>
-      </SafeAreaView>
-      
-    </SafeAreaView>
+    <NavigationContainer>
+			<StatusBar style="light" />
+
+			<Stack.Navigator>
+				<Stack.Screen
+					name="Homepage"
+					component={Homepage}
+					options={{
+						title: "FITBACK",
+						headerStyle: styles.headerBar,
+						headerTitleStyle: styles.headerText,
+
+            headerLeft: () => (
+              <MyMenu/>
+            ),
+            
+            headerRight: () => (<View />)
+					}}
+          
+				/>
+			</Stack.Navigator>
+		</NavigationContainer>
   );
 }
 

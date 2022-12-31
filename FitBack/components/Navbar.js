@@ -16,9 +16,9 @@ function Navbar() {
   }
 
 function MyMenu(props) {
-  const size = 48;
+  const size = 40;
   return (
-    props.hidden ? <Ionicons name="menu" size={size} color="black" style={styles.hide}/> : <Ionicons name="menu" size={size} color={colors.gray}/>
+    <Ionicons name="menu" size={size} color={colors.gray}/>
   )
 }
 
@@ -26,4 +26,4 @@ function MyMenu(props) {
 
 
 
-export {Navbar}
+export {Navbar, MyMenu}
