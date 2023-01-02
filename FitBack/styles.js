@@ -55,6 +55,30 @@ const styles = StyleSheet.create({
       alignItems:'center',
       alignSelf:'stretch'
     },
+    primaryButton: {
+      backgroundColor: colors.red,
+      marginBottom: 20,
+      width: 160,
+      height: 60,
+      borderRadius: 20,
+      justifyContent: 'center',
+      alignItems: "center",
+    },
+    secondaryButton: {
+      backgroundColor: colors.darkGray,
+      marginBottom: 20,
+      width: 160,
+      height: 60,
+      borderRadius: 20,
+      justifyContent: 'center',
+      alignItems: "center",
+    },
+    exerciseDetailsButtons: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignSelf: "stretch",
+      marginHorizontal: 15
+    },
     homepage: {
       marginTop: 30,
       flexDirection: "column",
@@ -73,8 +97,9 @@ const styles = StyleSheet.create({
       fontSize: 20,
     },
     titleText: {
+      color: colors.darkGray,
+      fontFamily: 'MontSerratBold',
       fontSize: 30,
-      fontWeight: "bold"
     },
     centerAligned: {
       alignItems: 'center'
@@ -103,6 +128,32 @@ const styles = StyleSheet.create({
     backButton: {
       color: colors.darkGray,
       fontFamily: 'Montserrat',
+    },
+    cardStyle: {
+      cardContainer: {
+          marginVertical: 20,
+          width: 350,
+          borderRadius: 10,
+          borderWidth: 1,
+      },
+      cardHeader: {
+        backgroundColor: colors.darkGray,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      cardHeaderText: {
+        color: colors.white,
+        fontFamily: 'MontSerratBold',
+      },
+      cardBody: {
+        backgroundColor: colors.white,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        padding: 10,
+      },
     }
   });
 

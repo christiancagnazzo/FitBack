@@ -16,7 +16,7 @@ export default function App() {
 	const [loaded] = useFonts({
 		Montserrat: require("./assets/fonts/Montserrat-Regular.ttf"),
 		BebasNeue: require("./assets/fonts/BebasNeue-Regular.ttf"),
-		MonteSerratBold: require("./assets/fonts/Montserrat-Bold.ttf"),
+		MontSerratBold: require("./assets/fonts/Montserrat-Bold.ttf"),
 	});
 
 	if (!loaded) {

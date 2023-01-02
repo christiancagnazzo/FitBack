@@ -51,7 +51,7 @@ function TodaysTrainingComponent(props) {
 function MyButton(props) {
     return (
         <View>
-            <TouchableOpacity style={props.style}>
+            <TouchableOpacity style={props.style} onPress={props.onPressAction}>
                 <MontSerratText style={styles.buttonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
         </View>
@@ -79,4 +79,4 @@ function ExerciseBox(props) {
     )
 }
 
-export {Homepage}
+export {Homepage, MyButton}
