@@ -22,8 +22,13 @@ function MyMenu(props) {
   )
 }
 
+function InfoButton(props) {
+  return (
+    <Ionicons name="information-circle-outline" size={38} color={colors.gray} />
+  )
+}
 
 
 
 
-export {Navbar, MyMenu}
+export {Navbar, MyMenu, InfoButton}

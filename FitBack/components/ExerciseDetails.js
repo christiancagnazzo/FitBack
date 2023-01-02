@@ -4,11 +4,12 @@ import { View, Text, ScrollView, Button } from "react-native";
 import { useState } from "react";
 import {Card} from "react-native-elements";
 import { MyButton } from "./Homepage";
+import { useNavigation } from "@react-navigation/native";
 
 
 function ExerciseDetails(props) {
     const [exerciseName, setExerciseName] = useState(props.route.params.text);
-    
+    const navigation = useNavigation();
     return (
     <View style={{flex: 1, flexDirection: "column", alignItems:"center"}}>
         <ScrollView>
@@ -30,7 +31,7 @@ function ExerciseDetails(props) {
              </View>
         </ScrollView>
         <View style={styles.exerciseDetailsButtons}>
-            <MyButton style={styles.secondaryButton} title={"Reviews"}/>
+            <MyButton style={styles.secondaryButton} title={"Reviews"} onPressAction={() => {navigation.navigate("ReviewsList", {exerciseName: exerciseName})}}/>
             <MyButton style={styles.primaryButton} title={"Start AR training"}/>
         </View>
 

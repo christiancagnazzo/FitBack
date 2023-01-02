@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     container2: {
       flex:1,
       alignItems:'center',
-      alignSelf:'stretch'
+      alignSelf:'stretch',
+      backgroundColor: colors.lightGray,
     },
     primaryButton: {
       backgroundColor: colors.red,
@@ -103,6 +104,24 @@ const styles = StyleSheet.create({
     },
     centerAligned: {
       alignItems: 'center'
+    },
+    reviewVideo: {
+      backgroundColor: colors.white,
+      height: 288,
+      width: 162,
+      borderWidth: 1,
+      borderColor: colors.darkGray,
+      borderRadius: 10,
+    },
+    reviewContainer: {
+      marginTop: 20,
+      flexDirection: "row",
+      
+    },
+    review: {
+      marginHorizontal: 15,
+      flexDirection: "column",
+      alignItems: 'center',
     },
     exerciseBox: {
       backgroundColor: colors.lightGray,
