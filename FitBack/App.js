@@ -4,6 +4,8 @@ import {styles} from './styles.js'
 import { Homepage } from './components/Homepage.js';
 import { Navbar, MyStatusBar, MyMenu } from './components/Navbar.js';
 import { useFonts } from 'expo-font';
+import { FrameYourself } from './components/Training.js';
+import { TutorialFrame } from './components/Tutorial.js';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -30,11 +32,11 @@ export default function App() {
 			<Stack.Navigator>
 				<Stack.Screen
 					name="Homepage"
-					component={Homepage}
+					component={TutorialFrame}
 					options={{
-						title: "FITBACK",
-						headerStyle: styles.headerBar,
-						headerTitleStyle: styles.headerText,
+						title: "Tutorial",
+						//headerStyle: styles.headerBar,
+						//headerTitleStyle: styles.headerText,
 
             headerLeft: () => (
               <MyMenu/>
@@ -56,4 +58,3 @@ function MontSerratText(props) {
 }
 
 export {MontSerratText};
-

@@ -13,6 +13,7 @@ const colors = {
   gray: "#D3D3D3",
   lightGray: "#F5F3F4",
   white: "#FFFFFF",
+  green: "#adff2f"
 };
 
 const styles = StyleSheet.create({
@@ -105,6 +106,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  reverseButton: {
+    backgroundColor: colors.darkGray,
+    width: 150,
+    height: 60,
+    borderRadius: 10,
+    marginRight: 25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   bottomView: {
     flex:1,
     width: "100%",
@@ -115,14 +125,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    elevation:2,
   },
   textStyle: {
     color: "#fff",
     fontSize: 18,
   },
-  externalRectangleFrame:{
-    borderWidth: 3,
-    borderColor: colors.white,
+  externalRectangleFrameRed:{
+    borderWidth: 10,
+    borderColor: colors.red,
+    flex:1, 
+    margin:20,
+    marginBottom:80,
+  },
+  externalRectangleFrameGreen:{
+    borderWidth: 10,
+    borderColor: colors.green,
     flex:1, 
     margin:20,
     marginBottom:80,
@@ -134,6 +152,50 @@ const styles = StyleSheet.create({
     borderColor: colors.white,
     borderRadius: 10,
   },
+  rectangleRotateToSee: {
+    margin:20,
+    alignItems: "center",
+    borderWidth: 3,
+    borderColor: colors.black,
+    borderRadius: 10,
+  },
+  container3: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  camera: {
+    flex:1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  textFrameYouself: {
+    margin: 10,
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  textRotateToSee: {
+    margin: 10,
+    color: colors.black,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  }
 });
 
 export { styles, colors };
