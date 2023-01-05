@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import {styles} from './styles.js'
 import { Homepage } from './components/Homepage.js';
+import { HomepageAfterSession } from './components/HomepageAfterSession.js';
 import { Navbar, MyStatusBar, MyMenu } from './components/Navbar.js';
 import { useFonts } from 'expo-font';
 import { FrameYourself } from './components/Training.js';
@@ -32,11 +33,11 @@ export default function App() {
 			<Stack.Navigator>
 				<Stack.Screen
 					name="Homepage"
-					component={TutorialFrame}
+					component={HomepageAfterSession}
 					options={{
-						title: "Tutorial",
-						//headerStyle: styles.headerBar,
-						//headerTitleStyle: styles.headerText,
+						title: "Home",
+						headerStyle: styles.headerBar,
+						headerTitleStyle: styles.headerText,
 
             headerLeft: () => (
               <MyMenu/>

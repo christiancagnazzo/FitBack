@@ -86,6 +86,17 @@ const styles = StyleSheet.create({
     borderColor: colors.darkGray,
     borderRadius: 10,
   },
+  alreadyFinishedBox: {
+    backgroundColor: colors.lightGray,
+    height: 120,
+    width: 350,
+    borderWidth: 1,
+    borderColor: colors.darkGray,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center"
+  },
   startARTrainingButton: {
     backgroundColor: colors.red,
     marginTop: 10,
