@@ -81,6 +81,11 @@ function TutorialFrame() {
                         <View style={styles.rectangleRotateToSee}>
                             <MontSerratText style={styles.textRotateToSee} text={"Rotate to see whole body"} />
                         </View>
+                        <ImageBackground
+                            source={require("../assets/tutorial_gif.gif")}
+                            resizeMode="contain"
+                            style={{ flex: 3 }}
+                        ></ImageBackground>
                         <View style={styles.bottomView}>
                             <View style={styles.horizontalFlex}>
                                 <MyButton style={[styles.exitButton]} title="Exit" ></MyButton>
