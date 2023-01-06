@@ -107,6 +107,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  startSession: {
+    backgroundColor: colors.red,
+    marginTop: 10,
+    width: 150,
+    height: 60,
+    borderRadius: 10,
+    marginRight: 25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   exitButton: {
     backgroundColor: colors.darkGray,
     marginLeft: 20,
@@ -197,6 +207,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
+  },
+  textStartingSession: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'black',
+    margin: 10
   },
   textFrameYouself: {
     margin: 10,

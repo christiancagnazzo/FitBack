@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import {styles} from './styles.js'
 import { Homepage } from './components/Homepage.js';
 import { HomepageAfterSession } from './components/HomepageAfterSession.js';
+import{StartingSession} from './components/TodaySessionStarting.js'
 import { Navbar, MyStatusBar, MyMenu } from './components/Navbar.js';
 import { useFonts } from 'expo-font';
 import { FrameYourself } from './components/Training.js';
@@ -33,7 +34,7 @@ export default function App() {
 			<Stack.Navigator>
 				<Stack.Screen
 					name="Homepage"
-					component={TutorialFrame}
+					component={StartingSession}
 					options={{
 						title: "Home",
 						headerStyle: styles.headerBar,
