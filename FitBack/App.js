@@ -33,7 +33,7 @@ export default function App() {
 			<Stack.Navigator>
 				<Stack.Screen
 					name="Homepage"
-					component={HomepageAfterSession}
+					component={TutorialFrame}
 					options={{
 						title: "Home",
 						headerStyle: styles.headerBar,

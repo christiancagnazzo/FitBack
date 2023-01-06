@@ -5,14 +5,15 @@ import {
     SafeAreaView,
     View,
     Text,
-    Switch,
     TouchableOpacity,
     ScrollView,
     ImageBackground,
 } from 'react-native';
+import { Switch } from 'react-native-switch';
 import { React, useEffect } from "react";
 import { colors, styles } from "../styles.js";
 import { MontSerratText } from "../App.js";
+import { color } from '@rneui/base';
 
 
 function TutorialFrame() {
@@ -73,14 +74,16 @@ function TutorialFrame() {
                                 <View style={styles.horizontalFlex}>
                                     <MyButton style={[styles.exitButton]} title="Exit" ></MyButton>
                                     <View style={styles.switchButton}>
-                                    <Switch
-                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                        thumbColor={isAR ? "#008000" : "#f4f3f4"}
-                                        ios_backgroundColor="#3e3e3e"
-                                        onValueChange={switchAR}
-                                        value={isAR}
-                                    />
-                                </View>
+                                        <Switch
+                                            value={isAR}
+                                            onValueChange={switchAR}
+                                            activeText={'AR'}
+                                            inActiveText={'OBJ'}
+                                            backgroundActive={'green'}
+                                            backgroundInactive={'gray'}
+                                            circleActiveColor={'#30a566'}
+                                            circleInActiveColor={'#000000'} />
+                                    </View>
                                 </View>
                             </View>
                         </View>
@@ -99,13 +102,15 @@ function TutorialFrame() {
                             <View style={styles.horizontalFlex}>
                                 <MyButton style={[styles.exitButton]} title="Exit" ></MyButton>
                                 <View style={styles.switchButton}>
-                                    <Switch
-                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                        thumbColor={isAR ? "#f5dd4b" : "#f4f3f4"}
-                                        ios_backgroundColor="#3e3e3e"
-                                        onValueChange={switchAR}
-                                        value={isAR}
-                                    />
+                                <Switch
+                                            value={isAR}
+                                            onValueChange={switchAR}
+                                            activeText={'AR'}
+                                            inActiveText={'OBJ'}
+                                            backgroundActive={'green'}
+                                            backgroundInactive={'gray'}
+                                            circleActiveColor={'#30a566'}
+                                            circleInActiveColor={'#000000'} />
                                 </View>
                             </View>
                         </View>

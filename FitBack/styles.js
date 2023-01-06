@@ -214,7 +214,14 @@ const styles = StyleSheet.create({
   },
   FinishedTrainingImage: {
     flex: 1
-  }
+  },
+  switchText: {
+    margin: 10,
+    color: colors.black,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
 });
 
 export { styles, colors };
