@@ -80,7 +80,7 @@ function FinishedBox() {
                 resizeMode="contain"
                 style={styles.FinishedTrainingImage}
             ></Image>
-            <MontSerratText color={colors.black} text="Try to look at suggested exercise "></MontSerratText>
+            <MontSerratText color={colors.black} text="Try to look at suggested exercises "></MontSerratText>
         </View>
     )
 }
