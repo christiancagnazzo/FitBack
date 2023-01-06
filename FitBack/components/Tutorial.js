@@ -5,6 +5,7 @@ import {
     SafeAreaView,
     View,
     Text,
+    Switch,
     TouchableOpacity,
     ScrollView,
     ImageBackground,
@@ -71,7 +72,15 @@ function TutorialFrame() {
                             <View style={styles.bottomView}>
                                 <View style={styles.horizontalFlex}>
                                     <MyButton style={[styles.exitButton]} title="Exit" ></MyButton>
-                                    <MyButton style={[styles.reverseButton]} title="Switch to Object" onPress={switchAR}></MyButton>
+                                    <View style={styles.switchButton}>
+                                    <Switch
+                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                        thumbColor={isAR ? "#008000" : "#f4f3f4"}
+                                        ios_backgroundColor="#3e3e3e"
+                                        onValueChange={switchAR}
+                                        value={isAR}
+                                    />
+                                </View>
                                 </View>
                             </View>
                         </View>
@@ -89,7 +98,15 @@ function TutorialFrame() {
                         <View style={styles.bottomView}>
                             <View style={styles.horizontalFlex}>
                                 <MyButton style={[styles.exitButton]} title="Exit" ></MyButton>
-                                <MyButton style={[styles.reverseButton]} title="Switch to AR" onPress={switchAR}></MyButton>
+                                <View style={styles.switchButton}>
+                                    <Switch
+                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                        thumbColor={isAR ? "#f5dd4b" : "#f4f3f4"}
+                                        ios_backgroundColor="#3e3e3e"
+                                        onValueChange={switchAR}
+                                        value={isAR}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -113,6 +130,8 @@ function MyButton(props) {
         </View>
     );
 }
+
+
 
 
 export { TutorialFrame }

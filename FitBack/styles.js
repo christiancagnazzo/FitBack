@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   alreadyFinishedBox: {
     backgroundColor: colors.lightGray,
-    height: 120,
+    height: 150,
     width: 350,
     borderWidth: 1,
     borderColor: colors.darkGray,
@@ -125,6 +125,11 @@ const styles = StyleSheet.create({
     marginRight: 25,
     justifyContent: "center",
     alignItems: "center",
+  },
+  switchButton: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
   },
   bottomView: {
     flex:1,
@@ -206,6 +211,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  FinishedTrainingImage: {
+    flex: 1
   }
 });
 

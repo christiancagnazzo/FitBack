@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, View, Text, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
+import { Button, View, Text, TouchableOpacity, ScrollView, Image, ImageBackground } from 'react-native';
 import { colors, styles } from '../styles.js'
 import { MontSerratText } from '../App.js';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -29,7 +29,8 @@ function TodaysTrainingComponent(props) {
                 <MontSerratText color={colors.black} style={styles.titleText} text={todaysTrainingText}> </MontSerratText>
             </View>
             <View>
-                <FinishedBox></FinishedBox>
+                <FinishedBox>
+                </FinishedBox>
             </View>
             <View style={styles.horizontalFlexReverse}>
                 <MyButton style={[styles.startARTrainingButton]} title="Start AR training" ></MyButton>
@@ -72,10 +73,14 @@ function ExerciseBox() {
 function FinishedBox() {
     return (
         <View style={[styles.alreadyFinishedBox, { marginVertical: 20, marginHorizontal: 15 }]}>
-            <MontSerratText  color={colors.black} text="You already finished your daily training! "></MontSerratText>
-            <MontSerratText  color={colors.black} text="Good Job! "></MontSerratText>
-      
-            <MontSerratText  color={colors.black} text="Try to look at suggested exercise "></MontSerratText>
+            <MontSerratText color={colors.black} text="You already finished your daily training! "></MontSerratText>
+            <MontSerratText color={colors.black} text="Good Job! "></MontSerratText>
+            <Image
+                source={require("../assets/coccarda.png")}
+                resizeMode="contain"
+                style={styles.FinishedTrainingImage}
+            ></Image>
+            <MontSerratText color={colors.black} text="Try to look at suggested exercise "></MontSerratText>
         </View>
     )
 }
