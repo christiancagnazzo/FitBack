@@ -75,6 +75,15 @@ export default function App() {
 				<Stack.Screen
 				name="ReviewVideo"
 				component={ReviewVideo}
+				options={{
+					title: "FITBACK",
+						headerStyle: styles.headerBar,
+						headerTitleStyle: styles.headerText,
+						headerBackTitle: "Back",
+						headerBackTitleStyle: styles.backButton,
+						headerTintColor: colors.lightGray,
+						headerShown: true,
+				}}
 				/>
 					
 			</Stack.Navigator>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Button, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, Button, FlatList, SafeAreaView, TouchableOpacity, Platform } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from "../styles";
 import { useNavigation } from "@react-navigation/native";
+
 
 
 function ReviewsList(props) {
@@ -30,20 +31,19 @@ function ReviewsList(props) {
 
     ]
 	const [reviews, setReviews] = useState(reviewsData);
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
 
-    const renderItem = ({item}) => (<ReviewVideo title={item.title}/>)
     
 	return (
 		<View style={styles.container2}>
 			<Text style={styles.titleText}>{props.route.params.exerciseName}</Text>
             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderWidth: 0, width: "100%"}}>
                 <Text style={{borderWidth: 0}}>Select date:</Text>
-                <DateTimePicker mode="date" value={date} style={{borderWidth: 0}} />
+                <MyDatePicker date={date} setDate={setDate}/>
                 <Button title="All dates" style={{flex:1}}></Button>
             </View>
 			
-            <Text style={{alignSelf: "left"}}>Selected date: {date.toDateString()}</Text>
+            <Text style={styles.datePicker}>Selected date: {date.toDateString()}</Text>
             <SafeAreaView>
             <FlatList 
             data={reviews}
@@ -62,12 +62,63 @@ function ReviewsList(props) {
 }
 
 
+function MyDatePicker(props) {
+
+
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const date = props.date
+    const setDate = props.setDate
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleDateSelectedAndroid = (event, value) => {
+        hideDatePicker();
+        setDate(value);
+    };
+
+    const handleDateSelectedIos = (event, value) => {
+        setDate(value);
+    };
+
+    {
+        if (Platform.OS === 'ios') {
+            return <DateTimePicker
+            onChange={handleDateSelectedIos}
+            maximumDate={new Date()}
+            mode="date" 
+            value={date}/>
+        }
+        else {
+            return (
+                <>
+                <Button title="Show date picker" onPress={showDatePicker}>Show date picker</Button>
+                {isDatePickerVisible && 
+                (<DateTimePicker
+                maximumDate={new Date().setHours(0,0,0,0)}
+                onCancel={hideDatePicker}
+                onChange={handleDateSelectedAndroid}
+                 mode="date" 
+                 value={date}/>)
+                }
+                </>
+            )
+        }
+    }
+    
+}
+
 
 const ReviewVideo = (props) => {
     const navigation = useNavigation();
     return (
         <TouchableOpacity onPress={() => {
-            navigation.navigate("ReviewVideoScreen")
+            navigation.navigate("ReviewVideo")
         }}>
         <View style={styles.review}>
             <View style={styles.reviewVideo}>

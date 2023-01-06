@@ -118,6 +118,9 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       
     },
+    datePicker: {
+      alignSelf: 'flex-start',
+    },
     review: {
       marginHorizontal: 15,
       flexDirection: "column",
