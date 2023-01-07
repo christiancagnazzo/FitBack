@@ -32,6 +32,13 @@ function StartingSession() {
 
             <View>
                 <MontSerratText style={styles.textStartingSession} text={"You are starting today's session!"} />
+                <View style={{ margin: 5, flexDirection:"row" }}>
+                    <Text style={{ fontWeight: "bold", fontSize: 25, marginLeft: 10 }}>{"Exercise"}</Text>
+                    <Text style={{ fontWeight: "bold", fontSize: 25, textAlign: "right", marginStart: 180 }}>{"Reps"}</Text>
+                </View>
+                <View style={{ flex: 1, height: 3, backgroundColor: 'black', marginLeft: 10, width: 350 }} />
+                 
+                <View style={{ flex: 1, height: 3, backgroundColor: 'black', marginLeft: 10, marginBottom: 20 }} />
                 <ScrollView style={{ marginTop: 10 }}>
                     {
                         exercises.map((e, i) => <ExerciseList key={i} exercise={e}></ExerciseList>)
