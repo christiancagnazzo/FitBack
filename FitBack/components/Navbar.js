@@ -1,5 +1,5 @@
 import { color, Header } from "@rneui/base";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, Button } from "react-native";
 import { styles, colors } from "../styles";
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -24,7 +24,9 @@ function MyMenu(props) {
 
 function InfoButton(props) {
   return (
-    <Ionicons name="information-circle-outline" size={38} color={colors.gray}/>
+    <TouchableOpacity title="info rewiews">
+      <Ionicons name="information-circle-outline" size={38} color={colors.gray}/>
+    </TouchableOpacity>
   )
 }
 

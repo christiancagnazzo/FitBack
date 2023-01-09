@@ -20,7 +20,6 @@ import { useState } from "react";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-	const [prova, setProva] = useState("prova")
 
 	const [loaded] = useFonts({
 		Montserrat: require("./assets/fonts/Montserrat-Regular.ttf"),
@@ -79,7 +78,6 @@ export default function App() {
 						
 						headerRight: () => <InfoButton/>,
 					}}
-					initialParams= {{prova: prova, setProva: setProva}}
 				/>
 				<Stack.Screen
 				name="ReviewVideo"

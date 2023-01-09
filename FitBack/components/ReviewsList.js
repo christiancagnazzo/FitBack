@@ -19,10 +19,9 @@ import { MontSerratText } from "./Utility";
 import Checkbox from "expo-checkbox";
 import {colors} from "../styles.js"
 import { MyButton } from "./Homepage";
-
+import { Ionicons } from '@expo/vector-icons';
 function ReviewsList(props) {
-	console.log(props.route.params)
-	props.route.params.setProva("Hello")
+	
 	const reviewsData = [
 		{
 			id: 1,
@@ -46,12 +45,29 @@ function ReviewsList(props) {
 	const [date, setDate] = useState(null);
 	const [isSelected, setSelection] = useState(false);
 	const [showPopup, setShowPopup] = useState(true);
-
+	const [preference, setPreference] = useState(true);
+	const [showPopupInfo, setShowPopupInfo] = useState(false);
+	
 	useEffect(() => {
-		//Carica/salva showPopup dal db
-		//per implementare il non mostrare più
+		//load preference from database and set it to the value
+	}, [])
 
-	}, [showPopup]);
+
+	
+	const clickCheckbox = function(value) {
+		setSelection(value);
+	}
+	useEffect(() => {
+		// Use `setOptions` to update the button that we previously specified
+		// Now the button includes an `onPress` handler to update the count
+		props.navigation.setOptions({
+		  headerRight: () => (
+			<TouchableOpacity title="info rewiews" onPress={() => setShowPopupInfo(true)}>
+				<Ionicons name="information-circle-outline" size={38} color={colors.gray}/>
+			</TouchableOpacity>
+		  ),
+		});
+	  }, [props.navigation]);
 	
 	return (
 		<View style={styles.container2}>
@@ -104,7 +120,41 @@ function ReviewsList(props) {
 					keyExtractor={(item) => item.id}
 				/>
 			</SafeAreaView>
+			{preference ?
 			<Modal visible={showPopup} animationType="none" transparent={true}>
+			<View style={pageStyles.centeredView}>
+				<View style={pageStyles.modalView}>
+					<Text
+						
+						style={pageStyles.whatAreReviews}
+					>What are reviews?</Text>
+					<MontSerratText
+						style={pageStyles.whatAreReviewsText}
+						text={
+							"Reviews show videos of your previous errors with a brief explanation"
+						}
+					></MontSerratText>
+					<View style={pageStyles.checkboxContainer}>
+						<Checkbox
+							pageStyles={styles.checkbox}
+							value={isSelected}
+							onValueChange={clickCheckbox}
+							color={isSelected ? "#4630EB" : undefined}
+						/>
+						<MontSerratText style={pageStyles.label} text={"Don't show this again"}>
+
+						</MontSerratText>
+					</View>
+					<MyButton
+						style={pageStyles.gotItButton}
+						title={"Got it!"}
+						onPressAction={() => {setPreference(!isSelected) ;setShowPopup(false)}}
+					></MyButton>
+				</View>
+			</View>
+		</Modal>
+			 : false}
+			<Modal visible={showPopupInfo} animationType="none" transparent={true}>
 				<View style={pageStyles.centeredView}>
 					<View style={pageStyles.modalView}>
 						<Text
@@ -118,24 +168,18 @@ function ReviewsList(props) {
 							}
 						></MontSerratText>
 						<View style={pageStyles.checkboxContainer}>
-							<Checkbox
-								pageStyles={styles.checkbox}
-								value={isSelected}
-								onValueChange={setSelection}
-								color={isSelected ? "#4630EB" : undefined}
-							/>
-							<MontSerratText style={pageStyles.label} text={"Don't show this again"}>
 
-							</MontSerratText>
 						</View>
 						<MyButton
 							style={pageStyles.gotItButton}
 							title={"Got it!"}
-							onPressAction={() => setShowPopup(false)}
+							onPressAction={() => setShowPopupInfo(false)}
 						></MyButton>
 					</View>
 				</View>
 			</Modal>
+		
+			
 		</View>
 	);
 }
