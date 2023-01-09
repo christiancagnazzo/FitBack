@@ -4,10 +4,9 @@ import { Video } from "expo-av";
 import { Button } from "react-native-elements";
 import { colors } from "../styles.js";
 import { Ionicons } from "@expo/vector-icons";
-import { MontSerratText } from "../App";
+import { MontSerratText } from "./Utility.js";
 import { ResizeMode } from "expo-av";
 
-import VideoPlayer from "expo-video-player";
 
 const ReviewVideo = () => {
 	const video = useRef(null);

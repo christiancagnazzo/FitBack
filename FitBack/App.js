@@ -15,10 +15,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ExerciseDetails } from "./components/ExerciseDetails.js";
 import { ReviewsList } from "./components/ReviewsList.js";
 import { ReviewVideo } from "./components/ReviewVideo.js";
+import { useState } from "react";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+	const [prova, setProva] = useState("prova")
+
 	const [loaded] = useFonts({
 		Montserrat: require("./assets/fonts/Montserrat-Regular.ttf"),
 		BebasNeue: require("./assets/fonts/BebasNeue-Regular.ttf"),
@@ -28,6 +31,9 @@ export default function App() {
 	if (!loaded) {
 		return null;
 	}
+	
+
+	
 
 	return (
 		<NavigationContainer>
@@ -41,7 +47,8 @@ export default function App() {
 						title: "FITBACK",
 						headerStyle: styles.headerBar,
 						headerTitleStyle: styles.headerText,
-
+						headerTitleAlign: 'center',
+						
 						headerLeft: () => <MyMenu />,
 
 						headerRight: () => <View />,
@@ -69,8 +76,10 @@ export default function App() {
 						headerBackTitle: "Back",
 						headerBackTitleStyle: styles.backButton,
 						headerTintColor: colors.lightGray,
-						headerRight: () => <InfoButton />,
+						
+						headerRight: () => <InfoButton/>,
 					}}
+					initialParams= {{prova: prova, setProva: setProva}}
 				/>
 				<Stack.Screen
 				name="ReviewVideo"
@@ -91,14 +100,3 @@ export default function App() {
 	);
 }
 
-function MontSerratText(props) {
-	return (
-		<Text
-			style={[styles.montSerratText, { color: props.color }, props.style]}
-		>
-			{props.text}
-		</Text>
-	);
-}
-
-export { MontSerratText };

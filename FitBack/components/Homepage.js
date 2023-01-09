@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
-import { Button, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { Button, View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import {colors, styles} from '../styles.js'
-import { MontSerratText } from '../App.js';
 import {LinearGradient} from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-
+import {MontSerratText} from './Utility.js'
 function Homepage() {
+    const [todayList, setTodayList] = useState([
+        {
+            id: 0,
+            name: "Push-ups",
+            uri: require("../assets/images/exercises_box/push-up.png")
+        },
+        {
+            id: 1,
+            name: "Pull-ups",
+            uri: require("../assets/images/exercises_box/pull-up.webp")
+        },
+        {
+            id: 2,
+            name: "Squats",
+            uri: require("../assets/images/exercises_box/squat.webp")
+        },
+        {
+            id: 3,
+            name: "Lunges",
+        },
+        {
+            id: 4,
+            name: "Bench press",
+        },
+    ]);
     const navigation = useNavigation();
     return (
         
@@ -16,7 +40,7 @@ function Homepage() {
             <HomepageButton title="Suggested exercises"/>
             <HomepageButton title="All exercises"/>
         </View>
-            <TodaysTrainingComponent navigation= {navigation}/>
+            <TodaysTrainingComponent todayList={todayList} navigation= {navigation}/>
         </View>
         
     );
@@ -31,12 +55,11 @@ function TodaysTrainingComponent(props) {
         </View>
         <View>
         <ScrollView horizontal={true}>
-            <ExerciseBox text={"Push-ups"} navigation={props.navigation}/>
-            <ExerciseBox/>
-            <ExerciseBox/>
-            <ExerciseBox/>
-            <ExerciseBox/>
-            <ExerciseBox/>
+            {props.todayList.map((item) => {
+                return (
+                    <ExerciseBox uri={item.uri} key={item.id} text={item.name} navigation={props.navigation}/>
+                )
+            })}
         </ScrollView>
         </View>
         <View style={styles.horizontalFlexReverse}>
@@ -73,7 +96,9 @@ function HomepageButton(props) {
 function ExerciseBox(props) {
     return (
         <TouchableOpacity style={styles.exerciseBoxAndText} onPress={() => {props.navigation.navigate("ExerciseDetails", {text: props.text})}}>
-        <View style={[styles.exerciseBox, {marginTop:20, marginBottom: 10, marginHorizontal:20}]}/>
+        <View style={{marginTop:20, marginBottom: 10, marginHorizontal:20}}>
+            <Image style={styles.exerciseBoxPhoto} source={props.uri}/>
+        </View>
         <MontSerratText text={props.text}></MontSerratText>
         </TouchableOpacity>
     )

@@ -18,13 +18,13 @@ function Navbar() {
 
 function MyMenu(props) {
   return (
-    <Ionicons name="menu" size={38}color={colors.gray} style={{borderWidth: 0, borderColor: "red",alignSelf: 'center', width:50, height: 50}}/>
+    <Ionicons name="menu" size={50} color={colors.gray} style={{borderWidth: 0, borderColor: "red",alignSelf: 'center', width:50, height: 50}}/>
   )
 }
 
 function InfoButton(props) {
   return (
-    <Ionicons name="information-circle-outline" size={38} color={colors.gray} />
+    <Ionicons name="information-circle-outline" size={38} color={colors.gray}/>
   )
 }
 

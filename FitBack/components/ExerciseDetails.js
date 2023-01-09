@@ -1,4 +1,4 @@
-import { MontSerratText } from "../App";
+import { MontSerratText } from "./Utility";
 import { styles } from "../styles";
 import { View, Text, ScrollView, Button } from "react-native";
 import { useState } from "react";

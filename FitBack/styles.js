@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     reviewVideo: {
-      backgroundColor: colors.white,
       height: 288,
       width: 162,
       borderWidth: 1,
@@ -126,13 +125,12 @@ const styles = StyleSheet.create({
       flexDirection: "column",
       alignItems: 'center',
     },
-    exerciseBox: {
-      backgroundColor: colors.lightGray,
+    exerciseBoxPhoto: {
       height: 100,
       width: 100,
+      borderRadius: 10,
       borderWidth: 1,
       borderColor: colors.darkGray,
-      borderRadius: 10,
     },
     startARTrainingButton: {
       backgroundColor: colors.red,

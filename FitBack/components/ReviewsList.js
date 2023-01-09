@@ -1,138 +1,278 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, Button, FlatList, SafeAreaView, TouchableOpacity, Platform } from "react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useEffect, useState } from "react";
+import {
+	View,
+	Text,
+	ScrollView,
+	Button,
+	FlatList,
+	SafeAreaView,
+	TouchableOpacity,
+	Platform,
+	Modal,
+	StyleSheet,
+	Image
+} from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { styles } from "../styles";
 import { useNavigation } from "@react-navigation/native";
-
-
+import { MontSerratText } from "./Utility";
+import Checkbox from "expo-checkbox";
+import {colors} from "../styles.js"
+import { MyButton } from "./Homepage";
 
 function ReviewsList(props) {
-	let reviewsPlaceHolder = [
-		<ReviewVideo/>,
-		<ReviewVideo/>,
-        <ReviewVideo/>,
+	console.log(props.route.params)
+	props.route.params.setProva("Hello")
+	const reviewsData = [
+		{
+			id: 1,
+			title: "Review 1",
+			date: "2023-01-03",
+			uri: require("../assets/video/thumbnail.png")
+		},
+		{
+			id: 2,
+			title: "Review 2",
+			date: "2023-01-03",
+			uri: require("../assets/video/thumbnail.png")
+		},
+		{
+			id: 3,
+			title: "Review 3",
+			date: "2020-08-29",
+		},
 	];
-    const reviewsData = [
-        {
-        id: 1,
-        title: "Review 1",
-        date: "2020-08-29",
-        },
-        {
-        id: 2,
-        title: "Review 2",
-        date: "2020-08-29",
-        },
-        {
-        id: 3,
-        title: "Review 3",
-        date: "2020-08-29",
-        },
-
-    ]
 	const [reviews, setReviews] = useState(reviewsData);
-    const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(null);
+	const [isSelected, setSelection] = useState(false);
+	const [showPopup, setShowPopup] = useState(true);
 
-    
+	useEffect(() => {
+		//Carica/salva showPopup dal db
+		//per implementare il non mostrare più
+
+	}, [showPopup]);
+	
 	return (
 		<View style={styles.container2}>
-			<Text style={styles.titleText}>{props.route.params.exerciseName}</Text>
-            <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderWidth: 0, width: "100%"}}>
-                <Text style={{borderWidth: 0}}>Select date:</Text>
-                <MyDatePicker date={date} setDate={setDate}/>
-                <Button title="All dates" style={{flex:1}}></Button>
-            </View>
-			
-            <Text style={styles.datePicker}>Selected date: {date.toDateString()}</Text>
-            <SafeAreaView>
-            <FlatList 
-            data={reviews}
-            numColumns={2}
-            renderItem={({item}) => {
-                return <ReviewVideo title={item.title} date={item.date}></ReviewVideo>} 
-            }               
-            
-            keyExtractor={(item) => item.id}
-            />
-                
-            
-            </SafeAreaView>
+			<Text style={styles.titleText}>
+				{props.route.params.exerciseName}
+			</Text>
+			<View
+				style={{
+					flexDirection: "row",
+					alignItems: "center",
+					justifyContent: "space-between",
+					borderWidth: 0,
+					width: "100%",
+				}}
+			>
+				<Text style={{ borderWidth: 0 }}>Select date:</Text>
+				<MyDatePicker date={date} setDate={setDate}/>
+				<Button title="All dates" style={{ flex: 1 }} onPress={() => {
+					setDate(null)
+				}}></Button>
+			</View>
+
+			<Text style={styles.datePicker}>
+				Selected date: {date ? date.toDateString() : "All dates"}
+			</Text>
+			<SafeAreaView>
+				<FlatList
+					data={reviews.filter((review) => {
+						if (date == null) {
+							return true;
+						}
+						if (review.date == date.toISOString().split("T")[0]) {
+							return true;
+						}
+						else {
+							return false
+						}
+					})}
+					numColumns={2}
+					renderItem={({ item }) => {
+						return (
+					
+							<ReviewVideo
+								uri={item.uri}
+								title={item.title}
+								date={item.date}
+							></ReviewVideo>
+						);
+					}}
+					keyExtractor={(item) => item.id}
+				/>
+			</SafeAreaView>
+			<Modal visible={showPopup} animationType="none" transparent={true}>
+				<View style={pageStyles.centeredView}>
+					<View style={pageStyles.modalView}>
+						<Text
+							
+							style={pageStyles.whatAreReviews}
+						>What are reviews?</Text>
+						<MontSerratText
+							style={pageStyles.whatAreReviewsText}
+							text={
+								"Reviews show videos of your previous errors with a brief explanation"
+							}
+						></MontSerratText>
+						<View style={pageStyles.checkboxContainer}>
+							<Checkbox
+								pageStyles={styles.checkbox}
+								value={isSelected}
+								onValueChange={setSelection}
+								color={isSelected ? "#4630EB" : undefined}
+							/>
+							<MontSerratText style={pageStyles.label} text={"Don't show this again"}>
+
+							</MontSerratText>
+						</View>
+						<MyButton
+							style={pageStyles.gotItButton}
+							title={"Got it!"}
+							onPressAction={() => setShowPopup(false)}
+						></MyButton>
+					</View>
+				</View>
+			</Modal>
 		</View>
 	);
 }
 
-
 function MyDatePicker(props) {
+	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+	const date = props.date;
+	const setDate = props.setDate;
 
+	const showDatePicker = () => {
+		setDatePickerVisibility(true);
+	};
 
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const date = props.date
-    const setDate = props.setDate
+	const hideDatePicker = () => {
+		setDatePickerVisibility(false);
+	};
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
+	const handleDateSelectedAndroid = (event, value) => {
+		hideDatePicker();
+		setDate(value);
+	};
 
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-    };
+	const handleDateSelectedIos = (event, value) => {
+		setDate(value);
+	};
 
-    const handleDateSelectedAndroid = (event, value) => {
-        hideDatePicker();
-        setDate(value);
-    };
-
-    const handleDateSelectedIos = (event, value) => {
-        setDate(value);
-    };
-
-    {
-        if (Platform.OS === 'ios') {
-            return <DateTimePicker
-            onChange={handleDateSelectedIos}
-            maximumDate={new Date()}
-            mode="date" 
-            value={date}/>
-        }
-        else {
-            return (
-                <>
-                <Button title="Show date picker" onPress={showDatePicker}>Show date picker</Button>
-                {isDatePickerVisible && 
-                (<DateTimePicker
-                maximumDate={new Date().setHours(0,0,0,0)}
-                onCancel={hideDatePicker}
-                onChange={handleDateSelectedAndroid}
-                 mode="date" 
-                 value={date}/>)
-                }
-                </>
-            )
-        }
-    }
-    
+	{
+		if (Platform.OS === "ios") {
+			return (
+				<>
+				
+				<DateTimePicker
+					onChange={handleDateSelectedIos}
+					maximumDate={new Date()}
+					mode="date"
+					value={date ? date : new Date()}
+				/> 
+				
+				</>
+			);
+		} else {
+			return (
+				<>
+					<Button title="Show date picker" onPress={showDatePicker}>
+						Show date picker
+					</Button>
+					{isDatePickerVisible && (
+						<DateTimePicker
+							maximumDate={new Date().setHours(0, 0, 0, 0)}
+							onCancel={hideDatePicker}
+							onChange={handleDateSelectedAndroid}
+							mode="date"
+							value={date ? date : new Date()}
+						/>
+					)}
+				</>
+			);
+		}
+	}
 }
-
 
 const ReviewVideo = (props) => {
-    const navigation = useNavigation();
-    return (
-        <TouchableOpacity onPress={() => {
-            navigation.navigate("ReviewVideo")
-        }}>
-        <View style={styles.review}>
-            <View style={styles.reviewVideo}>
+	const navigation = useNavigation();
+	return (
+		<TouchableOpacity
+			onPress={() => {
+				navigation.navigate("ReviewVideo");
+			}}
+		>
+			<View style={styles.review}>
+				<Image source={props.uri} style={styles.reviewVideo}></Image>
+				<Text>{props.title}</Text>
+				<Text>{props.date}</Text>
+			</View>
+		</TouchableOpacity>
+	);
+};
 
-            </View>
-            <Text>
-                {props.title}
-            </Text>
-            <Text>
-                {props.date}
-            </Text>
-        </View>
-        </TouchableOpacity>
-    );
-}
+const pageStyles = StyleSheet.create({
+	centeredView: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	gotItButton: {
+		backgroundColor: colors.red,
+		marginTop: 10,
+		width: 150,
+		height: 60,
+		borderRadius: 10,
+		justifyContent: 'center',
+		alignItems: "center",
+	},
+	whatAreReviews: {
+		color: colors.darkGray,
+		fontFamily: 'MontSerratBold',
+		fontSize: 25,
+		marginBottom: 15,
+	},
+	whatAreReviewsText: {
+		fontSize: 18,
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: "white",
+		borderRadius: 20,
+		paddingBottom: 30,
+		paddingHorizontal: 20,
+		paddingTop: 20,
+		alignItems: "center",
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+	},
+	container: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	checkboxContainer: {
+		flexDirection: "row",
+		marginTop: 10,
+		marginBottom: 10,
+		alignItems: "center",
+		alignSelf: "flex-start",
+	},
+	checkbox: {
+		alignSelf: "center",
+	},
+	label: {
+		margin: 8,
+	},
+});
 
 export { ReviewsList };
