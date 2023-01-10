@@ -11,20 +11,26 @@
   "dependencies": {
     "@expo/webpack-config": "^0.17.2",
     "@react-navigation/native": "^6.1.1",
+    "@react-navigation/native-stack": "^6.9.8",
     "@react-navigation/stack": "^6.3.10",
+    "@react-three/fiber": "^8.10.0",
     "@rneui/base": "^4.0.0-rc.7",
     "@rneui/themed": "^4.0.0-rc.7",
+    "@types/three": "^0.148.0",
     "expo": "~47.0.8",
     "expo-camera": "^13.1.0",
+    "expo-gl": "^12.0.1",
     "expo-linear-gradient": "~12.0.1",
     "expo-status-bar": "~1.4.2",
+    "expo-three": "^7.0.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-ionicons": "^4.6.5",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-switch": "^1.5.1",
-    "react-native-web": "~0.18.9"
+    "react-native-web": "~0.18.9",
+    "three": "^0.145.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

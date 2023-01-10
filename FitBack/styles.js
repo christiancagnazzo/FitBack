@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     marginRight: 25,
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "flex-end"
   },
   exitButton: {
     backgroundColor: colors.darkGray,
@@ -209,10 +210,11 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   textStartingSession: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     color: 'black',
-    margin: 10
+    margin: 35,
+    alignSelf: "center"
   },
   textFrameYouself: {
     margin: 10,
