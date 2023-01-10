@@ -20,12 +20,13 @@ import {
     PerspectiveCamera,
     BoxBufferGeometry,
 } from "three";
-import ExpoTHREE, { Renderer } from "expo-three";
+import ExpoTHREE, { Renderer, loadAsync } from "expo-three";
 import { ExpoWebGLRenderingContext, GLView } from "expo-gl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
+console.disableYellowBox = true;
 
 
 
@@ -79,7 +80,7 @@ function TutorialFrame() {
                                 <MontSerratText style={styles.textFrameYouself} text={"Rotate to see whole body"} />
                             </View>
                             <GLView
-                                await onContextCreate={onContextCreate}
+                                 onContextCreate={onContextCreate}
                                 // set height and width of GLView
                                 style={{ width: 400, height: 400 }}
                             />
@@ -107,7 +108,7 @@ function TutorialFrame() {
                             <MontSerratText style={styles.textRotateToSee} text={"Rotate to see whole body"} />
                         </View>
                         <GLView
-                            await onContextCreate={onContextCreate}
+                             onContextCreate={onContextCreate}
                             // set height and width of GLView
                             style={{ width: 400, height: 400 }}
                         />
@@ -182,10 +183,26 @@ const onContextCreate = async (gl) => {
 
     // add cube to scene
     scene.add(cube);
+    //camera.lookAt(cube.position);
 
-
+    /*
+        // Load and add an obj model
+        const model = {
+            '3d.obj': 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/obj/walt/WaltHead.obj',
+            '3d.mtl': 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/obj/walt/WaltHead.mtl'
+          };
+  
+          const object = await loadAsync([model['3d.obj'], model['3d.mtl']], null, name => model[name]);
+  
+          object.position.y += 0;
+          object.position.z -= -0;
+          object.scale.set(.02, .02, .02);
+  
+          scene.add(object);
+*/
+/*
     const fbxLoader = new FBXLoader()
-    fbxLoader.load(
+ fbxLoader.load(
         '../assets/girl.fbx',
         (object) => {
             // object.traverse(function (child) {
@@ -196,7 +213,6 @@ const onContextCreate = async (gl) => {
             //         }
             //     }
             // })
-             object.scale.set(.01, .01, .01)
             scene.add(object)
         },
         (xhr) => {
@@ -206,10 +222,12 @@ const onContextCreate = async (gl) => {
             console.log(error)
         }
     )
-    /*
-              const loader = new GLTFLoader();
+*/
+
+    
+          /*    const loader = new GLTFLoader();
             loader.load(
-              "../assets/scene.gltf",
+              "../assets/dinosaur.glb",
               (gltf) => {
                 scene.add(gltf);
               },
@@ -219,15 +237,17 @@ const onContextCreate = async (gl) => {
               (error) => {
                 console.error("An error happened", error);
               });
-        
+              */
+
+        /*
     
               const obj = await ExpoTHREE.loadAsync(
-                [require('../assets/dinosaur.glb')],
+                require('../assets/mbappe3d/source/mbappe.obj'),
                 null,
-                imageName => resources[imageName]
+                imageName => "pippo"
               );
-    
-                      */
+                */
+                      
 
 
     // create render function
