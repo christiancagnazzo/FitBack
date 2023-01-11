@@ -12,7 +12,7 @@ import {
 import { Switch } from 'react-native-switch';
 import { React, useEffect } from "react";
 import { colors, styles } from "../styles.js";
-import { MontSerratText } from "../App.js";
+import { MontSerratText } from "../components/Utility.js";
 import {
     Scene,
     Mesh,
@@ -21,16 +21,16 @@ import {
     BoxBufferGeometry,
 } from "three";
 import ExpoTHREE, { Renderer, loadAsync } from "expo-three";
+import { useNavigation } from "@react-navigation/native";
 import { ExpoWebGLRenderingContext, GLView } from "expo-gl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
-console.disableYellowBox = true;
 
 
 
-function TutorialFrame() {
+function TutorialFrame(props) {
     const [type, setType] = useState(CameraType.back);
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [isAR, setAR] = useState(true)
@@ -65,6 +65,7 @@ function TutorialFrame() {
 
         //wait 1 second to let the green screen be visible than change screen
     }
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container3}>
@@ -76,7 +77,7 @@ function TutorialFrame() {
 
                     <Camera style={styles.camera} type={type}>
                         <View style={{ flex: 1 }}>
-                            <View style={styles.rectangleFrameYourSelfTitle}>
+                            <View style={styles.rectangleRotateToSee1}>
                                 <MontSerratText style={styles.textFrameYouself} text={"Rotate to see whole body"} />
                             </View>
                             <GLView
@@ -86,7 +87,7 @@ function TutorialFrame() {
                             />
                             <View style={styles.bottomView}>
                                 <View style={styles.horizontalFlex}>
-                                    <MyButton style={[styles.exitButton]} title="Exit" ></MyButton>
+                                <MyButton style={[styles.exitButton]} title="Exit"  navigation={navigation} onPressAction={()=>navigation.navigate("ExerciseDetails", { text: props.text }) }></MyButton>
                                     <View style={styles.switchButton}>
                                         <Switch
                                             value={isAR}
@@ -114,7 +115,7 @@ function TutorialFrame() {
                         />
                         <View style={styles.bottomView}>
                             <View style={styles.horizontalFlex}>
-                                <MyButton style={[styles.exitButton]} title="Exit" ></MyButton>
+                                <MyButton style={[styles.exitButton]} title="Exit"  navigation={navigation} onPressAction={()=>navigation.navigate("ExerciseDetails", { text: props.text }) }></MyButton>
                                 <View style={styles.switchButton}>
                                     <Switch
                                         value={isAR}
@@ -139,15 +140,12 @@ function TutorialFrame() {
 function MyButton(props) {
     return (
         <View>
-            <TouchableOpacity style={props.style} onPress={props.onPress}>
-                <MontSerratText
-                    style={styles.buttonText}
-                    color={colors.white}
-                    text={props.title}
-                ></MontSerratText>
+            <TouchableOpacity style={props.style} onPress={props.onPressAction}>
+                <MontSerratText style={styles.buttonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
         </View>
-    );
+
+    )
 }
 
 

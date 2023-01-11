@@ -1,7 +1,9 @@
 import { View, Text, Image, ScrollView, Overlay, TouchableOpacity } from 'react-native';
 import { colors, styles } from '../styles.js'
 import { React, useState } from "react";
-import { MontSerratText } from '../App.js';
+import { MontSerratText } from '../components/Utility.js';
+import { useNavigation } from "@react-navigation/native";
+
 
 
 const HardCodedSession = [
@@ -23,9 +25,11 @@ const HardCodedSession = [
     }
 ]
 
-function StartingSession() {
+function StartingSession(props) {
     const [exercises, setExercise] = useState(HardCodedSession) // temp
     const [visible, setVisible] = useState(false);
+    const navigation = useNavigation();
+
 
     return (
         <View>
@@ -47,7 +51,7 @@ function StartingSession() {
 
             </View>
             <View style={styles.horizontalFlexReverse}>
-                <MyButton style={[styles.startSession]} title="Start AR session" ></MyButton>
+                <MyButton style={[styles.startSession]} navigation={props.navigation} onPressAction={()=>props.navigation.navigate("", { text: props.text }) } title="Start AR session" ></MyButton>
             </View>
         </View>
 
@@ -79,16 +83,13 @@ function ExerciseList(props) {
 function MyButton(props) {
     return (
         <View>
-            <TouchableOpacity style={props.style}>
+            <TouchableOpacity style={props.style} onPress={props.onPressAction}>
                 <MontSerratText style={styles.buttonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            </View>
         </View>
 
     )
 }
-
 
 
 
