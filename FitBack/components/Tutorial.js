@@ -21,7 +21,7 @@ import {
     BoxBufferGeometry,
     BoxGeometry,
 } from "three";
-import ExpoTHREE, { Renderer, loadAsync } from "expo-three";
+import ExpoTHREE, { Renderer, loadAsync, THREE } from "expo-three";
 import { useNavigation } from "@react-navigation/native";
 import { ExpoWebGLRenderingContext, GLView } from "expo-gl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -83,7 +83,7 @@ function TutorialFrame(props) {
                             </View>
                             <GLView
                                 onContextCreate={onContextCreate}
-                                // set height and width of GLView
+                                                             // set height and width of GLView
                                 style={{ width: 400, height: 400 }}
                             />
                             <View style={styles.bottomView}>
@@ -111,7 +111,8 @@ function TutorialFrame(props) {
                         </View>
                         <GLView
                             onContextCreate={onContextCreate}
-                            // set height and width of GLView
+                            onRender={onRender}
+                            onResize={onResize}                                // set height and width of GLView
                             style={{ width: 400, height: 400 }}
                         />
                         <View style={styles.bottomView}>
@@ -150,15 +151,29 @@ function MyButton(props) {
 }
 
 
+
+
+
+
 const onContextCreate = async (gl) => {
     // three.js implementation.
-    const scene = new Scene();
+    const scene = new THREE.Scene();
+
+
     const camera = new PerspectiveCamera(
         75,
         gl.drawingBufferWidth / gl.drawingBufferHeight,
-        0.1,
+        1,
         1000
     );
+
+
+    camera.position.set(0, 0,0 );
+
+    camera.lookAt(0, 0, 0);
+
+    scene.add(new THREE.AmbientLight(0xffffff));
+
     gl.canvas = {
         width: gl.drawingBufferWidth,
         height: gl.drawingBufferHeight,
@@ -182,6 +197,7 @@ const onContextCreate = async (gl) => {
 
     // add cube to scene
     scene.add(cube);
+
     //camera.lookAt(cube.position);
 
     /*
@@ -199,45 +215,45 @@ const onContextCreate = async (gl) => {
   
           scene.add(object);
 */
-/*
-    const fbxLoader = new FBXLoader()
-    fbxLoader.load(
-        '../assets/girl.fbx',
-        (object) => {
-           
-            const geometry= new BufferGeometry(object.children.BufferGeometry);
-            const material = new MeshBasicMaterial({
-                color: "red",
+    /*
+        const fbxLoader = new FBXLoader()
+        fbxLoader.load(
+            '../assets/girl.fbx',
+            (object) => {
+               
+                const geometry= new BufferGeometry(object.children.BufferGeometry);
+                const material = new MeshBasicMaterial({
+                    color: "red",
+                });
+    
+                const girl = new Mesh(geometry, material);
+    
+    
+                scene.add(girl)
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            }
+        )*/
+
+
+    /*
+            const loader = new GLTFLoader();
+          loader.load(
+            "../assets/dinosaur.glb",
+            (gltf) => {
+              scene.add(gltf);
+            },
+            (xhr) => {
+              console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+            },
+            (error) => {
+              console.error("An error happened", error);
             });
-
-            const girl = new Mesh(geometry, material);
-
-
-            scene.add(girl)
-        },
-        (xhr) => {
-            console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-        },
-        (error) => {
-            console.log(error)
-        }
-    )*/
-
-
-/*
-        const loader = new GLTFLoader();
-      loader.load(
-        "../assets/dinosaur.glb",
-        (gltf) => {
-          scene.add(gltf);
-        },
-        (xhr) => {
-          console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        },
-        (error) => {
-          console.error("An error happened", error);
-        });
-  */      
+      */
 
     /*
  
@@ -258,6 +274,7 @@ const onContextCreate = async (gl) => {
         cube.rotation.x += 0.01;
 
         // rotate around y axis
+        
         cube.rotation.y += 0.01;
 
         renderer.render(scene, camera);
@@ -271,7 +288,31 @@ const onContextCreate = async (gl) => {
 
 
 
+/*
+// When the phone rotates, or the view changes size, this method will be called.
+onResize = ({ x, y, scale, width, height }) => {
+    // Let's stop the function if we haven't setup our scene yet
+    if (!this.renderer) {
+        return;
+    }
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setPixelRatio(scale);
+    this.renderer.setSize(width, height);
+};
 
+// Called every frame.
+onRender = delta => {
+
+
+    // Finally render the scene with the Camera
+    renderer.render(scene, camera);
+};
+
+
+
+
+*/
 
 
 export { TutorialFrame }
