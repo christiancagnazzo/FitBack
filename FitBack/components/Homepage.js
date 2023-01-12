@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Button, View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import {colors, styles} from '../styles.js'
-import {LinearGradient} from 'expo-linear-gradient';
+import { colors, styles } from '../styles.js'
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import {MontSerratText} from './Utility.js'
+import { MontSerratText } from './Utility.js'
 function Homepage() {
+    const [alreadyTrained, setalreadyTrained] = useState(false);
     const [todayList, setTodayList] = useState([
         {
             id: 0,
@@ -32,7 +33,7 @@ function Homepage() {
     ]);
     const navigation = useNavigation();
     return (
-        
+
         <View>
         <View style={styles.homepage}>
         <MontSerratText style={[styles.titleText, {marginBottom: 10}]} text={"Welcome back John!"}/>
@@ -40,9 +41,9 @@ function Homepage() {
             <HomepageButton title="Suggested exercises"/>
             <HomepageButton title="All exercises"/>
         </View>
-            <TodaysTrainingComponent todayList={todayList} navigation= {navigation}/>
+            <TodaysTrainingComponent todayList={todayList} navigation= {navigation} alreadyTrained={alreadyTrained}/>
         </View>
-        
+
     );
 }
 
@@ -50,21 +51,27 @@ function TodaysTrainingComponent(props) {
     const [todaysTrainingText, setTodaysTrainingText] = useState("Today's training session")
     return (
         <View>
-        <View style= {styles.centerAligned}>
-            <MontSerratText color={colors.black} style = {styles.titleText} text={todaysTrainingText}> </MontSerratText>
-        </View>
-        <View>
-        <ScrollView horizontal={true}>
-            {props.todayList.map((item) => {
-                return (
-                    <ExerciseBox uri={item.uri} key={item.id} text={item.name} navigation={props.navigation}/>
-                )
-            })}
-        </ScrollView>
-        </View>
-        <View style={styles.horizontalFlexReverse}>
-            <MyButton style = {[styles.startARTrainingButton]} title="Start AR training" ></MyButton>
-        </View>
+            <View style={styles.centerAligned}>
+                <MontSerratText color={colors.black} style={styles.titleText} text={todaysTrainingText}> </MontSerratText>
+            </View>
+            <View>
+                {props.alreadyTrained ?
+                    <FinishedBox>
+                    </FinishedBox>
+                    :
+                    <ScrollView horizontal={true}>
+                        {props.todayList.map((item) => {
+                            return (
+                                <ExerciseBox uri={item.uri} key={item.id} text={item.name} navigation={props.navigation} />
+                            )
+                        })}
+                    </ScrollView>
+                }
+
+            </View>
+            <View style={styles.horizontalFlexReverse}>
+                <MyButton style={[styles.startARTrainingButton]} navigation={props.navigation} onPressAction={()=>props.navigation.navigate("TodaySessionStarting", { text: props.text }) } title="Start AR training" ></MyButton>
+            </View>
         </View>
 
 
@@ -78,7 +85,7 @@ function MyButton(props) {
                 <MontSerratText style={styles.buttonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
         </View>
-        
+
     )
 }
 
@@ -89,19 +96,36 @@ function HomepageButton(props) {
                 <MontSerratText style={styles.HomeButtonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
         </View>
-        
+
     )
 }
 
 function ExerciseBox(props) {
     return (
-        <TouchableOpacity style={styles.exerciseBoxAndText} onPress={() => {props.navigation.navigate("ExerciseDetails", {text: props.text})}}>
-        <View style={{marginTop:20, marginBottom: 10, marginHorizontal:20}}>
-            <Image style={styles.exerciseBoxPhoto} source={props.uri}/>
-        </View>
-        <MontSerratText text={props.text}></MontSerratText>
+        <TouchableOpacity style={styles.exerciseBoxAndText} onPress={() => { props.navigation.navigate("ExerciseDetails", { text: props.text}) }}>
+            <View style={{ marginTop: 20, marginBottom: 10, marginHorizontal: 20 }}>
+                <Image style={styles.exerciseBoxPhoto} source={props.uri} />
+            </View>
+            <MontSerratText text={props.text}></MontSerratText>
         </TouchableOpacity>
     )
 }
 
-export {Homepage, MyButton}
+function FinishedBox() {
+    return (
+        <View style={[styles.alreadyFinishedBox, { marginVertical: 5, marginHorizontal: 15 }]}>
+            <MontSerratText color={colors.black} text="You already finished your daily training! "></MontSerratText>
+            <MontSerratText color={colors.black} text="Good Job! "></MontSerratText>
+            <Image
+                source={require("../assets/coccarda.png")}
+                resizeMode="contain"
+                style={styles.FinishedTrainingImage}
+            ></Image>
+            <MontSerratText color={colors.black} text="Try to look at suggested exercises "></MontSerratText>
+        </View>
+    )
+}
+
+
+
+export { Homepage, MyButton }

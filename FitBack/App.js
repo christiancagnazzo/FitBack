@@ -3,10 +3,10 @@ import { SafeAreaView, StyleSheet, Text, View, Button } from "react-native";
 import { styles, colors } from "./styles.js";
 import { Homepage } from "./components/Homepage.js";
 import {
-	Navbar,
-	MyStatusBar,
-	MyMenu,
-	InfoButton,
+  Navbar,
+  MyStatusBar,
+  MyMenu,
+  InfoButton,
 } from "./components/Navbar.js";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,6 +15,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ExerciseDetails } from "./components/ExerciseDetails.js";
 import { ReviewsList } from "./components/ReviewsList.js";
 import { ReviewVideo } from "./components/ReviewVideo.js";
+import { StartingSession } from "./components/TodaySessionStarting.js";
+import { TutorialFrame } from "./components/Tutorial.js";
+
 import { useState } from "react";
 
 const Stack = createNativeStackNavigator();
@@ -32,7 +35,6 @@ export default function App() {
 	}
 	
 
-	
 
 	return (
 		<NavigationContainer>
@@ -92,6 +94,32 @@ export default function App() {
 						headerShown: true,
 				}}
 				/>
+        <Stack.Screen
+          name="TodaySessionStarting"
+          component={StartingSession}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerBackTitle: "Back",
+            headerBackTitleStyle: styles.backButton,
+            headerTintColor: colors.lightGray,
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Tutorial"
+          component={TutorialFrame}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerBackTitle: "Back",
+            headerBackTitleStyle: styles.backButton,
+            headerTintColor: colors.lightGray,
+            headerShown: false
+          }}
+        />
 					
 			</Stack.Navigator>
 		</NavigationContainer>
