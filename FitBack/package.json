@@ -20,6 +20,7 @@
     "@rneui/themed": "^4.0.0-rc.7",
     "@types/three": "^0.148.0",
     "expo": "~47.0.8",
+    "expo-asset": "^8.7.0",
     "expo-av": "^13.0.2",
     "expo-camera": "^13.1.0",
     "expo-checkbox": "^2.2.2",
@@ -35,6 +36,7 @@
     "react-native-linear-gradient": "^2.6.2",
     "react-native-switch": "^1.5.1",
     "react-native-web": "~0.18.9",
+    "react-three-fiber": "^6.0.13",
     "three": "^0.145.0"
   },
   "devDependencies": {

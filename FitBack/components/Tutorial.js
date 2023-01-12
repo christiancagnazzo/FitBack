@@ -19,6 +19,7 @@ import {
     MeshBasicMaterial,
     PerspectiveCamera,
     BoxBufferGeometry,
+    BoxGeometry,
 } from "three";
 import ExpoTHREE, { Renderer, loadAsync } from "expo-three";
 import { useNavigation } from "@react-navigation/native";
@@ -81,13 +82,13 @@ function TutorialFrame(props) {
                                 <MontSerratText style={styles.textFrameYouself} text={"Rotate to see whole body"} />
                             </View>
                             <GLView
-                                 onContextCreate={onContextCreate}
+                                onContextCreate={onContextCreate}
                                 // set height and width of GLView
                                 style={{ width: 400, height: 400 }}
                             />
                             <View style={styles.bottomView}>
                                 <View style={styles.horizontalFlex}>
-                                <MyButton style={[styles.exitButton]} title="Exit"  navigation={navigation} onPressAction={()=>navigation.navigate("ExerciseDetails", { text: props.text }) }></MyButton>
+                                    <MyButton style={[styles.exitButton]} title="Exit" navigation={navigation} onPressAction={() => navigation.navigate("ExerciseDetails", { text: props.text })}></MyButton>
                                     <View style={styles.switchButton}>
                                         <Switch
                                             value={isAR}
@@ -109,13 +110,13 @@ function TutorialFrame(props) {
                             <MontSerratText style={styles.textRotateToSee} text={"Rotate to see whole body"} />
                         </View>
                         <GLView
-                             onContextCreate={onContextCreate}
+                            onContextCreate={onContextCreate}
                             // set height and width of GLView
                             style={{ width: 400, height: 400 }}
                         />
                         <View style={styles.bottomView}>
                             <View style={styles.horizontalFlex}>
-                                <MyButton style={[styles.exitButton]} title="Exit"  navigation={navigation} onPressAction={()=>navigation.navigate("ExerciseDetails", { text: props.text }) }></MyButton>
+                                <MyButton style={[styles.exitButton]} title="Exit" navigation={navigation} onPressAction={() => navigation.navigate("ExerciseDetails", { text: props.text })}></MyButton>
                                 <View style={styles.switchButton}>
                                     <Switch
                                         value={isAR}
@@ -172,7 +173,7 @@ const onContextCreate = async (gl) => {
 
     // create cube
     // define geometry
-    const geometry = new BoxBufferGeometry(1, 1, 1);
+    const geometry = new BoxGeometry(1, 1, 1);
     const material = new MeshBasicMaterial({
         color: "cyan",
     });
@@ -200,18 +201,19 @@ const onContextCreate = async (gl) => {
 */
 /*
     const fbxLoader = new FBXLoader()
- fbxLoader.load(
+    fbxLoader.load(
         '../assets/girl.fbx',
         (object) => {
-            // object.traverse(function (child) {
-            //     if ((child as THREE.Mesh).isMesh) {
-            //         // (child as THREE.Mesh).material = material
-            //         if ((child as THREE.Mesh).material) {
-            //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-            //         }
-            //     }
-            // })
-            scene.add(object)
+           
+            const geometry= new BufferGeometry(object.children.BufferGeometry);
+            const material = new MeshBasicMaterial({
+                color: "red",
+            });
+
+            const girl = new Mesh(geometry, material);
+
+
+            scene.add(girl)
         },
         (xhr) => {
             console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
@@ -219,33 +221,33 @@ const onContextCreate = async (gl) => {
         (error) => {
             console.log(error)
         }
-    )
-*/
+    )*/
 
-    
-          /*    const loader = new GLTFLoader();
-            loader.load(
-              "../assets/dinosaur.glb",
-              (gltf) => {
-                scene.add(gltf);
-              },
-              (xhr) => {
-                console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-              },
-              (error) => {
-                console.error("An error happened", error);
-              });
-              */
 
-        /*
-    
-              const obj = await ExpoTHREE.loadAsync(
-                require('../assets/mbappe3d/source/mbappe.obj'),
-                null,
-                imageName => "pippo"
-              );
-                */
-                      
+/*
+        const loader = new GLTFLoader();
+      loader.load(
+        "../assets/dinosaur.glb",
+        (gltf) => {
+          scene.add(gltf);
+        },
+        (xhr) => {
+          console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        },
+        (error) => {
+          console.error("An error happened", error);
+        });
+  */      
+
+    /*
+ 
+          const obj = await ExpoTHREE.loadAsync(
+            require('../assets/mbappe3d/source/mbappe.obj'),
+            null,
+            imageName => "pippo"
+          );
+            */
+
 
 
     // create render function
