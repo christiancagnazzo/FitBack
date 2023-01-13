@@ -53,6 +53,7 @@
     "react-native-video": "^5.2.1",
     "react-native-web": "~0.18.9",
     "react-three-fiber": "^6.0.13",
+    "sqlite3": "^5.1.4",
     "three": "^0.145.0"
   },
   "devDependencies": {
