@@ -493,6 +493,21 @@ const styles = StyleSheet.create({
       fontSize: 20,
       fontWeight: "bold",
       textAlign: "center",
+    },
+    exerciseCard: {
+      backgroundColor: "#BEBEBE",
+      borderRadius: 10,
+      margin: 10,
+      height: 120
+    },
+    filterCard: {
+      borderRadius: 10,
+      backgroundColor: "grey",
+      width: 115,
+      height: 40,
+      marginBottom: 20,
+      marginRight: 8,
+      marginLeft: 8
     }
   });
 

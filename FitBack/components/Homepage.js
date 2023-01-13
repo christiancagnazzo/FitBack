@@ -37,9 +37,9 @@ function Homepage() {
         <View>
         <View style={styles.homepage}>
         <MontSerratText style={[styles.titleText, {marginBottom: 10}]} text={"Welcome back John!"}/>
-            <HomepageButton navigation={navigation} title="Your exercises"/>
-            <HomepageButton title="Suggested exercises"/>
-            <HomepageButton title="All exercises"/>
+            <HomepageButton navigation={navigation} title="Your exercises" type={"Your Exercises"}/>
+            <HomepageButton navigation={navigation} title="Suggested exercises"  type={"Suggested Exercises"}/>
+            <HomepageButton navigation={navigation} title="All exercises"  type={"All Exercises"}/>
         </View>
             <TodaysTrainingComponent todayList={todayList} navigation= {navigation} alreadyTrained={alreadyTrained}/>
         </View>
@@ -92,7 +92,7 @@ function MyButton(props) {
 function HomepageButton(props) {
     return (
         <View>
-            <TouchableOpacity style={styles.homepageButton} onPress={() => props.navigation.navigate('Profile')}>
+            <TouchableOpacity style={styles.homepageButton} onPress={() => props.navigation.navigate('ExercisesList', {type: props.type})}>
                 <MontSerratText style={styles.HomeButtonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
         </View>

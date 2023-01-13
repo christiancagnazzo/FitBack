@@ -4,8 +4,6 @@ import { styles, colors } from "../styles";
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
-
-
 function Navbar() {
     return (
         <View style={[styles.horizontalFlex, styles.headerBar]}>
@@ -18,7 +16,8 @@ function Navbar() {
 
 function MyMenu(props) {
   return (
-    <Ionicons name="menu" size={50} color={colors.gray} style={{borderWidth: 0, borderColor: "red",alignSelf: 'center', width:50, height: 50}}/>
+    <Ionicons name="menu" onPress={() => 
+      props.setSidebar((value) => (!value))} size={40} color={colors.gray} style={{borderWidth: 0, borderColor: "red",alignSelf: 'center', width:50, height: 50}}/>
   )
 }
 

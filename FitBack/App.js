@@ -3,10 +3,10 @@ import { SafeAreaView, StyleSheet, Text, View, Button } from "react-native";
 import { styles, colors } from "./styles.js";
 import { Homepage } from "./components/Homepage.js";
 import {
-  Navbar,
-  MyStatusBar,
-  MyMenu,
-  InfoButton,
+	Navbar,
+	MyStatusBar,
+	MyMenu,
+	InfoButton,
 } from "./components/Navbar.js";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,12 +17,26 @@ import { ReviewsList } from "./components/ReviewsList.js";
 import { ReviewVideo } from "./components/ReviewVideo.js";
 import { StartingSession } from "./components/TodaySessionStarting.js";
 import { TutorialFrame } from "./components/Tutorial.js";
-
 import { useState } from "react";
+import SideMenu from 'react-native-side-menu-updated'
+import LevelUp from "./components/LevelUp.js";
+import Exercise from "./components/Exercises.js";
+import Sidebar from "./components/Sidebar.js";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+	const [sidebar, setSidebar] = useState(false)
+	const menu = <Sidebar></Sidebar>
+
+	return (
+		<SideMenu onChange={(status) => setSidebar(status)} disableGestures={true} isOpen={sidebar} menu={menu} openMenuOffset={180}>
+			<MyApp setSidebar={setSidebar} />
+		</SideMenu>
+	);
+}
+
+function MyApp(props) {
 
 	const [loaded] = useFonts({
 		Montserrat: require("./assets/fonts/Montserrat-Regular.ttf"),
@@ -33,7 +47,7 @@ export default function App() {
 	if (!loaded) {
 		return null;
 	}
-	
+
 
 
 	return (
@@ -49,8 +63,8 @@ export default function App() {
 						headerStyle: styles.headerBar,
 						headerTitleStyle: styles.headerText,
 						headerTitleAlign: 'center',
-						
-						headerLeft: () => <MyMenu />,
+
+						headerLeft: () => <MyMenu setSidebar={props.setSidebar} setPrevSidebar={props.setPrevSidebar} />,
 
 						headerRight: () => <View />,
 					}}
@@ -77,50 +91,62 @@ export default function App() {
 						headerBackTitle: "Back",
 						headerBackTitleStyle: styles.backButton,
 						headerTintColor: colors.lightGray,
-						
-						headerRight: () => <InfoButton/>,
+
+						headerRight: () => <InfoButton />,
 					}}
 				/>
 				<Stack.Screen
-				name="ReviewVideo"
-				component={ReviewVideo}
-				options={{
-					title: "FITBACK",
+					name="ReviewVideo"
+					component={ReviewVideo}
+					options={{
+						title: "FITBACK",
 						headerStyle: styles.headerBar,
 						headerTitleStyle: styles.headerText,
 						headerBackTitle: "Back",
 						headerBackTitleStyle: styles.backButton,
 						headerTintColor: colors.lightGray,
 						headerShown: true,
-				}}
+					}}
 				/>
-        <Stack.Screen
-          name="TodaySessionStarting"
-          component={StartingSession}
-          options={{
-            title: "FITBACK",
-            headerStyle: styles.headerBar,
-            headerTitleStyle: styles.headerText,
-            headerBackTitle: "Back",
-            headerBackTitleStyle: styles.backButton,
-            headerTintColor: colors.lightGray,
-            headerShown: true,
-          }}
-        />
-        <Stack.Screen
-          name="Tutorial"
-          component={TutorialFrame}
-          options={{
-            title: "FITBACK",
-            headerStyle: styles.headerBar,
-            headerTitleStyle: styles.headerText,
-            headerBackTitle: "Back",
-            headerBackTitleStyle: styles.backButton,
-            headerTintColor: colors.lightGray,
-            headerShown: false
-          }}
-        />
-					
+				<Stack.Screen
+					name="TodaySessionStarting"
+					component={StartingSession}
+					options={{
+						title: "FITBACK",
+						headerStyle: styles.headerBar,
+						headerTitleStyle: styles.headerText,
+						headerBackTitle: "Back",
+						headerBackTitleStyle: styles.backButton,
+						headerTintColor: colors.lightGray,
+						headerShown: true,
+					}}
+				/>
+				<Stack.Screen
+					name="Tutorial"
+					component={TutorialFrame}
+					options={{
+						title: "FITBACK",
+						headerStyle: styles.headerBar,
+						headerTitleStyle: styles.headerText,
+						headerBackTitle: "Back",
+						headerBackTitleStyle: styles.backButton,
+						headerTintColor: colors.lightGray,
+						headerShown: false
+					}}
+				/>
+				<Stack.Screen
+					name="ExercisesList"
+					component={Exercise}
+					options={{
+						title: "FITBACK",
+						headerStyle: styles.headerBar,
+						headerTitleStyle: styles.headerText,
+						headerBackTitle: "Back",
+						headerBackTitleStyle: styles.backButton,
+						headerTintColor: colors.lightGray,
+					}}
+				/>
+
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
