@@ -80,7 +80,7 @@ function TodaysTrainingComponent(props) {
 
 function MyButton(props) {
     return (
-        <View>
+        <View style={props.viewStyle}>
             <TouchableOpacity style={props.style} onPress={props.onPressAction}>
                 <MontSerratText style={styles.buttonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>

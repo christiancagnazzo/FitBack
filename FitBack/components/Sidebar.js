@@ -2,6 +2,7 @@ import { Text } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 function Sidebar() {
     return (

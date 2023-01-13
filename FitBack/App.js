@@ -28,7 +28,9 @@ import {
   ExercisePaused,
 } from "./components/Training.js";
 import { Report } from "./components/ReportSession.js";
-
+import {Profile} from "./components/Profile.js"
+import { EditProfile } from "./components/EditProfile.js";
+import { Settings } from "./components/Settings.js";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -63,7 +65,41 @@ function MyApp(props) {
     <NavigationContainer>
       <StatusBar style="light" />
 
-      <Stack.Navigator>
+      <Stack.Navigator
+      initialRouteName="Homepage">
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerTitleAlign: "center",
+
+          }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerTitleAlign: "center",
+
+          }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerTitleAlign: "center",
+
+          }}
+        />
         <Stack.Screen
           name="Homepage"
           component={Homepage}
@@ -216,6 +252,7 @@ function MyApp(props) {
               <View/>)
           }}
         />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
