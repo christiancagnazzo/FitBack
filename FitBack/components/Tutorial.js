@@ -29,8 +29,6 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 
-
-
 function TutorialFrame(props) {
     const [type, setType] = useState(CameraType.back);
     const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -83,7 +81,6 @@ function TutorialFrame(props) {
                             </View>
                             <GLView
                                 onContextCreate={onContextCreate}
-                                                             // set height and width of GLView
                                 style={{ width: 400, height: 400 }}
                             />
                             <View style={styles.bottomView}>

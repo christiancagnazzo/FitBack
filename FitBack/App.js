@@ -27,6 +27,7 @@ import {
   ExecuteExercise,
   ExercisePaused,
 } from "./components/Training.js";
+import { Report } from "./components/ReportSession.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -102,7 +103,7 @@ function MyApp(props) {
             title: "FITBACK",
             headerStyle: styles.headerBar,
             headerTitleStyle: styles.headerText,
-			headerTitleAlign: "center",
+			      headerTitleAlign: "center",
             headerBackTitle: "Back",
             headerBackTitleStyle: styles.backButton,
             headerTintColor: colors.lightGray,
@@ -198,6 +199,21 @@ function MyApp(props) {
             headerBackTitleStyle: styles.backButton,
             headerTintColor: colors.lightGray,
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ReportSession"
+          component={Report}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerTintColor: colors.lightGray,
+            headerTitleAlign: "center",
+            headerShown: true,
+            //Togliere back, come si fa?
+            headerLeft: () => (
+              <View/>)
           }}
         />
       </Stack.Navigator>

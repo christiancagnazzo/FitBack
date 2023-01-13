@@ -457,6 +457,7 @@ const styles = StyleSheet.create({
     container3: {
       flex: 1,
       justifyContent: 'center',
+      marginTop:20,
     },
     buttonContainer: {
       flex: 1,

@@ -120,10 +120,9 @@ function FrameYourself() {
 }
 
 function ExecuteExercise(props) {
-  const [type, setType] = useState(props.route.params.type === "front"? CameraType.front : CameraType.back);
   const [reps, setReps] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+  let   [permission, requestPermission] = Camera.useCameraPermissions();
 
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
@@ -133,7 +132,6 @@ function ExecuteExercise(props) {
   const video = React.useRef(null);
 
   useEffect(() => {
-    toggleCameraType(type)
     setInterval(updateReps, 3000);
   }, []);
 
@@ -148,7 +146,7 @@ function ExecuteExercise(props) {
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
+          We need your permission to show the  camera
         </Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
@@ -156,6 +154,8 @@ function ExecuteExercise(props) {
   }
 
   function updateReps() {
+    reps === totalReps ? 
+    props.navigation.navigate("ReportSession") :
     setReps((current) => (current < totalReps ? current + 1 : current));
   }
 
@@ -165,12 +165,11 @@ function ExecuteExercise(props) {
     );
   }
 
-
   return (
     <View style={[styles.container3]}>
       <Camera
         style={{ flex: 1, width: windowWidth, height: windowHeight}}
-        type={type}
+        type={CameraType.front}
       >
         <View style={{ flex: 1 }}>
           <View style={styles.horizontalFlex}>
@@ -198,12 +197,12 @@ function ExecuteExercise(props) {
 
           <View style={[{ margin:40, flexDirection: "row", justifyContent:'space-between', marginTop:350}]}>
             <View style={{flexDirection:'row'}}>
-            <MontSerratText text={'Reps:'} style={{fontSize: 25, fontWeight:'bold'}}></MontSerratText>
+            <MontSerratText text={'Reps='} style={{fontSize: 25, fontWeight:'bold'}}></MontSerratText>
             <MontSerratText text={reps+"/"+totalReps} style={{fontSize: 25}}></MontSerratText>
             </View>
             <View style={{flexDirection:'row'}}>
-            <MontSerratText text={"Sets:"} style={{fontSize: 25, fontWeight:'bold'}}></MontSerratText>
-            <MontSerratText text="1/3" style={{fontSize: 25}}></MontSerratText>
+            <MontSerratText text={"Sets="} style={{fontSize: 25, fontWeight:'bold'}}></MontSerratText>
+            <MontSerratText text={"1"+"/"+"3"} style={{fontSize: 25}}></MontSerratText>
             </View>
           </View>
 
@@ -216,7 +215,7 @@ function ExecuteExercise(props) {
           <View style={styles.bottomView2}>
             <View style={styles.horizontalFlex}>
               <MyButton style={[styles.exitButton]} title="Exit" onPress={()=>setModalVisible(true)}></MyButton>
-              <PauseButton style={[styles.pauseButton]} onPress={()=>  navigation.navigate("PauseExercise", {reps:reps})} />
+              <PauseButton style={[styles.pauseButton]} onPress={()=>  props.navigation.navigate("PauseExercise", {reps:reps})} />
             </View>
 
             <View style={{ flex: 1, marginTop: 10, alignItems: "center" }}>
@@ -236,7 +235,6 @@ function ExecuteExercise(props) {
 
 
 function ExercisePaused(props) {
-  const [type, setType] = useState(props.route.params.type === "front"? CameraType.front : CameraType.back);
   const [reps, setReps] = useState(props.route.params.reps);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -259,7 +257,7 @@ function ExercisePaused(props) {
           </View>
 
           <View style={{ alignItems: "center", marginTop:100 }}>
-            <PlayButton onPress={()=> props.navigation.goBack()}/>
+            <PlayButton onPress={()=> props.navigation.navigate('ExecuteExercise')}/>
           </View>
 
           <View style={[{ margin:40, flexDirection: "row", justifyContent:'space-between', marginTop:150}]}>
@@ -275,7 +273,7 @@ function ExercisePaused(props) {
 
           <ModalSafeExit
             modalVisible={modalVisible}
-            //navigation={navigation}
+            navigation={props.navigation}
             setModalVisible={setModalVisible}
           />
 
@@ -332,7 +330,7 @@ function PlayButton(props) {
     <View>
       <TouchableOpacity style={props.style} onPress={props.onPress}>
         <Image
-          source={require("../assets/images/play.png")}
+          source={ require("../assets/images/play.png")}
           style={{ width: 150, height: 150 }}
         />
       </TouchableOpacity>
@@ -371,7 +369,8 @@ function ModalSafeExit(props) {
             <MyButton
               style={pageStyles.turnHomeButton}
               title={"Confirm\n(rename)"}
-              onPress={() => props.setModalVisible(false)}
+              onPress={() => {props.setModalVisible(false);
+                              props.navigation.navigate('Homepage')}}
             ></MyButton>
           </View>
         </View>
