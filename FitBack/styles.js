@@ -49,7 +49,11 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: colors.darkGray,
-
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   container2: {
     flex: 1,
@@ -65,6 +69,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: "center",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
   secondaryButton: {
     backgroundColor: colors.darkGray,
@@ -186,12 +205,6 @@ const styles = StyleSheet.create({
     hide: {
       opacity: 0,
     },
-    horizontalFlex: {
-      flexDirection: "row",
-      alignItems: "center",
-      alignSelf: "stretch",
-      justifyContent: "space-between",
-    },
     horizontalFlexReverse: {
       flexDirection: "row-reverse",
       alignItems: "center",
@@ -251,9 +264,8 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
     },
-    exitButton: {
+    reverseButton: {
       backgroundColor: colors.darkGray,
-      marginLeft: 20,
       width: 150,
       height: 60,
       borderRadius: 10,
@@ -261,12 +273,17 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
     },
-    bottomView: {
-      flex: 1,
+    bottomView2: {
+      flex:1,
       width: "100%",
-      position: "absolute", //Here is the trick
-      bottom: 10, //Here is the trick
+      position: "absolute", 
+      bottom: 0,
     },
+    pauseButton:{
+        marginRight: 25,
+        marginLeft: 'auto',
+        justifyContent: "center",
+      },
     containerMain: {
       flex: 1,
       alignItems: "center",
@@ -283,12 +300,20 @@ const styles = StyleSheet.create({
       margin: 20,
       marginBottom: 80,
     },
-    rectangleFrameYourSelfTitle: {
-      margin: 20,
+    ectangleFrameYourSelfTitle: {
+      margin:20,
       alignItems: "center",
       borderWidth: 3,
       borderColor: colors.white,
       borderRadius: 10,
+    },
+    rectangleExerciseTitle: {
+      flex:1,
+      margin:15,
+      borderWidth: 3,
+      borderColor: colors.white,
+      borderRadius: 10,
+      width:'40%'
     },
     ectangleRotateToSee: {
       margin: 40,
@@ -303,10 +328,6 @@ const styles = StyleSheet.create({
       borderWidth: 3,
       borderColor: colors.white,
       borderRadius: 10,
-    },
-    container3: {
-      flex: 1,
-      justifyContent: 'center',
     },
     camera: {
       flex: 1,
@@ -333,13 +354,6 @@ const styles = StyleSheet.create({
       color: 'black',
       margin: 35,
       alignSelf: "center"
-    },
-    textFrameYouself: {
-      margin: 10,
-      color: colors.white,
-      fontSize: 20,
-      fontWeight: "bold",
-      textAlign: "center",
     },
     textRotateToSee: {
       margin: 10,
@@ -443,9 +457,6 @@ const styles = StyleSheet.create({
     container3: {
       flex: 1,
       justifyContent: 'center',
-    },
-    camera: {
-      flex: 1,
     },
     buttonContainer: {
       flex: 1,

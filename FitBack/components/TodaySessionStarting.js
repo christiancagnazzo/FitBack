@@ -51,7 +51,7 @@ function StartingSession(props) {
 
             </View>
             <View style={styles.horizontalFlexReverse}>
-                <MyButton style={[styles.startSession]} navigation={props.navigation} onPressAction={()=>props.navigation.navigate("", { text: props.text }) } title="Start AR session" ></MyButton>
+                <MyButton style={[styles.startSession]} navigation={props.navigation} onPressAction={()=>props.navigation.navigate("FrameYourself", { text: props.text }) } title="Start AR session" ></MyButton>
             </View>
         </View>
 
