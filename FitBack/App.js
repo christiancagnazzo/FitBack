@@ -185,7 +185,7 @@ function MyApp(props) {
             headerBackTitle: "Back",
             headerBackTitleStyle: styles.backButton,
             headerTintColor: colors.lightGray,
-            headerShown: false,
+            headerShown: false, 
           }}
         />
         <Stack.Screen

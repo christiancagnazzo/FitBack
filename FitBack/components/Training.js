@@ -123,6 +123,7 @@ function ExecuteExercise(props) {
   const [reps, setReps] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   let   [permission, requestPermission] = Camera.useCameraPermissions();
+  const [intervalId, setIntervalId] = useState(0);
 
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
@@ -132,7 +133,23 @@ function ExecuteExercise(props) {
   const video = React.useRef(null);
 
   useEffect(() => {
-    setInterval(updateReps, 3000);
+    const myinterval= setInterval(updateReps, 3000);
+    setIntervalId(myinterval)
+
+    let r =0; 
+
+    function updateReps() {
+      r = r+1;
+      if (r === totalReps)
+      { 
+        console.log('dentro')
+        props.navigation.navigate("ReportSession")
+        clearInterval(intervalId)
+      }
+       else
+      setReps((current) => (current < totalReps ? current + 1 : current));
+    }
+
   }, []);
 
   if (!permission) {
@@ -153,11 +170,6 @@ function ExecuteExercise(props) {
     );
   }
 
-  function updateReps() {
-    reps === totalReps ? 
-    props.navigation.navigate("ReportSession") :
-    setReps((current) => (current < totalReps ? current + 1 : current));
-  }
 
   function toggleCameraType() {
     setType((current) =>
