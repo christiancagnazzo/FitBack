@@ -17,7 +17,7 @@ import { ReviewsList } from "./components/ReviewsList.js";
 import { ReviewVideo } from "./components/ReviewVideo.js";
 import { StartingSession } from "./components/TodaySessionStarting.js";
 import { TutorialFrame } from "./components/Tutorial.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SideMenu from "react-native-side-menu-updated";
 import LevelUp from "./components/LevelUp.js";
 import Exercise from "./components/Exercises.js";
@@ -28,14 +28,26 @@ import {
   ExercisePaused,
 } from "./components/Training.js";
 import { Report } from "./components/ReportSession.js";
-import {Profile} from "./components/Profile.js"
+import { Profile } from "./components/Profile.js"
 import { EditProfile } from "./components/EditProfile.js";
 import { Settings } from "./components/Settings.js";
+import dao from './persistence/dao';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [sidebar, setSidebar] = useState(false);
   const menu = <Sidebar></Sidebar>;
+  const [db, setDb] = useState(null);
+
+  useEffect(() => {
+    const openDb = async function () {
+      const db = await dao.openDatabase()
+      setDb(db)
+    }
+
+    openDb()
+  }, [])
 
   return (
     <SideMenu
@@ -45,7 +57,7 @@ export default function App() {
       menu={menu}
       openMenuOffset={180}
     >
-      <MyApp setSidebar={setSidebar} />
+      <MyApp db={db} setSidebar={setSidebar} />
     </SideMenu>
   );
 }
@@ -66,10 +78,11 @@ function MyApp(props) {
       <StatusBar style="light" />
 
       <Stack.Navigator
-      initialRouteName="Homepage">
+        initialRouteName="Homepage">
         <Stack.Screen
           name="Profile"
           component={Profile}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -81,6 +94,7 @@ function MyApp(props) {
         <Stack.Screen
           name="Settings"
           component={Settings}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -92,6 +106,7 @@ function MyApp(props) {
         <Stack.Screen
           name="EditProfile"
           component={EditProfile}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -103,6 +118,7 @@ function MyApp(props) {
         <Stack.Screen
           name="Homepage"
           component={Homepage}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -122,11 +138,12 @@ function MyApp(props) {
         <Stack.Screen
           name="ExerciseDetails"
           component={ExerciseDetails}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
             headerTitleStyle: styles.headerText,
-			headerTitleAlign: "center",
+            headerTitleAlign: "center",
             headerBackTitle: "Back",
             headerBackTitleStyle: styles.backButton,
             headerTintColor: colors.lightGray,
@@ -135,11 +152,12 @@ function MyApp(props) {
         <Stack.Screen
           name="ReviewsList"
           component={ReviewsList}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
             headerTitleStyle: styles.headerText,
-			      headerTitleAlign: "center",
+            headerTitleAlign: "center",
             headerBackTitle: "Back",
             headerBackTitleStyle: styles.backButton,
             headerTintColor: colors.lightGray,
@@ -150,6 +168,7 @@ function MyApp(props) {
         <Stack.Screen
           name="ReviewVideo"
           component={ReviewVideo}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -163,6 +182,7 @@ function MyApp(props) {
         <Stack.Screen
           name="TodaySessionStarting"
           component={StartingSession}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -176,6 +196,7 @@ function MyApp(props) {
         <Stack.Screen
           name="Tutorial"
           component={TutorialFrame}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -189,6 +210,7 @@ function MyApp(props) {
         <Stack.Screen
           name="ExercisesList"
           component={Exercise}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -201,6 +223,7 @@ function MyApp(props) {
         <Stack.Screen
           name="FrameYourself"
           component={FrameYourself}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -214,6 +237,7 @@ function MyApp(props) {
         <Stack.Screen
           name="PauseExercise"
           component={ExercisePaused}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -221,12 +245,13 @@ function MyApp(props) {
             headerBackTitle: "Back",
             headerBackTitleStyle: styles.backButton,
             headerTintColor: colors.lightGray,
-            headerShown: false, 
+            headerShown: false,
           }}
         />
         <Stack.Screen
           name="ExecuteExercise"
           component={ExecuteExercise}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -240,6 +265,7 @@ function MyApp(props) {
         <Stack.Screen
           name="ReportSession"
           component={Report}
+          initialParams={{ 'db': props.db }}
           options={{
             title: "FITBACK",
             headerStyle: styles.headerBar,
@@ -249,10 +275,10 @@ function MyApp(props) {
             headerShown: true,
             //Togliere back, come si fa?
             headerLeft: () => (
-              <View/>)
+              <View />)
           }}
         />
-       
+
       </Stack.Navigator>
     </NavigationContainer>
   );

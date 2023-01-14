@@ -4,7 +4,7 @@ import { SearchBar } from 'react-native-elements';
 import { styles } from "../styles.js";
 import DraggablePanel from 'react-native-draggable-panel';
 import Checkbox from 'expo-checkbox';
-import dao from '../persistence/dao.js';
+
 
 /*const HardCodedExercise = [
     {
@@ -36,16 +36,24 @@ import dao from '../persistence/dao.js';
 function Exercise(props) {
     const [pageType, setPageType] = useState(props.route.params.type) // props
     const [search, setSearch] = useState({ text: "" })
-    const [exercises, setExercise] = useState([]) 
-    const [displayedExercises, setDisplayedExercise] = useState([]) 
+    const [exercises, setExercise] = useState([])
+    const [displayedExercises, setDisplayedExercise] = useState([])
 
     useEffect(() => {
-        const getExercises = async (type) => {
-            const db = await dao.openDatabase()
-            db.transaction((tx) => {
+        const getExercises = async (type, level) => {
+            let sql = ""
+
+            if (type === undefined)
+                sql = `select * from exercises`
+            else if (type === 'your')
+                sql = `select * from exercises where difficulty = ?`
+            else
+                sql = `select * from exercises`
+
+            props.route.params.db.transaction((tx) => {
                 tx.executeSql(
-                    `select * from exercises`,
-                    [], // param
+                    sql,
+                    [level ? level : ""], // param
                     (_, result) => {
                         setExercise(result.rows._array)
                         setDisplayedExercise(result.rows._array)
@@ -54,8 +62,13 @@ function Exercise(props) {
                 );
             })
         }
-        
-        getExercises("all");
+
+        if (pageType === 'All Exercises')
+            getExercises();
+        else if (pageType === 'Your Exercises')
+            getExercises('your')
+        else
+            getExercises('suggested', "Intermediate") // to fix
     }, [])
 
     function updateSearch(text) {
@@ -90,8 +103,8 @@ function Exercise(props) {
     );
 }
 
-function getImage(image){ // to fix
-    switch (image){
+function getImage(image) { // to fix
+    switch (image) {
         case 'squat':
             return require('../assets/squat.png')
         // add other cases
