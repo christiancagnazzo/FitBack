@@ -1,11 +1,12 @@
 import { View, Text, Image, ScrollView, TouchableWithoutFeedback, Pressable } from 'react-native';
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { SearchBar } from 'react-native-elements';
 import { styles } from "../styles.js";
 import DraggablePanel from 'react-native-draggable-panel';
 import Checkbox from 'expo-checkbox';
+import dao from '../persistence/dao.js';
 
-const HardCodedExercise = [
+/*const HardCodedExercise = [
     {
         "title": "PUSH-UPS",
         "difficulty": "Novice",
@@ -30,16 +31,36 @@ const HardCodedExercise = [
         "score": undefined,
         "icon": require("../assets/lunges.png")
     }
-]
+]*/
 
 function Exercise(props) {
     const [pageType, setPageType] = useState(props.route.params.type) // props
     const [search, setSearch] = useState({ text: "" })
-    const [exercises, setExercise] = useState(HardCodedExercise) // temp
+    const [exercises, setExercise] = useState([]) 
+    const [displayedExercises, setDisplayedExercise] = useState([]) 
+
+    useEffect(() => {
+        const getExercises = async (type) => {
+            const db = await dao.openDatabase()
+            db.transaction((tx) => {
+                tx.executeSql(
+                    `select * from exercises`,
+                    [], // param
+                    (_, result) => {
+                        setExercise(result.rows._array)
+                        setDisplayedExercise(result.rows._array)
+                    },
+                    (_, error) => console.log(error)
+                );
+            })
+        }
+        
+        getExercises("all");
+    }, [])
 
     function updateSearch(text) {
         setSearch({ text });
-        setExercise(() => HardCodedExercise.filter((e) => e.title.startsWith(text.toUpperCase())))
+        setDisplayedExercise(() => exercises.filter((e) => e.title.toUpperCase().startsWith(text.toUpperCase())))
     };
 
     return (
@@ -49,7 +70,7 @@ function Exercise(props) {
             <View>
                 <SearchBar
                     inputContainerStyle={{ height: 30 }}
-                    containerStyle={{borderRadius: 5, margin: 5 }}
+                    containerStyle={{ borderRadius: 5, margin: 5 }}
                     placeholder="Search"
                     onChangeText={updateSearch}
                     value={search.text}
@@ -62,21 +83,27 @@ function Exercise(props) {
 
             <ScrollView style={{ marginTop: 5 }}>
                 {
-                    exercises.map((e, i) => <ExerciseCard key={i} exercise={e}></ExerciseCard>)
+                    displayedExercises.map((e, i) => <ExerciseCard key={i} exercise={e}></ExerciseCard>)
                 }
             </ScrollView>
         </View>
     );
 }
 
-// to fix image
+function getImage(image){ // to fix
+    switch (image){
+        case 'squat':
+            return require('../assets/squat.png')
+        // add other cases
+    }
+}
 
 function ExerciseCard(props) {
     return (
         <View style={styles.exerciseCard}>
             <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1 }}>
                 <View style={{ width: 100, height: 100, margin: 15, borderRadius: 10, backgroundColor: "white" }}>
-                    <Image style={{ width: 100, height: 100, borderRadius: 10 }} source={props.exercise.icon}></Image>
+                    <Image style={{ width: 100, height: 100, borderRadius: 10 }} source={getImage(props.exercise.image_path)} ></Image>
                 </View>
                 <View>
                     <View style={{ flexDirection: 'row', margin: 3 }}>

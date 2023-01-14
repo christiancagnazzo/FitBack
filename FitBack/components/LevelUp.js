@@ -1,6 +1,13 @@
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
-import { React } from "react";
+import { React, Component } from "react";
 import { colors } from "../styles.js";
+
+
+class Touchables extends Component {
+    _onPressButton() {
+        alert('You tapped the button!')
+    }
+}
 
 function LevelUp() {
     return (
