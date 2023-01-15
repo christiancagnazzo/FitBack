@@ -29,7 +29,7 @@ db.serialize(function () {
                 "info_review"   INTEGER,\
                 PRIMARY KEY("id" AUTOINCREMENT))');
 
-    db.run('CREATE TABLE IF NOT EXISTS "user-exercise"(\
+    db.run('CREATE TABLE IF NOT EXISTS "userExercise"(\
                 "id"    INTEGER,\
                 "exercise"  INTEGER,\
                 "user"  INTEGER,\
@@ -61,7 +61,7 @@ db.serialize(function () {
                 "path_foto" TEXT,\
                 PRIMARY KEY("id" AUTOINCREMENT))');
 
-    db.run('CREATE TABLE IF NOT EXISTS "exercise-muscle"(\
+    db.run('CREATE TABLE IF NOT EXISTS "exerciseMuscle"(\
         "id"    INTEGER,\
         "exercise"  INTEGER,\
         "muscle"    INTEGER,\
@@ -69,7 +69,7 @@ db.serialize(function () {
         FOREIGN KEY("muscle") REFERENCES "muscles"("id") on DELETE CASCADE ON UPDATE CASCADE, \
         PRIMARY KEY("id" AUTOINCREMENT))');
 
-    db.run('CREATE TABLE IF NOT EXISTS "exercise-equipment"(\
+    db.run('CREATE TABLE IF NOT EXISTS "exerciseEquipment"(\
         "id"    INTEGER,\
         "exercise"  INTEGER,\
         "equipment" INTEGER,\
@@ -84,4 +84,19 @@ db.serialize(function () {
     // EXERCISES
     db.run("INSERT OR IGNORE INTO exercises VALUES (1, 'Squat', 'Intermediate', 'video_path', 'squat', 'Description of the exercise')")
 
+    // MUSCLES
+    db.run("INSERT OR IGNORE INTO muscles VALUES (1, 'Dummbell', 'path')")
+    db.run("INSERT OR IGNORE INTO muscles VALUES (2, 'Kettlebell', 'path')")
+    db.run("INSERT OR IGNORE INTO muscles VALUES (3, 'Mat', 'path')")
+
+    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (1, 1, 1)")
+    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (2, 1, 2)")
+
+    // EQUIPMENTS
+    db.run("INSERT OR IGNORE INTO equipments VALUES (1, 'Dummbell', 'path')")
+    db.run("INSERT OR IGNORE INTO equipments VALUES (2, 'Kettlebell', 'path')")
+    db.run("INSERT OR IGNORE INTO equipments VALUES (3, 'Mat', 'path')")
+
+    db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (1, 1, 1)")
+    db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (2, 1, 2)")
 });

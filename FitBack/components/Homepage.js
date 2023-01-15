@@ -92,7 +92,7 @@ function MyButton(props) {
 function HomepageButton(props) {
     return (
         <View>
-            <TouchableOpacity style={styles.homepageButton} onPress={() => props.navigation.navigate('ExercisesList', {type: props.type})}>
+            <TouchableOpacity style={styles.homepageButton} onPress={() => props.navigation.navigate('ExercisesList', {type: props.type, navigation: props.navigation})}>
                 <MontSerratText style={styles.HomeButtonText} color={colors.white} text={props.title}></MontSerratText>
             </TouchableOpacity>
         </View>
