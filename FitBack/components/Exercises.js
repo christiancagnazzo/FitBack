@@ -127,11 +127,14 @@ function Exercise(props) {
     );
 }
 
-function getImage(image) { // to fix
+function getImage(image) { 
     switch (image) {
         case 'squat':
             return require('../assets/squat.png')
-        // add other cases
+        case 'lunges':
+            return require('../assets/lunges.png')
+        case 'pushup':
+            return require('../assets/pushup.png')
     }
 }
 
@@ -394,8 +397,8 @@ function Filters(props) {
                                 <Pressable style={btstyles.apply_button} onPress={() => {
                                     setFilterType("")
                                     setPrevMuscle(muscle)
-                                    props.setDisplayedExercise(props.exercises.filter( (ex)=>{
-                                        for (let i = 0; i < ex.muscles.length; i++){
+                                    props.setDisplayedExercise(props.exercises.filter((ex) => {
+                                        for (let i = 0; i < ex.muscles.length; i++) {
                                             if (muscle.includes(ex.muscles[i]))
                                                 return true
                                         }
@@ -484,8 +487,8 @@ function Filters(props) {
                                         <Pressable style={btstyles.apply_button} onPress={() => {
                                             setFilterType("")
                                             setPrevEquipment(equipment)
-                                            props.setDisplayedExercise(props.exercises.filter( (ex)=>{
-                                                for (let i = 0; i < ex.equipments.length; i++){
+                                            props.setDisplayedExercise(props.exercises.filter((ex) => {
+                                                for (let i = 0; i < ex.equipments.length; i++) {
                                                     if (equipment.includes(ex.equipments[i]))
                                                         return true
                                                 }

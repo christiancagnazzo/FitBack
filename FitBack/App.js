@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet, Text, View, Button } from "react-native";
 import { styles, colors } from "./styles.js";
+import { useNavigation } from '@react-navigation/native';
 import { Homepage } from "./components/Homepage.js";
 import {
   Navbar,
@@ -37,10 +38,10 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [sidebar, setSidebar] = useState(false);
-  const menu = <Sidebar></Sidebar>;
+  const menu = <Sidebar setSidebar={setSidebar}></Sidebar>;
   const [db, setDb] = useState(null);
   const [user, setUser] = useState({})
-
+  
   useEffect(() => {
     const openDb = async function () {
       const db = await dao.openDatabase()
@@ -63,6 +64,7 @@ export default function App() {
   }, [])
 
   return (
+    <NavigationContainer>
     <SideMenu
       onChange={(status) => setSidebar(status)}
       disableGestures={true}
@@ -72,6 +74,7 @@ export default function App() {
     >
       <MyApp db={db} user={user} setSidebar={setSidebar} />
     </SideMenu>
+    </NavigationContainer>
   );
 }
 
@@ -87,7 +90,7 @@ function MyApp(props) {
   }
 
   return (
-    <NavigationContainer>
+    <>
       <StatusBar style="light" />
 
       <Stack.Navigator
@@ -293,6 +296,6 @@ function MyApp(props) {
         />
 
       </Stack.Navigator>
-    </NavigationContainer>
+      </>
   );
 }
