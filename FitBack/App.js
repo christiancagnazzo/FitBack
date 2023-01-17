@@ -151,6 +151,7 @@ function MyApp(props) {
             headerRight: () => <View />,
           }}
         />
+        
         <Stack.Screen
           name="ExerciseDetails"
           component={ExerciseDetails}
