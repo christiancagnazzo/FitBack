@@ -3,6 +3,8 @@ import { SafeAreaView, StyleSheet, Text, View, Button } from "react-native";
 import { styles, colors } from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
 import { Homepage } from "./components/Homepage.js";
+import { HomepageAfterSession } from "./components/HomepageAfterSession";
+
 import {
   Navbar,
   MyStatusBar,
@@ -134,6 +136,26 @@ function MyApp(props) {
         <Stack.Screen
           name="Homepage"
           component={Homepage}
+          initialParams={{ 'db': props.db, 'user': props.user }}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerTitleAlign: "center",
+
+            headerLeft: () => (
+              <MyMenu
+                setSidebar={props.setSidebar}
+                setPrevSidebar={props.setPrevSidebar}
+              />
+            ),
+
+            headerRight: () => <View />,
+          }}
+        />
+         <Stack.Screen
+          name="HomepageAfterSession"
+          component={HomepageAfterSession}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
             title: "FITBACK",

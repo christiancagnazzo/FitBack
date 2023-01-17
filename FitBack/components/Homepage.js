@@ -41,7 +41,7 @@ function Homepage() {
             <HomepageButton navigation={navigation} title="Suggested exercises"  type={"Suggested Exercises"}/>
             <HomepageButton navigation={navigation} title="All exercises"  type={"All Exercises"}/>
         </View>
-            <TodaysTrainingComponent todayList={todayList} navigation= {navigation} alreadyTrained={alreadyTrained}/>
+            <TodaysTrainingComponent todayList={todayList} navigation= {navigation} alreadyTrained={alreadyTrained} setalreadyTrained={setalreadyTrained}/>
         </View>
 
     );
