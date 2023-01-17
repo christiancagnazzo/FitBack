@@ -19,22 +19,26 @@ import {
     MeshBasicMaterial,
     PerspectiveCamera,
     BoxBufferGeometry,
+    BufferGeometry,
     BoxGeometry,
     Math,
     AmbientLight,
     Fog,
     PointLight,
     SpotLight,
+    TextureLoader
 } from "three";
-import ExpoTHREE, { Renderer, loadAsync } from "expo-three";
+import ExpoTHREE, { Renderer, loadAsync, createARBackgroundTexture, createARCamera } from "expo-three";
 import { useNavigation } from "@react-navigation/native";
 import { ExpoWebGLRenderingContext, GLView } from "expo-gl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { Canvas } from "@react-three/fiber";
 import { useLoader } from "@react-three/fiber";
 import { Asset } from 'expo-asset';
+
 //import ha from 'https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj'
 
 function TutorialFrame(props) {
@@ -42,7 +46,7 @@ function TutorialFrame(props) {
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [isAR, setAR] = useState(true)
 
-   
+
 
     if (!permission) {
         // Camera permissions are still loading
@@ -68,83 +72,10 @@ function TutorialFrame(props) {
 
         //wait 1 second to let the green screen be visible than change screen
     }
-    //const navigation = useNavigation();
-    
-    return (
-        <GLView
-        style={{ flex: 1 }}
-        onContextCreate={async (gl) => {
-          const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
-          const sceneColor = 668096;
-  
-          // Create a WebGLRenderer without a DOM element
-          const renderer = new Renderer({ gl });
-          renderer.setSize(width, height);
-          renderer.setClearColor(0x668096);
-  
-          const camera = new PerspectiveCamera(70, width / height, 0.01, 1000);
-          camera.position.set(2, 5, 5);
-  
-          const scene = new Scene();
-          scene.fog = new Fog(sceneColor, 1, 10000);
-  
-          const ambientLight = new AmbientLight(0x101010);
-          scene.add(ambientLight);
-  
-          const pointLight = new PointLight(0xffffff, 2, 1000, 1);
-          pointLight.position.set(0, 200, 200);
-          scene.add(pointLight);
-  
-          const spotLight = new SpotLight(0xffffff, 0.5);
-          spotLight.position.set(0, 500, 100);
-          spotLight.lookAt(scene.position);
-          scene.add(spotLight);
-          const p = require("../mbappe.obj")
-          //const asset = Asset.fromModule(ha)
-          //const asset = Asset.froUri("https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj");
-          //await asset.downloadAsync();
-          
-          // instantiate a loader
-          const loader = new OBJLoader();
-            
-          // load a resource
-          loader.load(
-              // resource URL
-              "https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj",
-              // called when resource is loaded
-              function ( object ) {
-                    console.log(object)
-                  object.scale.set(1, 1, 1)
-                  scene.add( object );
-                  camera.lookAt(object.position)
-  
-                  const render = () => {
-                      timeout = requestAnimationFrame(render);
-                      renderer.render(scene, camera);
-                      gl.endFrameEXP();
-                    };
-                  render();
-              },
-             
-              // called when loading is in progresses
-              function ( xhr ) {
-  
-                  console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-  
-              },
-              // called when loading has errors
-              function ( error ) {
-  
-                  console.log( error );
-  
-              }
-          
-          );   
-        }}
-      />
-    )
-      
-    /*
+    const navigation = useNavigation();
+
+
+
     return (
         <View style={styles.container3}>
 
@@ -159,8 +90,104 @@ function TutorialFrame(props) {
                                 <MontSerratText style={styles.textFrameYouself} text={"Rotate to see whole body"} />
                             </View>
                             <GLView
-                                onContextCreate={onContextCreate}
-                                style={{ width: 400, height: 400 }}
+                                style={{ flex: 1 }}
+                                onContextCreate={async (gl) => {
+                                    const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
+                                    const sceneColor = 668096;
+
+                                    //await gl.startARSessionAsync()
+                                    const camera = new PerspectiveCamera(70, width / height, 0.01, 1000);
+
+                                    // Create a WebGLRenderer without a DOM element
+                                    const renderer = new Renderer({ gl });
+                                    renderer.setSize(width, height);
+                                    //renderer.setClearColor(0x668096);
+
+                                    camera.position.set(6, 5, 5);
+
+                                    const scene = new Scene();
+                                    scene.fog = new Fog(sceneColor, 1, 10000);
+
+                                    // scene.background = ExpoTHREE.createARBackgroundTexture(true, renderer);
+
+                                    const ambientLight = new AmbientLight(0x101010);
+                                    scene.add(ambientLight);
+
+                                    const pointLight = new PointLight(0xffffff, 2, 1000, 1);
+                                    pointLight.position.set(0, 200, 200);
+                                    scene.add(pointLight);
+
+                                    const spotLight = new SpotLight(0xffffff, 0.5);
+                                    spotLight.position.set(0, 500, 100);
+                                    spotLight.lookAt(scene.position);
+                                    scene.add(spotLight);
+                                    const p = require("../mbappe.obj")
+                                    //const asset = Asset.fromModule(ha)
+                                    //const asset = Asset.froUri("https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj");
+                                    //await asset.downloadAsync();
+
+                                    // instantiate a loader
+                                    const loader = new OBJLoader();
+                               //     const loaderMtl = MTLLoader()
+
+
+                                    // load a resource
+                                    loader.load(
+                                        // resource URL
+                                        "https://raw.githubusercontent.com/Alegelx24/fbxContent/main/tipa.obj",
+                                        // called when resource is loaded
+                                        function (object) {
+                                            console.log(object)
+                                            object.scale.set(0.01, 0.01, 0.01);
+
+
+                                      //      let test= loaderMtl.load("https://raw.githubusercontent.com/Alegelx24/fbxContent/main/tipa.mtl",  (object));
+
+                                      //    object.attach(test);
+
+                                            /*   const textureLoader = new TextureLoader();
+                                               const uri =require("../assets//mbappe/textures/texture.png");
+                                               const texture = textureLoader.load(uri);
+                                               const textureMaterial = new MeshBasicMaterial({
+                                                 color: "green",
+                                                 //map: texture
+                                               });
+   
+                                               object.traverse((child)=>{
+                                                   child.material=textureMaterial;
+                                               })
+                                               let cube = new Mesh(, texture);
+                                               */
+
+                                            scene.add(object)
+
+                                            // scene.add(object);
+                                            camera.lookAt(object.position)
+
+                                            const render = () => {
+                                                timeout = requestAnimationFrame(render);
+                                                // create rotate functionality
+                                                // rotate around x axis
+                                                object.rotation.y += 0.003;
+
+                                                // rotate around y axis
+
+                                                //object.rotation.y += 0.01;
+                                                renderer.render(scene, camera);
+                                                gl.endFrameEXP();
+                                            };
+                                            render();
+                                        },
+                                        // called when loading is in progresses
+                                        function (xhr) {
+                                            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                                        },
+                                        // called when loading has errors
+                                        function (error) {
+                                            console.log(error);
+                                        }
+                                    );
+                                }}
                             />
                             <View style={styles.bottomView}>
                                 <View style={styles.horizontalFlex}>
@@ -181,12 +208,104 @@ function TutorialFrame(props) {
                         </View>
                     </Camera>
                     :
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1 , backgroundColor : "#d2d2d2"}}>
                         <View style={styles.rectangleRotateToSee}>
                             <MontSerratText style={styles.textRotateToSee} text={"Rotate to see whole body"} />
                         </View>
-                       
-          
+                        <GLView
+                            style={{ flex: 1 }}
+                            onContextCreate={async (gl) => {
+                                const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
+                                const sceneColor = 668096;
+
+                                //await gl.startARSessionAsync()
+                                const camera = new PerspectiveCamera(70, width / height, 0.01, 1000);
+
+                                // Create a WebGLRenderer without a DOM element
+                                const renderer = new Renderer({ gl });
+                                renderer.setSize(width, height);
+                                //renderer.setClearColor(0x668096);
+
+                                camera.position.set(6, 5, 5);
+
+                                const scene = new Scene();
+                                scene.fog = new Fog(sceneColor, 1, 10000);
+
+                                // scene.background = ExpoTHREE.createARBackgroundTexture(true, renderer);
+
+                                const ambientLight = new AmbientLight(0x101010);
+                                scene.add(ambientLight);
+
+                                const pointLight = new PointLight(0xffffff, 2, 1000, 1);
+                                pointLight.position.set(0, 200, 200);
+                                scene.add(pointLight);
+
+                                const spotLight = new SpotLight(0xffffff, 0.5);
+                                spotLight.position.set(0, 500, 100);
+                                spotLight.lookAt(scene.position);
+                                scene.add(spotLight);
+                                const p = require("../mbappe.obj")
+                                //const asset = Asset.fromModule(ha)
+                                //const asset = Asset.froUri("https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj");
+                                //await asset.downloadAsync();
+
+                                // instantiate a loader
+                                const loader = new OBJLoader();
+
+                                // load a resource
+                                loader.load(
+                                    // resource URL
+                                    "https://raw.githubusercontent.com/Alegelx24/fbxContent/main/tipa.obj",
+                                    // called when resource is loaded
+                                    function (object) {
+                                        console.log(object)
+                                        object.scale.set(0.01, 0.01, 0.01);
+
+                                        /*   const textureLoader = new TextureLoader();
+                                           const uri =require("../assets//mbappe/textures/texture.png");
+                                           const texture = textureLoader.load(uri);
+                                           const textureMaterial = new MeshBasicMaterial({
+                                             color: "green",
+                                             //map: texture
+                                           });
+ 
+                                           object.traverse((child)=>{
+                                               child.material=textureMaterial;
+                                           })
+                                           let cube = new Mesh(, texture);
+                                           */
+
+                                        scene.add(object)
+
+                                        // scene.add(object);
+                                        camera.lookAt(object.position)
+
+                                        const render = () => {
+                                            timeout = requestAnimationFrame(render);
+                                            // create rotate functionality
+                                            // rotate around x axis
+                                            object.rotation.y += 0.003;
+
+                                            // rotate around y axis
+
+                                            //object.rotation.y += 0.01;
+                                            renderer.render(scene, camera);
+                                            gl.endFrameEXP();
+                                        };
+                                        render();
+                                    },
+                                    // called when loading is in progresses
+                                    function (xhr) {
+                                        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                                    },
+                                    // called when loading has errors
+                                    function (error) {
+                                        console.log(error);
+                                    }
+                                );
+                            }}
+                        />
+
                         <View style={styles.bottomView}>
                             <View style={styles.horizontalFlex}>
                                 <MyButton style={[styles.exitButton]} title="Exit" navigation={navigation} onPressAction={() => navigation.navigate("ExerciseDetails", { text: props.text })}></MyButton>
@@ -208,7 +327,7 @@ function TutorialFrame(props) {
             }
         </View>
 
-    );*/
+    );
 }
 
 function MyButton(props) {
@@ -237,12 +356,12 @@ const Model = async () => {
     return <primitive object={obj} scale={0.005} />;
 };
 
-function degToRad(deg){
+function degToRad(deg) {
     return deg * (3.1423 / 180);
 }
 
 
-
+/*
 const onContextCreate = async (gl) => {
     // three.js implementation.
     const scene = new THREE.Scene();
@@ -256,7 +375,7 @@ const onContextCreate = async (gl) => {
     );
 
 
-    camera.position.set(0, 0,0 );
+    camera.position.set(0, 0, 0);
 
     camera.lookAt(0, 0, 0);
 
@@ -288,68 +407,68 @@ const onContextCreate = async (gl) => {
 
     //camera.lookAt(cube.position);
 
-    
-        // Load and add an obj model
-        const model = {
-            '3d.obj': 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/obj/walt/WaltHead.obj',
-            '3d.mtl': 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/obj/walt/WaltHead.mtl'
-          };
-  
-          const object = await loadAsync([model['3d.obj'], model['3d.mtl']], null, name => model[name]);
-  
-          object.position.y += 0;
-          object.position.z -= -0;
-          object.scale.set(.02, .02, .02);
-  
-          scene.add(object);
 
-    
-        const fbxLoader = new FBXLoader()
-        fbxLoader.load(
-            '../assets/girl.fbx',
-            (object) => {
-               
-                const geometry= new BufferGeometry(object.children.BufferGeometry);
-                const material = new MeshBasicMaterial({
-                    color: "red",
-                });
-    
-                const girl = new Mesh(geometry, material);
-    
-    
-                scene.add(girl)
-            },
-            (xhr) => {
-                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-            },
-            (error) => {
-                console.log(error)
-            }
-        )
+    // Load and add an obj model
+    const model = {
+        '3d.obj': 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/obj/walt/WaltHead.obj',
+        '3d.mtl': 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/obj/walt/WaltHead.mtl'
+    };
+
+    const object = await loadAsync([model['3d.obj'], model['3d.mtl']], null, name => model[name]);
+
+    object.position.y += 0;
+    object.position.z -= -0;
+    object.scale.set(.02, .02, .02);
+
+    scene.add(object);
 
 
-    
-            const loader = new GLTFLoader();
-          loader.load(
-            "../assets/dinosaur.glb",
-            (gltf) => {
-              scene.add(gltf);
-            },
-            (xhr) => {
-              console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-            },
-            (error) => {
-              console.error("An error happened", error);
+    const fbxLoader = new FBXLoader()
+    fbxLoader.load(
+        '../assets/girl.fbx',
+        (object) => {
+
+            const geometry = new BufferGeometry(object.children.BufferGeometry);
+            const material = new MeshBasicMaterial({
+                color: "red",
             });
-      
-    
- 
-          const obj = await ExpoTHREE.loadAsync(
-            //require('../assets/mbappe/source/mbappe.obj'),
-            null,
-            imageName => "pippo"
-          );
-            
+
+            const girl = new Mesh(geometry, material);
+
+
+            scene.add(girl)
+        },
+        (xhr) => {
+            console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+        },
+        (error) => {
+            console.log(error)
+        }
+    )
+
+
+
+    const loader = new GLTFLoader();
+    loader.load(
+        "../assets/dinosaur.glb",
+        (gltf) => {
+            scene.add(gltf);
+        },
+        (xhr) => {
+            console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+        },
+        (error) => {
+            console.error("An error happened", error);
+        });
+
+
+
+    const obj = await ExpoTHREE.loadAsync(
+        //require('../assets/mbappe/source/mbappe.obj'),
+        null,
+        imageName => "pippo"
+    );
+
 
 
 
@@ -361,7 +480,7 @@ const onContextCreate = async (gl) => {
         cube.rotation.x += 0.01;
 
         // rotate around y axis
-        
+
         cube.rotation.y += 0.01;
 
         renderer.render(scene, camera);
