@@ -20,13 +20,17 @@ import {
     PerspectiveCamera,
     BoxBufferGeometry,
     BoxGeometry,
+    Math
 } from "three";
-import ExpoTHREE, { Renderer, loadAsync, THREE } from "expo-three";
+import ExpoTHREE, { Renderer, loadAsync } from "expo-three";
 import { useNavigation } from "@react-navigation/native";
 import { ExpoWebGLRenderingContext, GLView } from "expo-gl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { Canvas } from "@react-three/fiber";
+import { useLoader } from "@react-three/fiber";
+import { Asset } from 'expo-asset';
 
 
 function TutorialFrame(props) {
@@ -34,11 +38,7 @@ function TutorialFrame(props) {
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [isAR, setAR] = useState(true)
 
-
-    useEffect(() => {
-        //simulates the fact that the user has framed his self inside the rectancle
-        setTimeout(exitFromThisScreen, 10000);
-    }), [];
+   
 
     if (!permission) {
         // Camera permissions are still loading
@@ -108,8 +108,6 @@ function TutorialFrame(props) {
                         </View>
                         <GLView
                             onContextCreate={onContextCreate}
-                            onRender={onRender}
-                            onResize={onResize}                                // set height and width of GLView
                             style={{ width: 400, height: 400 }}
                         />
                         <View style={styles.bottomView}>
@@ -149,6 +147,22 @@ function MyButton(props) {
 
 
 
+const Model = async () => {
+    const asset = Asset.fromModule(require('../assets/mbappe/source/mbappe/mbappe.obj'));
+    //const asset = Asset.fromModule(require('../assets/girl.fbx'));
+
+    await asset.downloadAsync();
+
+    // This is the local URI
+    const uri = asset.localUri;
+    const obj = useLoader(OBJLoader, uri);
+
+    return <primitive object={obj} scale={0.005} />;
+};
+
+function degToRad(deg){
+    return deg * (3.1423 / 180);
+}
 
 
 
@@ -283,6 +297,82 @@ const onContextCreate = async (gl) => {
 };
 
 
+
+/*
+
+//ON CONTEXT CREATE FOR OBJ FILE, PROBLEM WITH THREE.Math.degToRad(degreeX)
+const onContextCreate = async (gl) => {
+    // three.js implementation.
+    const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
+        const sceneColor = 668096;
+
+        // Create a WebGLRenderer without a DOM element
+        const renderer = new Renderer({ gl });
+        renderer.setSize(width, height);
+        renderer.setClearColor(0x668096);
+
+        const camera = new PerspectiveCamera(70, width / height, 0.01, 1000);
+        camera.position.set(2, 5, 5);
+
+        const scene = new Scene();
+
+    
+        const asset = Asset.fromModule(require("../assets/mbappe/source/mbappe/mbappe.obj"));
+        await asset.downloadAsync();
+
+        // instantiate a loader
+        const loader = new OBJLoader();
+
+        // load a resource
+        loader.load(
+            // resource URL
+            asset.localUri,
+            // called when resource is loaded
+            function ( object ) {
+                object.scale.set(0.065, 0.065, 0.065)
+                scene.add( object );
+                camera.lookAt(object.position)
+            //rotate my obj file
+                function rotateObject(object, degreeX=0, degreeY=0, degreeZ=0) {
+                    object.rotateX( degToRad(degreeX));
+                    object.rotateY(degToRad(degreeY));
+                    object.rotateZ(degToRad(degreeZ));
+                 }
+                 
+                 // usage:
+                 rotateObject(object, 0, 0, 70);
+
+                //animate rotation
+                function update() {
+                    object.rotation.x += 0.015
+                }
+                const render = () => {
+                   timeout = requestAnimationFrame(render);
+                    update();
+                    renderer.render(scene, camera);
+                    gl.endFrameEXP();
+                  };
+                render();
+            },
+           
+            // called when loading is in progresses
+            function ( xhr ) {
+
+                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+            },
+            // called when loading has errors
+            function ( error ) {
+
+                console.log( error );
+
+            }
+        
+        );   
+      
+};
+
+*/
 
 
 /*
