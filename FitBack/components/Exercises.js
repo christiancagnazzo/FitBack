@@ -1,11 +1,12 @@
 import { View, Text, Image, ScrollView, TouchableWithoutFeedback, Pressable } from 'react-native';
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { SearchBar } from 'react-native-elements';
 import { styles } from "../styles.js";
 import DraggablePanel from 'react-native-draggable-panel';
 import Checkbox from 'expo-checkbox';
 
-const HardCodedExercise = [
+
+/*const HardCodedExercise = [
     {
         "title": "PUSH-UPS",
         "difficulty": "Novice",
@@ -30,16 +31,73 @@ const HardCodedExercise = [
         "score": undefined,
         "icon": require("../assets/lunges.png")
     }
-]
+]*/
 
 function Exercise(props) {
     const [pageType, setPageType] = useState(props.route.params.type) // props
     const [search, setSearch] = useState({ text: "" })
-    const [exercises, setExercise] = useState(HardCodedExercise) // temp
+    const [exercises, setExercise] = useState([])
+    const [displayedExercises, setDisplayedExercise] = useState([])
+
+    useEffect(() => {
+        const getExercises = async (type, user) => {
+            let sql = ""
+            let param = undefined
+
+            if (type === undefined)
+                sql = `select * from exercises`
+            else if (type === 'your') {
+                sql = `select * from exercises join userExercise 
+                on exercises.id = userExercise.exercise 
+                where userExercise.user = ?`
+                param = user.id
+            }
+            else {
+                sql = `select * from exercises where difficulty = ?`
+                param = user.level
+            }
+
+            props.route.params.db.transaction((tx) => {
+                tx.executeSql(
+                    sql,
+                    [param ? param : ""],
+                    (_, result) => {
+                        for (let i = 0; i < result.rows._array.length; i++) {
+                            tx.executeSql(
+                                'select name from equipments join exerciseEquipment  on exerciseEquipment.equipment= equipments.id',
+                                [],
+                                (_, res1) => {
+                                    tx.executeSql(
+                                        'select name from muscles join exerciseMuscle  on exerciseMuscle.muscle= muscles.id',
+                                        [],
+                                        (_, res2) => {
+                                            setExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
+                                            setDisplayedExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
+                                        },
+                                        (_, error) => console.log(error)
+                                    )
+                                },
+                                (_, error) => console.log(error)
+                            )
+
+                        }
+                    },
+                    (_, error) => console.log(error)
+                );
+            })
+        }
+
+        if (pageType === 'All Exercises')
+            getExercises();
+        else if (pageType === 'Your Exercises')
+            getExercises('your', props.route.params.user)
+        else
+            getExercises('suggested', props.route.params.user)
+    }, [])
 
     function updateSearch(text) {
         setSearch({ text });
-        setExercise(() => HardCodedExercise.filter((e) => e.title.startsWith(text.toUpperCase())))
+        setDisplayedExercise(() => exercises.filter((e) => e.title.toUpperCase().startsWith(text.toUpperCase())))
     };
 
     return (
@@ -49,7 +107,7 @@ function Exercise(props) {
             <View>
                 <SearchBar
                     inputContainerStyle={{ height: 30 }}
-                    containerStyle={{borderRadius: 5, margin: 5 }}
+                    containerStyle={{ borderRadius: 5, margin: 5 }}
                     placeholder="Search"
                     onChangeText={updateSearch}
                     value={search.text}
@@ -57,46 +115,57 @@ function Exercise(props) {
             </View>
 
             <Text style={{ fontSize: 24, margin: 10, textAlign: "center", fontFamily: "BebasNeue" }}>Filters</Text>
-            <Filters setExercises={setExercise}></Filters>
+            <Filters db={props.route.params.db} setDisplayedExercise={setDisplayedExercise} exercises={exercises}></Filters>
 
 
             <ScrollView style={{ marginTop: 5 }}>
                 {
-                    exercises.map((e, i) => <ExerciseCard key={i} exercise={e}></ExerciseCard>)
+                    displayedExercises.map((e, i) => <ExerciseCard navigation={props.route.params.navigation} key={i} exercise={e}></ExerciseCard>)
                 }
             </ScrollView>
         </View>
     );
 }
 
-// to fix image
+function getImage(image) { 
+    switch (image) {
+        case 'squat':
+            return require('../assets/squat.png')
+        case 'lunges':
+            return require('../assets/lunges.png')
+        case 'pushup':
+            return require('../assets/pushup.png')
+    }
+}
 
 function ExerciseCard(props) {
     return (
-        <View style={styles.exerciseCard}>
-            <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1 }}>
-                <View style={{ width: 100, height: 100, margin: 15, borderRadius: 10, backgroundColor: "white" }}>
-                    <Image style={{ width: 100, height: 100, borderRadius: 10 }} source={props.exercise.icon}></Image>
-                </View>
-                <View>
-                    <View style={{ flexDirection: 'row', margin: 3 }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 32, fontFamily: "BebasNeue" }}>{props.exercise.title}</Text>
+        <TouchableWithoutFeedback onPress={() => props.navigation.navigate("ExerciseDetails", { text: props.exercise.id })}>
+            <View style={styles.exerciseCard}>
+                <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1 }}>
+                    <View style={{ width: 100, height: 100, margin: 15, borderRadius: 10, backgroundColor: "white" }}>
+                        <Image style={{ width: 100, height: 100, borderRadius: 10 }} source={getImage(props.exercise.image_path)} ></Image>
                     </View>
-                    <View style={{ flexDirection: 'row', margin: 3 }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 14 }}>Difficulty: </Text>
-                        <Text style={{ fontSize: 14 }}>{props.exercise.difficulty}</Text>
-                    </View>
-                    {
-                        props.exercise.score === undefined ? null :
-                            <View style={{ flexDirection: 'row', margin: 3 }}>
-                                <Text style={{ fontWeight: "bold", fontSize: 14 }}>Your Score: </Text>
-                                <Text style={{ fontSize: 14 }}>{props.exercise.score}</Text>
-                            </View>
-                    }
+                    <View>
+                        <View style={{ flexDirection: 'row', margin: 3 }}>
+                            <Text style={{ fontWeight: "bold", fontSize: 32, fontFamily: "BebasNeue" }}>{props.exercise.title}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', margin: 3 }}>
+                            <Text style={{ fontWeight: "bold", fontSize: 14 }}>Difficulty: </Text>
+                            <Text style={{ fontSize: 14 }}>{props.exercise.difficulty}</Text>
+                        </View>
+                        {
+                            props.exercise.score === undefined ? null :
+                                <View style={{ flexDirection: 'row', margin: 3 }}>
+                                    <Text style={{ fontWeight: "bold", fontSize: 14 }}>Your Score: </Text>
+                                    <Text style={{ fontSize: 14 }}>{props.exercise.score}</Text>
+                                </View>
+                        }
 
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     )
 
 }
@@ -134,9 +203,9 @@ function Filters(props) {
     };
 
     let [filterType, setFilterType] = useState("");
-    let [difficulty, setDifficulty] = useState([]);
-    let [muscle, setMuscle] = useState([]);
-    let [equipment, setEquipment] = useState([]);
+    let [difficulty, setDifficulty] = useState(["Super Novice", "Novice", "Beginner", "Intermediate", "Advanced", "Expert"]);
+    let [muscle, setMuscle] = useState(["Biceps", "Quadriceps", "Calf"]);
+    let [equipment, setEquipment] = useState(["Dummbell", "Kettlebell", "Mat"]);
     let [prevDifficulty, setPrevDifficulty] = useState([]);
     let [prevMuscle, setPrevMuscle] = useState([]);
     let [prevEquipment, setPrevEquipment] = useState([]);
@@ -198,12 +267,12 @@ function Filters(props) {
                                 <Text style={{ marginLeft: 10, fontSize: 25, fontFamily: "BebasNeue" }}>Novice</Text>
                             </View>
                             <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                <Checkbox style={{ width: 30, height: 30 }} value={difficulty.includes("Begineer")} onValueChange={(e) => setDifficulty((d) => {
-                                    if (difficulty.includes("Begineer"))
-                                        return d.filter((d) => d !== "Begineer")
-                                    else return [...d, "Begineer"]
+                                <Checkbox style={{ width: 30, height: 30 }} value={difficulty.includes("Beginner")} onValueChange={(e) => setDifficulty((d) => {
+                                    if (difficulty.includes("Beginner"))
+                                        return d.filter((d) => d !== "Beginner")
+                                    else return [...d, "Beginner"]
                                 })} />
-                                <Text style={{ marginLeft: 10, fontSize: 25, fontFamily: "BebasNeue" }}>Begineer</Text>
+                                <Text style={{ marginLeft: 10, fontSize: 25, fontFamily: "BebasNeue" }}>Beginner</Text>
                             </View>
                         </View>
                         <View>
@@ -243,7 +312,11 @@ function Filters(props) {
                         <Pressable style={btstyles.apply_button} onPress={() => {
                             setFilterType("")
                             setPrevDifficulty(difficulty)
-                            // todo filters 
+                            props.setDisplayedExercise(props.exercises.filter(ex => {
+                                if (difficulty.includes(ex.difficulty))
+                                    return true;
+                                return false;
+                            }))
                         }}>
                             <Text style={btstyles.text}>Apply</Text>
                         </Pressable>
@@ -324,7 +397,13 @@ function Filters(props) {
                                 <Pressable style={btstyles.apply_button} onPress={() => {
                                     setFilterType("")
                                     setPrevMuscle(muscle)
-                                    // todo filters 
+                                    props.setDisplayedExercise(props.exercises.filter((ex) => {
+                                        for (let i = 0; i < ex.muscles.length; i++) {
+                                            if (muscle.includes(ex.muscles[i]))
+                                                return true
+                                        }
+                                        return false
+                                    }))
                                 }}>
                                     <Text style={btstyles.text}>Apply</Text>
                                 </Pressable>
@@ -408,7 +487,13 @@ function Filters(props) {
                                         <Pressable style={btstyles.apply_button} onPress={() => {
                                             setFilterType("")
                                             setPrevEquipment(equipment)
-                                            // todo filters 
+                                            props.setDisplayedExercise(props.exercises.filter((ex) => {
+                                                for (let i = 0; i < ex.equipments.length; i++) {
+                                                    if (equipment.includes(ex.equipments[i]))
+                                                        return true
+                                                }
+                                                return false
+                                            }))
                                         }}>
                                             <Text style={btstyles.text}>Apply</Text>
                                         </Pressable>

@@ -1,10 +1,13 @@
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
-import { React } from "react";
+import { React, Component } from "react";
 import { colors } from "../styles.js";
+import { useNavigation } from '@react-navigation/native';
 
 function LevelUp() {
+    const navigation = useNavigation()
+
     return (
-        <TouchableWithoutFeedback onPress={()=>console.log("cambia schermata")}>
+        <TouchableWithoutFeedback onPress={()=>navigation.navigate("Homepage")}>
             <View>
                 <Text style={{ fontSize: 80, margin: 40, textAlign: "center", fontWeight: "bold", fontFamily: "BebasNeue" }}>LEVEL UP!</Text>
                 <View style={{ justifyContent: 'center', alignItems: 'center', fontFamily: "BebasNeue" }}>
