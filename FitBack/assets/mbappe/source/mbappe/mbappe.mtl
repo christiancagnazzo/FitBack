@@ -1,0 +1,24 @@
+# Blender MTL File: 'تم 772.blend'
+# Material Count: 2
+
+newmtl Material__280
+Ns 9.803921
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ke 0.0 0.0 0.0
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\pcwrld\\Desktop\\لاعبيين\\\u202bخطير - نسخة.png
+
+newmtl material_0.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd model.png
