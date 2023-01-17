@@ -5,7 +5,7 @@ const config = getDefaultConfig(__dirname);
 
 config.resolver.assetExts.push(
   // Adds support for `.db` files for SQLite databases
-  'db', 'fbx', 'gltf'
+  'db', 'fbx', 'gltf', 'obj'
 );
 
 module.exports = config;
