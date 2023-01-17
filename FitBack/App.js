@@ -3,6 +3,8 @@ import { SafeAreaView, StyleSheet, Text, View, Button } from "react-native";
 import { styles, colors } from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
 import { Homepage } from "./components/Homepage.js";
+import { HomepageAfterSession } from "./components/HomepageAfterSession";
+
 import {
   Navbar,
   MyStatusBar,
