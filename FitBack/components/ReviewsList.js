@@ -45,12 +45,54 @@ function ReviewsList(props) {
 	const [date, setDate] = useState(null);
 	const [isSelected, setSelection] = useState(false);
 	const [showPopup, setShowPopup] = useState(true);
-	const [preference, setPreference] = useState(true);
+	const [preference, setPreference] = useState(false);
 	const [showPopupInfo, setShowPopupInfo] = useState(false);
 	
 	useEffect(() => {
-		//load preference from database and set it to the value
+		props.route.params.db.transaction((tx) => {
+			tx.executeSql(
+				'select * from users where id = ?',
+				[1],
+				(_, res1) => {
+					console.log(res1.rows._array[0])
+					if (res1.rows._array[0].info_review == 1) {
+						setShowPopup(false)
+					}
+					else {
+						setShowPopup(true)
+					}
+				},
+				(_, error) => console.log(error)
+			)
+		})
 	}, [])
+
+	useEffect(() => {
+		props.route.params.db.transaction((tx) => {
+			tx.executeSql(
+				'select * from users where id = ?',
+				[1],
+				(_, res1) => {
+					console.log(res1.rows._array[0])
+					if (res1.rows._array[0].info_review == 1) {
+						setShowPopup(false)
+					}
+					else {
+						tx.executeSql(
+							'update users set info_review = ? where id = ?',
+							[preference, 1],
+							(_, res1) => {
+								console.log(res1)
+							},
+							(_, error) => console.log(error)
+						)
+					}
+				},
+				(_, error) => console.log(error)
+			)
+			
+		})
+	}, [preference])
 
 
 	
@@ -120,7 +162,6 @@ function ReviewsList(props) {
 					keyExtractor={(item) => item.id}
 				/>
 			</SafeAreaView>
-			{preference ?
 			<Modal visible={showPopup} animationType="none" transparent={true}>
 			<View style={pageStyles.centeredView}>
 				<View style={pageStyles.modalView}>
@@ -148,12 +189,11 @@ function ReviewsList(props) {
 					<MyButton
 						style={pageStyles.gotItButton}
 						title={"Got it!"}
-						onPressAction={() => {setPreference(!isSelected) ;setShowPopup(false)}}
+						onPressAction={() => {setShowPopup(false); setPreference(isSelected)}}
 					></MyButton>
 				</View>
 			</View>
 		</Modal>
-			 : false}
 			<Modal visible={showPopupInfo} animationType="none" transparent={true}>
 				<View style={pageStyles.centeredView}>
 					<View style={pageStyles.modalView}>

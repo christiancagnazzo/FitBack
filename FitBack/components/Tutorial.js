@@ -10,7 +10,7 @@ import {
     ImageBackground,
 } from 'react-native';
 import { Switch } from 'react-native-switch';
-import { React, useEffect } from "react";
+import * as React from 'react';
 import { colors, styles } from "../styles.js";
 import { MontSerratText } from "../components/Utility.js";
 import {
@@ -20,7 +20,11 @@ import {
     PerspectiveCamera,
     BoxBufferGeometry,
     BoxGeometry,
-    Math
+    Math,
+    AmbientLight,
+    Fog,
+    PointLight,
+    SpotLight,
 } from "three";
 import ExpoTHREE, { Renderer, loadAsync } from "expo-three";
 import { useNavigation } from "@react-navigation/native";
@@ -31,7 +35,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Canvas } from "@react-three/fiber";
 import { useLoader } from "@react-three/fiber";
 import { Asset } from 'expo-asset';
-
+//import ha from 'https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj'
 
 function TutorialFrame(props) {
     const [type, setType] = useState(CameraType.back);
@@ -64,8 +68,83 @@ function TutorialFrame(props) {
 
         //wait 1 second to let the green screen be visible than change screen
     }
-    const navigation = useNavigation();
-
+    //const navigation = useNavigation();
+    
+    return (
+        <GLView
+        style={{ flex: 1 }}
+        onContextCreate={async (gl) => {
+          const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
+          const sceneColor = 668096;
+  
+          // Create a WebGLRenderer without a DOM element
+          const renderer = new Renderer({ gl });
+          renderer.setSize(width, height);
+          renderer.setClearColor(0x668096);
+  
+          const camera = new PerspectiveCamera(70, width / height, 0.01, 1000);
+          camera.position.set(2, 5, 5);
+  
+          const scene = new Scene();
+          scene.fog = new Fog(sceneColor, 1, 10000);
+  
+          const ambientLight = new AmbientLight(0x101010);
+          scene.add(ambientLight);
+  
+          const pointLight = new PointLight(0xffffff, 2, 1000, 1);
+          pointLight.position.set(0, 200, 200);
+          scene.add(pointLight);
+  
+          const spotLight = new SpotLight(0xffffff, 0.5);
+          spotLight.position.set(0, 500, 100);
+          spotLight.lookAt(scene.position);
+          scene.add(spotLight);
+          const p = require("../mbappe.obj")
+          //const asset = Asset.fromModule(ha)
+          //const asset = Asset.froUri("https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj");
+          //await asset.downloadAsync();
+          
+          // instantiate a loader
+          const loader = new OBJLoader();
+            
+          // load a resource
+          loader.load(
+              // resource URL
+              "https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj",
+              // called when resource is loaded
+              function ( object ) {
+                    console.log(object)
+                  object.scale.set(1, 1, 1)
+                  scene.add( object );
+                  camera.lookAt(object.position)
+  
+                  const render = () => {
+                      timeout = requestAnimationFrame(render);
+                      renderer.render(scene, camera);
+                      gl.endFrameEXP();
+                    };
+                  render();
+              },
+             
+              // called when loading is in progresses
+              function ( xhr ) {
+  
+                  console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+  
+              },
+              // called when loading has errors
+              function ( error ) {
+  
+                  console.log( error );
+  
+              }
+          
+          );   
+        }}
+      />
+    )
+      
+    /*
     return (
         <View style={styles.container3}>
 
@@ -106,10 +185,8 @@ function TutorialFrame(props) {
                         <View style={styles.rectangleRotateToSee}>
                             <MontSerratText style={styles.textRotateToSee} text={"Rotate to see whole body"} />
                         </View>
-                        <GLView
-                            onContextCreate={onContextCreate}
-                            style={{ width: 400, height: 400 }}
-                        />
+                       
+          
                         <View style={styles.bottomView}>
                             <View style={styles.horizontalFlex}>
                                 <MyButton style={[styles.exitButton]} title="Exit" navigation={navigation} onPressAction={() => navigation.navigate("ExerciseDetails", { text: props.text })}></MyButton>
@@ -131,7 +208,7 @@ function TutorialFrame(props) {
             }
         </View>
 
-    );
+    );*/
 }
 
 function MyButton(props) {
@@ -148,7 +225,7 @@ function MyButton(props) {
 
 
 const Model = async () => {
-    const asset = Asset.fromModule(require('../assets/mbappe/source/mbappe/mbappe.obj'));
+    //const asset = Asset.fromModule(require('../assets/mbappe/source/mbappe/mbappe.obj'));
     //const asset = Asset.fromModule(require('../assets/girl.fbx'));
 
     await asset.downloadAsync();
@@ -211,7 +288,7 @@ const onContextCreate = async (gl) => {
 
     //camera.lookAt(cube.position);
 
-    /*
+    
         // Load and add an obj model
         const model = {
             '3d.obj': 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/obj/walt/WaltHead.obj',
@@ -225,8 +302,8 @@ const onContextCreate = async (gl) => {
           object.scale.set(.02, .02, .02);
   
           scene.add(object);
-*/
-    /*
+
+    
         const fbxLoader = new FBXLoader()
         fbxLoader.load(
             '../assets/girl.fbx',
@@ -248,10 +325,10 @@ const onContextCreate = async (gl) => {
             (error) => {
                 console.log(error)
             }
-        )*/
+        )
 
 
-    /*
+    
             const loader = new GLTFLoader();
           loader.load(
             "../assets/dinosaur.glb",
@@ -264,16 +341,15 @@ const onContextCreate = async (gl) => {
             (error) => {
               console.error("An error happened", error);
             });
-      */
-
-    /*
+      
+    
  
           const obj = await ExpoTHREE.loadAsync(
-            require('../assets/mbappe3d/source/mbappe.obj'),
+            //require('../assets/mbappe/source/mbappe.obj'),
             null,
             imageName => "pippo"
           );
-            */
+            
 
 
 
