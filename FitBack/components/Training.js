@@ -375,12 +375,12 @@ function ModalSafeExit(props) {
           <View style={styles.horizontalFlex}>
             <MyButton
               style={pageStyles.turnHomeButton}
-              title={"Cancel\n(rename)"}
+              title={"Continue training"}
               onPress={() => props.setModalVisible(false)}
             ></MyButton>
             <MyButton
               style={pageStyles.turnHomeButton}
-              title={"Confirm\n(rename)"}
+              title={"Exit"}
               onPress={() => {props.setModalVisible(false);
                               props.navigation.navigate('Homepage')}}
             ></MyButton>

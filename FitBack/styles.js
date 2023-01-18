@@ -519,7 +519,8 @@ const styles = StyleSheet.create({
       height: 40,
       marginBottom: 20,
       marginRight: 8,
-      marginLeft: 8
+      marginLeft: 8,
+      
     }
   });
 

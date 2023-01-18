@@ -25,19 +25,19 @@ function ReviewsList(props) {
 	const reviewsData = [
 		{
 			id: 1,
-			title: "Review 1",
+			title: "Revision 1",
 			date: "2023-01-03",
 			uri: require("../assets/video/thumbnail.png")
 		},
 		{
 			id: 2,
-			title: "Review 2",
+			title: "Revision 2",
 			date: "2023-01-03",
 			uri: require("../assets/video/thumbnail.png")
 		},
 		{
 			id: 3,
-			title: "Review 3",
+			title: "Revision 3",
 			date: "2020-08-29",
 		},
 	];
@@ -168,11 +168,11 @@ function ReviewsList(props) {
 					<Text
 						
 						style={pageStyles.whatAreReviews}
-					>What are reviews?</Text>
+					>What are revisions?</Text>
 					<MontSerratText
 						style={pageStyles.whatAreReviewsText}
 						text={
-							"Reviews show videos of your previous errors with a brief explanation"
+							"Revision show videos of your previous errors with a brief explanation"
 						}
 					></MontSerratText>
 					<View style={pageStyles.checkboxContainer}>
@@ -200,11 +200,11 @@ function ReviewsList(props) {
 						<Text
 							
 							style={pageStyles.whatAreReviews}
-						>What are reviews?</Text>
+						>What are revisions?</Text>
 						<MontSerratText
 							style={pageStyles.whatAreReviewsText}
 							text={
-								"Reviews show videos of your previous errors with a brief explanation"
+								"Revision show videos of your previous errors with a brief explanation"
 							}
 						></MontSerratText>
 						<View style={pageStyles.checkboxContainer}>

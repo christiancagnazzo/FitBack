@@ -16,7 +16,7 @@ function Settings() {
             <SettingsRow title={"Font size"} text={"32"}></SettingsRow>
             <SettingsRow title={"Notifications"} text={"On"}></SettingsRow>
             <View style={page_styles.buttonFlex}>
-            <MyButton  viewStyle={{alignSelf: "flex-start"}} style={page_styles.cancelButton} title="Cancel"></MyButton>
+            <MyButton  viewStyle={{alignSelf: "flex-end"}} style={page_styles.cancelButton} title="Reset"></MyButton>
             <MyButton viewStyle={{alignSelf: "flex-end"}} style={page_styles.button} title="Save"></MyButton>
             </View>
         </View>
@@ -41,7 +41,7 @@ const page_styles = StyleSheet.create({
         width: 200,
       },
     rowFlex: {
-        marginVertical: 10,
+        marginVertical: 20,
         flexDirection: "row",
         alignSelf: "flex-start",
         justifyContent: "space-around",
@@ -50,7 +50,7 @@ const page_styles = StyleSheet.create({
     button: {
         backgroundColor: colors.red,
         marginTop: 10,
-        width: 150,
+        width: 120,
         height: 60,
         borderRadius: 10,
         justifyContent: 'center',
@@ -58,8 +58,8 @@ const page_styles = StyleSheet.create({
     },
     cancelButton: {
         backgroundColor: colors.darkGray,
-        marginTop: 10,
-        width: 150,
+        marginTop: 20,
+        width: 120,
         height: 60,
         borderRadius: 10,
         justifyContent: 'center',
@@ -69,7 +69,8 @@ const page_styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignSelf: "stretch",
-        marginHorizontal: 15
+        marginHorizontal: 15,
+        
     },
 });
 export {Settings}

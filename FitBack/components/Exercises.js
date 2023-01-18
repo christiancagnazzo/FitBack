@@ -4,6 +4,8 @@ import { SearchBar } from 'react-native-elements';
 import { styles } from "../styles.js";
 import DraggablePanel from 'react-native-draggable-panel';
 import Checkbox from 'expo-checkbox';
+import { AntDesign } from '@expo/vector-icons'; 
+
 
 
 /*const HardCodedExercise = [
@@ -218,17 +220,17 @@ function Filters(props) {
             <View style={{ flexDirection: 'row', margin: 3, justifyContent: 'center', alignItems: 'center', }}>
                 <TouchableWithoutFeedback onPress={() => setFilterType("equipment")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Equipment</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Equipment +</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => setFilterType("muscle")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Muscle Group</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Muscle Group +</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => setFilterType("difficulty")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Difficulty</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Difficulty +</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
