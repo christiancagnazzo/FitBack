@@ -3,6 +3,8 @@ import { colors, styles } from '../styles.js'
 import { React, useState } from "react";
 import { MontSerratText } from '../components/Utility.js';
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 
 
@@ -45,7 +47,7 @@ function StartingSession(props) {
                 <View style={{ flex: 1, height: 1, backgroundColor: 'black', marginLeft: 10, marginBottom: 20 }} />
                 <ScrollView style={{ marginTop: 10 }}>
                     {
-                        exercises.map((e, i) => <ExerciseList key={i} exercise={e}></ExerciseList>)
+                        exercises.map((e, i) => <ExerciseList key={i} exercise={e} navigation={props.navigation} text={e.title}></ExerciseList>)
                     }
                 </ScrollView>
 
@@ -63,11 +65,12 @@ function ExerciseList(props) {
         <View >
             <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1 }}>
                 <View>
-                    <View style={{ margin: 3 }}>
-                        <Text style={{ fontWeight: "normal", fontSize: 20, marginLeft: 10 }}>{props.exercise.title}</Text>
-
-                        <Text style={{ fontWeight: "normal", fontSize: 20, textAlign: 'right' }}>{props.exercise.reps}</Text>
+                    <View style={{ margin: 3, flexDirection: 'row' }}>
+                        <Text style={{ fontWeight: "normal", fontSize: 20, marginLeft: 10, marginRight: 5 }}>{props.exercise.title}</Text>
+                        <Ionicons name="ios-information-circle-outline" size={24} color="black" onPress={()=>props.navigation.navigate("ExerciseDetails", { text: props.text })}/>
                     </View>
+                    <Text style={{ fontWeight: "normal", fontSize: 20, textAlign: 'right' }}>{props.exercise.reps}</Text>
+
                     <View style={{ flex: 1, height: 2, backgroundColor: 'black', marginLeft: 10, width: 350 }} />
                     <View>
                     </View>
