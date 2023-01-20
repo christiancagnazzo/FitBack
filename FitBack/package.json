@@ -57,7 +57,8 @@
     "react-three-fiber": "^6.0.13",
     "sqlite3": "^5.1.4",
     "three": "^0.145.0",
-    "expo-file-system": "~15.1.1"
+    "expo-file-system": "~15.1.1",
+    "react-native-webview": "11.23.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

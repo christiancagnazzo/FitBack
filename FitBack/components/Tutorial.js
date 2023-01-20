@@ -38,6 +38,7 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { Canvas } from "@react-three/fiber";
 import { useLoader } from "@react-three/fiber";
 import { Asset } from 'expo-asset';
+import { WebView } from 'react-native-webview';
 
 //import ha from 'https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj'
 
@@ -84,131 +85,11 @@ function TutorialFrame(props) {
 
                 isAR ?
 
-                    <Camera style={styles.camera} type={type}>
-                        <View style={{ flex: 1 }}>
-                            <View style={styles.rectangleRotateToSee1}>
-                                <MontSerratText style={styles.textFrameYouself} text={"Rotate to see whole body"} />
-                            </View>
-                            <GLView
-                                style={{ flex: 1 }}
-                                onContextCreate={async (gl) => {
-                                    const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
-                                    const sceneColor = 668096;
-
-                                    //await gl.startARSessionAsync()
-                                    const camera = new PerspectiveCamera(70, width / height, 0.01, 1000);
-
-                                    // Create a WebGLRenderer without a DOM element
-                                    const renderer = new Renderer({ gl });
-                                    renderer.setSize(width, height);
-                                    //renderer.setClearColor(0x668096);
-
-                                    camera.position.set(6, 5, 5);
-
-                                    const scene = new Scene();
-                                    scene.fog = new Fog(sceneColor, 1, 10000);
-
-                                    // scene.background = ExpoTHREE.createARBackgroundTexture(true, renderer);
-
-                                    const ambientLight = new AmbientLight(0x101010);
-                                    scene.add(ambientLight);
-
-                                    const pointLight = new PointLight(0xffffff, 2, 1000, 1);
-                                    pointLight.position.set(0, 200, 200);
-                                    scene.add(pointLight);
-
-                                    const spotLight = new SpotLight(0xffffff, 0.5);
-                                    spotLight.position.set(0, 500, 100);
-                                    spotLight.lookAt(scene.position);
-                                    scene.add(spotLight);
-                                    const p = require("../mbappe.obj")
-                                    //const asset = Asset.fromModule(ha)
-                                    //const asset = Asset.froUri("https://raw.githubusercontent.com/Lorediel/prova_ar/main/mbappe.obj");
-                                    //await asset.downloadAsync();
-
-                                    // instantiate a loader
-                                    const loader = new OBJLoader();
-                               //     const loaderMtl = MTLLoader()
-
-
-                                    // load a resource
-                                    loader.load(
-                                        // resource URL
-                                        "https://raw.githubusercontent.com/Alegelx24/fbxContent/main/tipa.obj",
-                                        // called when resource is loaded
-                                        function (object) {
-                                            console.log(object)
-                                            object.scale.set(0.01, 0.01, 0.01);
-
-
-                                      //      let test= loaderMtl.load("https://raw.githubusercontent.com/Alegelx24/fbxContent/main/tipa.mtl",  (object));
-
-                                      //    object.attach(test);
-
-                                            /*   const textureLoader = new TextureLoader();
-                                               const uri =require("../assets//mbappe/textures/texture.png");
-                                               const texture = textureLoader.load(uri);
-                                               const textureMaterial = new MeshBasicMaterial({
-                                                 color: "green",
-                                                 //map: texture
-                                               });
-   
-                                               object.traverse((child)=>{
-                                                   child.material=textureMaterial;
-                                               })
-                                               let cube = new Mesh(, texture);
-                                               */
-
-                                            scene.add(object)
-
-                                            // scene.add(object);
-                                            camera.lookAt(object.position)
-
-                                            const render = () => {
-                                                timeout = requestAnimationFrame(render);
-                                                // create rotate functionality
-                                                // rotate around x axis
-                                                object.rotation.y += 0.003;
-
-                                                // rotate around y axis
-
-                                                //object.rotation.y += 0.01;
-                                                renderer.render(scene, camera);
-                                                gl.endFrameEXP();
-                                            };
-                                            render();
-                                        },
-                                        // called when loading is in progresses
-                                        function (xhr) {
-                                            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-                                        },
-                                        // called when loading has errors
-                                        function (error) {
-                                            console.log(error);
-                                        }
-                                    );
-                                }}
-                            />
-                            <View style={styles.bottomView}>
-                                <View style={styles.horizontalFlex}>
-                                    <MyButton style={[styles.exitButton]} title="Exit" navigation={navigation} onPressAction={() => navigation.navigate("ExerciseDetails", { text: props.text })}></MyButton>
-                                    <View style={styles.switchButton}>
-                                        <Switch
-                                            value={isAR}
-                                            onValueChange={switchAR}
-                                            activeText={'AR'}
-                                            inActiveText={'OBJ'}
-                                            backgroundActive={'green'}
-                                            backgroundInactive={'gray'}
-                                            circleActiveColor={'#30a566'}
-                                            circleInActiveColor={'#000000'} />
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </Camera>
+                    <WebView
+                        source={{ uri: 'https://mywebar.com/p/Project_0_oli5sfzewq' }}
+                    />
                     :
-                    <View style={{ flex: 1 , backgroundColor : "#d2d2d2"}}>
+                    <View style={{ flex: 1, backgroundColor: "#d2d2d2" }}>
                         <View style={styles.rectangleRotateToSee}>
                             <MontSerratText style={styles.textRotateToSee} text={"Rotate to see whole body"} />
                         </View>
