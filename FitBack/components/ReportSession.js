@@ -18,25 +18,20 @@ import { MontSerratText } from "./Utility";
 
 const HardCodedResults = [
   {
-    title: "PUSH-UPS",
-    attempts: "27/36",
+    title: "Lift Harm",
+    attempts: "7/7",
   },
   {
-    title: "BENCH PRESS",
-    attempts: "30/40",
+    title: "Squat",
+    attempts: "6/7",
   },
-  {
-    title: "SQUAT",
-    attempts: "35/36",
-  },
-  {
-    title: "LATERAL-LUNGES",
-    attempts: "53/100",
-  },
-];
+]
+
+
+
 
 function Report(props) {
-  const [exercises, setExercise] = useState(HardCodedResults); // temp
+  const [exercises, setExercise] = useState(HardCodedResults); // Lascia così
 
   return (
     <View>

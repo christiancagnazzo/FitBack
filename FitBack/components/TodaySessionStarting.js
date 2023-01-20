@@ -4,16 +4,14 @@ import { React, useState } from "react";
 import { MontSerratText } from '../components/Utility.js';
 import { useNavigation } from "@react-navigation/native";
 
-
-
 const HardCodedSession = [
     {
         "title": "Lift Harm",
-        "reps": "3x12",
+        "reps": "1x7",
     },
     {
-        "title": "SQUAT",
-        "reps": "3x12",
+        "title": "Squat",
+        "reps": "1x7",
     },
 
 ]
