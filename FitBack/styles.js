@@ -315,18 +315,18 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       width:'40%'
     },
-    ectangleRotateToSee: {
-      margin: 40,
+    rectangleRotateToSee: {
+      margin: 10,
       alignItems: "center",
       borderWidth: 3,
       borderColor: colors.black,
       borderRadius: 10,
     },
     rectangleRotateToSee1: {
-      margin: 40,
+      margin: 30,
       alignItems: "center",
       borderWidth: 3,
-      borderColor: colors.white,
+      borderColor: colors.black,
       borderRadius: 10,
     },
     camera: {
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     },
     textRotateToSee: {
       margin: 10,
-      color: colors.black,
+      color: colors.white,
       fontSize: 20,
       fontWeight: "bold",
       textAlign: "center",
@@ -375,6 +375,7 @@ const styles = StyleSheet.create({
     exitButton: {
       backgroundColor: colors.darkGray,
       marginLeft: 20,
+      marginTop:25,
       width: 150,
       height: 60,
       borderRadius: 10,
@@ -444,7 +445,7 @@ const styles = StyleSheet.create({
       margin: 40,
       alignItems: "center",
       borderWidth: 3,
-      borderColor: colors.black,
+      borderColor: colors.white,
       borderRadius: 10,
     },
     rectangleRotateToSee1: {
@@ -457,7 +458,7 @@ const styles = StyleSheet.create({
     container3: {
       flex: 1,
       justifyContent: 'center',
-      marginTop:20,
+      marginTop:1,
     },
     buttonContainer: {
       flex: 1,
