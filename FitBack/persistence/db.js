@@ -27,6 +27,7 @@ db.serialize(function () {
                 "sex"   TEXT,\
                 "level" TEXT,\
                 "info_review"   INTEGER,\
+                "sessiondone" INTEGER, \
                 PRIMARY KEY("id" AUTOINCREMENT))');
 
     db.run('CREATE TABLE IF NOT EXISTS "userExercise"(\
@@ -79,12 +80,13 @@ db.serialize(function () {
 
     
     // USER
-    db.run("INSERT OR IGNORE INTO users VALUES (1, 'Antonio', 'Cassano', '170', 24, 'M', 'Intermediate', 0)")
+    db.run("INSERT OR IGNORE INTO users VALUES (1, 'Antonio', 'Cassano', '170', 24, 'M', 'Intermediate', 0, 0)")
     
     // EXERCISES
     db.run("INSERT OR IGNORE INTO exercises VALUES (1, 'Squat', 'Intermediate', 'video_path', 'squat', 'Description of the exercise')")
     db.run("INSERT OR IGNORE INTO exercises VALUES (2, 'Push-up', 'Beginner', 'video_path', 'pushup', 'Description of the exercise')")
     db.run("INSERT OR IGNORE INTO exercises VALUES (3, 'Lunges', 'Intermediate', 'video_path', 'lunges', 'Description of the exercise')")
+    db.run("INSERT OR IGNORE INTO exercises VALUES (4, 'Lift Left Harm', 'Beginner', 'video_path', 'lift', 'Description of the exercise')")
 
     // EXERCISES-USER
     db.run("INSERT OR IGNORE INTO userExercise VALUES (1,2,1,50)")

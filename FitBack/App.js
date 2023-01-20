@@ -268,7 +268,7 @@ function MyApp(props) {
           }}
         />
         <Stack.Screen
-          name="ExecuteExercise"
+          name="ExecuteExercise" 
           component={ExecuteExercise}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
@@ -292,13 +292,12 @@ function MyApp(props) {
             headerTintColor: colors.lightGray,
             headerTitleAlign: "center",
             headerShown: true,
-            //Togliere back, come si fa?
-            headerLeft: () => (
-              <View />)
+            headerLeft: () => ( 
+              <View />) 
           }}
         />
 
       </Stack.Navigator>
       </>
   );
-}
+}  
