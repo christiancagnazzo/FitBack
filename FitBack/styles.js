@@ -311,7 +311,8 @@ const styles = StyleSheet.create({
       flex:1,
       margin:15,
       borderWidth: 3,
-      borderColor: colors.white,
+      borderColor: colors.black,
+      backgroundColor: colors.black,
       borderRadius: 10,
       width:'40%'
     },
@@ -438,7 +439,10 @@ const styles = StyleSheet.create({
       margin: 20,
       alignItems: "center",
       borderWidth: 3,
-      borderColor: colors.white,
+      borderColor: colors.black,
+      padding: 10,
+      backgroundColor: colors.black,
+      color: colors.white,
       borderRadius: 10,
     },
     rectangleRotateToSee: {
@@ -487,6 +491,9 @@ const styles = StyleSheet.create({
     textFrameYouself: {
       margin: 10,
       color: colors.white,
+      backgroundColor: colors.black,
+      borderRadius: 10,
+      padding: 10,
       fontSize: 20,
       fontWeight: "bold",
       textAlign: "center",

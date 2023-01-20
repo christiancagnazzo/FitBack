@@ -96,7 +96,7 @@ function Report(props) {
           <MontSerratText
             style={{ fontWeight: "bold", fontSize: 30, alignSelf: "center"}}
             text={"Estimated\nevaluation"}
-            color = {colors.black}
+            color = {colors.w}
           />
           <View
             style={[styles.rectangleExerciseTitle, { marginLeft: 60, flex: 1 }]}
@@ -105,7 +105,7 @@ function Report(props) {
               //style={styles.textFrameYouself}
               style={{
                 margin: 10,
-                color: colors.black,
+                color: colors.white,
                 fontSize: 20,
                 fontWeight: "bold",
                 textAlign: "center",

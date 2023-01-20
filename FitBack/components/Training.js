@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { colors, styles } from "../styles.js";
 import { MontSerratText } from "./Utility";
 import * as Progress from "react-native-progress";
-import { Video, AVPlaybackStatus } from "expo-av";
+import { Video, AVPlaybackStatus, Audio } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
 
 function FrameYourself(props) {
@@ -29,8 +29,8 @@ function FrameYourself(props) {
 
   useEffect(() => {
     //simulates the fact that the user has framed his self inside the rectancle
-    setTimeout(exitFromThisScreen, 3000); 
-  },[]);
+    setTimeout(exitFromThisScreen, 3000);
+  }, []);
 
 
   if (!permission) {
@@ -56,9 +56,9 @@ function FrameYourself(props) {
 
     //wait 1 second to let the green screen be visible than change screen
     setTimeout(() => {
-      navigation.navigate("ExecuteExercise", { title: 'Lift Left Harm'});
+      navigation.navigate("ExecuteExercise", { title: 'Lift Left Arm' });
     }, 1000);
-  
+
   }
 
   return (
@@ -114,36 +114,45 @@ function FrameYourself(props) {
 function ExecuteExercise(props) {
   const [reps, setReps] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-  let   [permission, requestPermission] = Camera.useCameraPermissions();
+  let [permission, requestPermission] = Camera.useCameraPermissions();
   const [title, setTitle] = useState(props.route.params.title)
   const [type, setType] = useState(CameraType.front);
 
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
-  const totalReps = 7; 
+  const totalReps = 7;
   const navigation = useNavigation();
   const video = React.useRef(null);
+  const [sound, setSound] = React.useState();
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   useEffect(() => {
 
-    const myinterval= setInterval(updateReps, 3000);
+    const myinterval = setInterval(updateReps, 1000);
     console.log(myinterval)
 
-    let r =0; 
+    let r = 0;
     let title2 = title;
 
     function updateReps() {
-      r = r+1;
-      if (r === totalReps)
-      { 
-        r=0;
+      r = r + 1;
+      if (r === totalReps) {
+        r = 0;
         console.log(title2)
-        switch (title2){
-          case 'Lift Left Harm':
+        switch (title2) {
+          case 'Lift Left Arm':
             setTitle('Squat')
-            title2='Squat'
-            setReps(0) 
+            title2 = 'Squat'
+            setReps(0)
             break
           case 'Squat':
             console.log('dentro case squat')
@@ -155,38 +164,48 @@ function ExecuteExercise(props) {
         }
 
       }
-       else
-      setReps((current) => (current < totalReps ? current + 1 : current));
+      else
+        setReps((current) => (current < totalReps ? current + 1 : current));
     }
 
   }, []);
 
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync( require('../assets/correction.mp3')
+    );
+    setSound(sound);
+
+    await sound.playAsync();
+  }
+
+  if (reps === 3 && title === 'Squat')
+    playSound()
 
   function updateDbEndSession() {
 
     sql = "UPDATE users SET sessiondone=1"
     props.route.params.db.transaction((tx) => {
       tx.executeSql(
-          sql,
-          [],
-          (_, result) => {  console.log(result) },
-          (_, error) => console.log(error)
+        sql,
+        [],
+        (_, result) => { console.log(result) },
+        (_, error) => console.log(error)
       );
-  })
+    })
 
   }
 
   function toggleCameraType() {
     console.log('cambio tipo')
     setType((current) =>
-    current === CameraType.back ? CameraType.front : CameraType.back
-  );
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
   }
 
 
   if (!permission) {
     // Camera permissions are still loading
-    return <View style={{margin:100}}>
+    return <View style={{ margin: 100 }}>
     </View>;
   }
 
@@ -206,7 +225,7 @@ function ExecuteExercise(props) {
   return (
     <View style={[styles.container3]}>
       <Camera
-        style={{ flex: 1, width: windowWidth, height: windowHeight}}
+        style={{ flex: 1, width: windowWidth, height: windowHeight }}
         type={type}
       >
         <View style={{ flex: 1 }}>
@@ -229,15 +248,19 @@ function ExecuteExercise(props) {
               ></Video>
             </View>
           </View>
-
-          <View style={[{ margin:40, flexDirection: "row", justifyContent:'space-between', marginTop:350, zIndex:1}]}>
-            <View style={{flexDirection:'row'}}>
-            <Text  style={{fontSize: 25, fontWeight:'bold'}}> {"Reps="} </Text>
-            <Text  style={{fontSize: 25}}> {reps+"/"+totalReps}</Text>
+          <View>
+            {
+              title === 'Squat' && reps > 2 && reps < 7 ? <Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image> : null
+            }
+          </View>
+          <View style={[{ marginLeft: 80, flexDirection: "row", justifyContent: 'space-between', marginTop: 700, zIndex: 1, position: 'absolute', backgroundColor: 'black', borderRadius: 10, padding: 10 }]}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color:'white', fontSize: 25, fontWeight: 'bold' }}> {"Reps="} </Text>
+              <Text style={{ color:'white', fontSize: 25 }}> {reps + "/" + totalReps}</Text>
             </View>
-            <View style={{flexDirection:'row'}}>
-            <Text  style={{fontSize: 25, fontWeight:'bold'}}> {"Sets="} </Text> 
-            <Text  style={{fontSize: 25}}> {"1/1"}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color:'white', fontSize: 25, fontWeight: 'bold' }}> {"Sets="} </Text>
+              <Text style={{ color:'white', fontSize: 25 }}> {"1/1"}</Text>
             </View>
           </View>
 
@@ -249,8 +272,8 @@ function ExecuteExercise(props) {
 
           <View style={styles.bottomView2}>
             <View style={styles.horizontalFlex}>
-              <MyButton style={[styles.exitButton]} title="Exit" onPress={()=>setModalVisible(true)}></MyButton>
-              <PauseButton style={[styles.pauseButton]} onPress={()=>  props.navigation.navigate("PauseExercise", {reps:reps, title:title})} />
+              <MyButton style={[styles.exitButton]} title="Exit" onPress={() => setModalVisible(true)}></MyButton>
+              <PauseButton style={[styles.pauseButton]} onPress={() => props.navigation.navigate("PauseExercise", { reps: reps, title: title })} />
             </View>
 
             <View style={{ flex: 1, marginTop: 10, alignItems: "center" }}>
@@ -280,7 +303,7 @@ function ExercisePaused(props) {
 
   return (
     <View style={[styles.container3]}>
-      <ImageBackground source={require("../assets/images/sfondo_pause.png")}  style={{flex:1 }} blurRadius={10}>
+      <ImageBackground source={require("../assets/images/sfondo_pause.png")} style={{ flex: 1 }} blurRadius={10}>
         <View style={{ flex: 1 }}>
           <View style={styles.horizontalFlex}>
             <View style={styles.rectangleExerciseTitle}>
@@ -291,18 +314,18 @@ function ExercisePaused(props) {
             </View>
           </View>
 
-          <View style={{ alignItems: "center", marginTop:100 }}>
-            <PlayButton onPress={()=> props.navigation.navigate('ExecuteExercise', { title: props.route.params.title }) }/>
+          <View style={{ alignItems: "center", marginTop: 100 }}>
+            <PlayButton onPress={() => props.navigation.navigate('ExecuteExercise', { title: props.route.params.title })} />
           </View>
 
-          <View style={[{ margin:40, flexDirection: "row", justifyContent:'space-between', marginTop:150}]}>
-            <View style={{flexDirection:'row'}}>
-            <Text  style={{fontSize: 25, fontWeight:'bold'}}> Reps= </Text>
-            <Text  style={{fontSize: 25}}> {reps+"/"+totalReps}</Text>
+          <View style={[{ margin: 40, flexDirection: "row", justifyContent: 'space-between', marginTop: 150 }]}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: 25, fontWeight: 'bold' }}> Reps= </Text>
+              <Text style={{ fontSize: 25 }}> {reps + "/" + totalReps}</Text>
             </View>
-            <View style={{flexDirection:'row'}}>
-            <Text  style={{fontSize: 25, fontWeight:'bold'}}>Sets= </Text> 
-            <Text  style={{fontSize: 25}}> {"1/1"}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Sets= </Text>
+              <Text style={{ fontSize: 25 }}> {"1/1"}</Text>
             </View>
           </View>
 
@@ -314,7 +337,7 @@ function ExercisePaused(props) {
 
           <View style={styles.bottomView2}>
             <View style={styles.horizontalFlex}>
-              <MyButton style={[styles.exitButton]} title="Exit" onPress={()=>setModalVisible(true)}></MyButton>
+              <MyButton style={[styles.exitButton]} title="Exit" onPress={() => setModalVisible(true)}></MyButton>
             </View>
 
             <View style={{ flex: 1, marginTop: 10, alignItems: "center" }}>
@@ -365,7 +388,7 @@ function PlayButton(props) {
     <View>
       <TouchableOpacity style={props.style} onPress={props.onPress}>
         <Image
-          source={ require("../assets/images/play.png")}
+          source={require("../assets/images/play.png")}
           style={{ width: 150, height: 150 }}
         />
       </TouchableOpacity>
@@ -404,8 +427,10 @@ function ModalSafeExit(props) {
             <MyButton
               style={pageStyles.turnHomeButton}
               title={"Exit"}
-              onPress={() => {props.setModalVisible(false);
-                              props.navigation.navigate('Homepage')}}
+              onPress={() => {
+                props.setModalVisible(false);
+                props.navigation.navigate('Homepage')
+              }}
             ></MyButton>
           </View>
         </View>
