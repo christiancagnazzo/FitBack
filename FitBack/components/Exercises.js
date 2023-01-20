@@ -135,6 +135,9 @@ function getImage(image) {
             return require('../assets/lunges.png')
         case 'pushup':
             return require('../assets/pushup.png')
+        case 'lift':
+            return require('../assets/lift.png')
+        
     }
 }
 

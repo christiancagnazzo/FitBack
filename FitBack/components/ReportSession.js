@@ -116,7 +116,7 @@ function Report(props) {
         </View>
 
         <View style={{marginTop:15}}>
-        <MyButton style={[styles.exitButton]} title="Exit" onPress={()=>  props.navigation.navigate("Homepage") /*Navigate to home page without start ar training*/}></MyButton>
+        <MyButton style={[styles.exitButton]} title="Exit" onPress={()=>  props.navigation.navigate("LevelUp") /*Navigate to home page without start ar training*/}></MyButton>
         </View>
       </View>
     </View>

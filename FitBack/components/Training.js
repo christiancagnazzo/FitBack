@@ -172,6 +172,19 @@ function ExecuteExercise(props) {
           (_, result) => {  console.log(result) },
           (_, error) => console.log(error)
       );
+  
+      tx.executeSql(
+        "INSERT OR IGNORE INTO userExercise VALUES (1,4,1,50)",
+        [],
+        (_, result) => {  console.log(result) },
+        (_, error) => console.log(error)
+    );
+    tx.executeSql(
+      "INSERT OR IGNORE INTO userExercise VALUES (1,1,1,50)",
+      [],
+      (_, result) => {  console.log(result) },
+      (_, error) => console.log(error)
+  );
   })
 
   }
