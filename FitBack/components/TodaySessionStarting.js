@@ -8,28 +8,20 @@ import { useNavigation } from "@react-navigation/native";
 
 const HardCodedSession = [
     {
-        "title": "PUSH-UPS",
+        "title": "Lift Harm",
         "reps": "3x12",
-    },
-    {
-        "title": "BENCH PRESS",
-        "reps": "4x10",
     },
     {
         "title": "SQUAT",
         "reps": "3x12",
     },
-    {
-        "title": "LATERAL-LUNGES",
-        "reps": "4x15",
-    }
+
 ]
 
 function StartingSession(props) {
-    const [exercises, setExercise] = useState(HardCodedSession) // temp
+    const [exercises, setExercise] = useState(HardCodedSession) // Lascia hardcode, va bene così Ale
     const [visible, setVisible] = useState(false);
     const navigation = useNavigation();
-
 
     return (
         <View>
@@ -51,7 +43,7 @@ function StartingSession(props) {
 
             </View>
             <View style={styles.horizontalFlexReverse}>
-                <MyButton style={[styles.startSession]} navigation={props.navigation} onPressAction={()=>props.navigation.navigate("FrameYourself", { text: props.text }) } title="Start AR session" ></MyButton>
+                <MyButton style={[styles.startSession]} navigation={props.navigation} onPressAction={()=>props.navigation.navigate("FrameYourself", { exercises: exercises}) } title="Start AR session" ></MyButton>
             </View>
         </View>
 

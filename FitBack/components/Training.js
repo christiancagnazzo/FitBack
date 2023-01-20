@@ -19,7 +19,7 @@ import * as Progress from "react-native-progress";
 import { Video, AVPlaybackStatus } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
 
-function FrameYourself() {
+function FrameYourself(props) {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [frameFinished, setFrameFinished] = useState(false);
@@ -29,16 +29,32 @@ function FrameYourself() {
 
   useEffect(() => {
     //simulates the fact that the user has framed his self inside the rectancle
-    setTimeout(exitFromThisScreen, 10000);
+    setTimeout(exitFromThisScreen, 10000); 
+    updateDbEndSession()
   },[]);
+
+  function updateDbEndSession() {
+
+    console.log('eseguo')
+    sql = "UPDATE users SET sessiondone=1"
+    props.route.params.db.transaction((tx) => {
+      tx.executeSql(
+          sql,
+          [],
+          (_, result) => { console.log(result)  },
+          (_, error) => console.log(error)
+      );
+  })
+
+  }
 
   if (!permission) {
     // Camera permissions are still loading
-    return <View />;
+    return <View />
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet
+    // Camera permissions are not granted yet 
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: "center" }}>
@@ -60,7 +76,7 @@ function FrameYourself() {
 
     //wait 1 second to let the green screen be visible than change screen
     setTimeout(() => {
-      navigation.navigate("ExecuteExercise", {type:type});
+      navigation.navigate("ExecuteExercise", {type:type, title: 'Lift Left Harm'});
     }, 1000);
   
   }
@@ -124,26 +140,42 @@ function ExecuteExercise(props) {
   const [modalVisible, setModalVisible] = useState(false);
   let   [permission, requestPermission] = Camera.useCameraPermissions();
   const [intervalId, setIntervalId] = useState(0);
+  const [title, setTitle] = useState(props.route.params.title)
 
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
-  const totalReps = 15; //fake! use props
+  const totalReps = 7; 
   const navigation = useNavigation();
   const video = React.useRef(null);
 
   useEffect(() => {
+
     const myinterval= setInterval(updateReps, 3000);
     setIntervalId(myinterval)
 
     let r =0; 
+    let title2 = title;
 
     function updateReps() {
       r = r+1;
       if (r === totalReps)
       { 
-        console.log('dentro')
-        props.navigation.navigate("ReportSession")
+        r=0;
+        console.log(title2)
+        switch (title2){
+          case 'Lift Left Harm':
+            setTitle('Squat')
+            title2='Squat'
+            setReps(0) 
+            break
+          case 'Squat':
+            console.log('dentro case squat')
+            clearInterval(intervalId)
+            updateDbEndSession()
+            props.navigation.navigate("ReportSession")
+            break
+        }
         clearInterval(intervalId)
       }
        else
@@ -151,6 +183,21 @@ function ExecuteExercise(props) {
     }
 
   }, []);
+
+  function updateDbEndSession() {
+
+    sql = "UPDATE users SET sessiondone=1"
+    props.route.params.db.transaction((tx) => {
+      tx.executeSql(
+          sql,
+          [],
+          (_, result) => {  },
+          (_, error) => console.log(error)
+      );
+  })
+
+  }
+
 
   if (!permission) {
     // Camera permissions are still loading
@@ -188,7 +235,7 @@ function ExecuteExercise(props) {
             <View style={styles.rectangleExerciseTitle}>
               <MontSerratText
                 style={styles.textFrameYouself}
-                text={"fake Title.."}
+                text={title}
               />
             </View>
             <View>
