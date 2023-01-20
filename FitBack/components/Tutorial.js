@@ -86,6 +86,7 @@ function TutorialFrame(props) {
                 isAR ?
 
                     <WebView
+                    allowsInlineMediaPlayback
                         source={{ uri: 'https://mywebar.com/p/Project_0_oli5sfzewq' }}
                     />
                     :
