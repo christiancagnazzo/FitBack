@@ -459,6 +459,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       marginTop:1,
+      backgroundColor: '#D3D3D3'
     },
     buttonContainer: {
       flex: 1,
