@@ -242,6 +242,7 @@ const styles = StyleSheet.create({
     titleText: {
       fontSize: 30,
       fontWeight: "bold",
+      marginTop: 30
     },
     centerAligned: {
       alignItems: "center",
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
     },
     startARTrainingButton: {
       backgroundColor: colors.red,
-      marginTop: 10,
+      marginTop: 50,
       width: 150,
       height: 60,
       borderRadius: 10,
@@ -383,6 +384,7 @@ const styles = StyleSheet.create({
       marginRight: 25,
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor: colors.red
     },
     bottomView: {
       flex: 1,

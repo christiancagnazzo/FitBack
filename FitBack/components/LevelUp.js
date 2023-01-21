@@ -9,7 +9,7 @@ function LevelUp() {
     return (
         <TouchableWithoutFeedback onPress={()=>navigation.navigate("Homepage")}>
             <View>
-                <Text style={{ fontSize: 80, margin: 40, textAlign: "center", fontWeight: "bold", fontFamily: "BebasNeue" }}>LEVEL UP!</Text>
+                <Text style={{ fontSize: 80, margin: 60, textAlign: "center", fontWeight: "bold", fontFamily: "BebasNeue" }}>LEVEL UP!</Text>
                 <View style={{ justifyContent: 'center', alignItems: 'center', fontFamily: "BebasNeue" }}>
                     <Image style={{ height: 350, width: 300 }} source={require("../assets/level-up.png")}></Image>
                     <Text style={{ fontSize: 35, marginTop: 40, textAlign: "center", fontWeight: "bold", fontFamily: "BebasNeue" }}>CONGRATULATIONS!</Text>

@@ -21,6 +21,7 @@ import {colors} from "../styles.js"
 import { MyButton } from "./Homepage";
 import { Ionicons } from '@expo/vector-icons';
 function ReviewsList(props) {
+	const exercise = props.route.params.exercise
 	/*
 	const reviewsData = [
 		{
@@ -145,7 +146,7 @@ function ReviewsList(props) {
 	return (
 		<View style={styles.container2}>
 			<Text style={styles.titleText}>
-				{props.route.params.exerciseName}
+				{exercise.title}
 			</Text>
 			<View
 				style={{

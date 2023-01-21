@@ -25,12 +25,12 @@ function FrameYourself(props) {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [frameFinished, setFrameFinished] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [myTimeout, setMyTimeout]=useState(0)
+  const [myTimeout, setMyTimeout] = useState(0)
   const navigation = useNavigation();
 
   useEffect(() => {
     //simulates the fact that the user has framed his self inside the rectancle
-    const myTimeout2= setTimeout(exitFromThisScreen, 6000);
+    const myTimeout2 = setTimeout(exitFromThisScreen, 6000);
     setMyTimeout(myTimeout2)
   }, []);
 
@@ -75,40 +75,40 @@ function FrameYourself(props) {
                   text={"Ready to start!"}
                 />
               </View>
-            
+
             </View>
           ) : (
             <>
-            <View style={styles.externalRectangleFrameRed}>
-              <View style={styles.rectangleFrameYourSelfTitle}>
-                <MontSerratText
-                  style={styles.textFrameYouself}
-                  text={"Frame yourself in the camera"}
+              <View style={styles.externalRectangleFrameRed}>
+                <View style={styles.rectangleFrameYourSelfTitle}>
+                  <MontSerratText
+                    style={styles.textFrameYouself}
+                    text={"Frame yourself in the camera"}
+                  />
+                </View>
+                <ModalSafeExit
+                  modalVisible={modalVisible}
+                  navigation={navigation}
+                  setModalVisible={setModalVisible}
+                  myTimeout={myTimeout}
                 />
+
               </View>
-              <ModalSafeExit
-                modalVisible={modalVisible}
-                navigation={navigation}
-                setModalVisible={setModalVisible}
-                myTimeout = {myTimeout}
-              />
 
-            </View>
+              <View style={styles.bottomView}>
+                <View style={styles.horizontalFlex}>
+                  <MyButton
+                    style={[styles.exitButton]}
+                    title="Exit"
+                    onPress={() => setModalVisible(true)}
+                  ></MyButton>
 
-            <View style={styles.bottomView}>
-            <View style={styles.horizontalFlex}>
-              <MyButton
-                style={[styles.exitButton]}
-                title="Exit"
-                onPress={() => setModalVisible(true)}
-              ></MyButton>
-
-            </View>
-          </View>
-          </>
+                </View>
+              </View>
+            </>
           )}
 
-          
+
         </View>
       </Camera>
     </View>
@@ -121,7 +121,7 @@ function ExecuteExercise(props) {
   let [permission, requestPermission] = Camera.useCameraPermissions();
   const [title, setTitle] = useState(props.route.params.title)
   const [type, setType] = useState(CameraType.front);
- const [myInterval, setMyInterval] = useState(0)
+  const [myInterval, setMyInterval] = useState(0)
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
@@ -134,8 +134,8 @@ function ExecuteExercise(props) {
   useEffect(() => {
     return sound
       ? () => {
-          sound.unloadAsync();
-        }
+        sound.unloadAsync();
+      }
       : undefined;
   }, [sound]);
 
@@ -172,7 +172,7 @@ function ExecuteExercise(props) {
   }, []);
 
   async function playSound() {
-    const { sound } = await Audio.Sound.createAsync( require('../assets/correction.mp3')
+    const { sound } = await Audio.Sound.createAsync(require('../assets/correction.mp3')
     );
     setSound(sound);
 
@@ -183,29 +183,33 @@ function ExecuteExercise(props) {
     playSound()
 
   function updateDbEndSession() {
-
-    sql = "UPDATE users SET sessiondone=1"
     props.route.params.db.transaction((tx) => {
       tx.executeSql(
-        sql,
+        "UPDATE users SET sessiondone=1",
         [],
         (_, result) => { console.log(result) },
         (_, error) => console.log(error)
       );
-  
+
       tx.executeSql(
         "INSERT OR IGNORE INTO userExercise VALUES (1,4,1,50)",
         [],
-        (_, result) => {  console.log(result) },
+        (_, result) => { console.log(result) },
         (_, error) => console.log(error)
-    );
-    tx.executeSql(
-      "INSERT OR IGNORE INTO userExercise VALUES (1,1,1,50)",
-      [],
-      (_, result) => {  console.log(result) },
-      (_, error) => console.log(error)
-  );
-  })
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO userExercise VALUES (2,1,1,50)",
+        [],
+        (_, result) => { console.log(result) },
+        (_, error) => console.log(error)
+      );
+      tx.executeSql(
+        "UPDATE users SET level='Intermediate'",
+        [],
+        (_, result) => { console.log(result) },
+        (_, error) => console.log(error)
+      );
+    })
 
   }
 
@@ -268,12 +272,12 @@ function ExecuteExercise(props) {
           </View>
           <View style={[{ marginLeft: 80, flexDirection: "row", justifyContent: 'space-between', marginTop: 700, zIndex: 1, position: 'absolute', backgroundColor: 'black', borderRadius: 10, padding: 10 }]}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color:'white', fontSize: 25, fontWeight: 'bold' }}> {"Reps="} </Text>
-              <Text style={{ color:'white', fontSize: 25 }}> {reps + "/" + totalReps}</Text>
+              <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}> {"Reps="} </Text>
+              <Text style={{ color: 'white', fontSize: 25 }}> {reps + "/" + totalReps}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color:'white', fontSize: 25, fontWeight: 'bold' }}> {"Sets="} </Text>
-              <Text style={{ color:'white', fontSize: 25 }}> {"1/1"}</Text>
+              <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}> {"Sets="} </Text>
+              <Text style={{ color: 'white', fontSize: 25 }}> {"1/1"}</Text>
             </View>
           </View>
 

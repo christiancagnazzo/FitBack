@@ -4,7 +4,7 @@ import { SearchBar } from 'react-native-elements';
 import { styles } from "../styles.js";
 import DraggablePanel from 'react-native-draggable-panel';
 import Checkbox from 'expo-checkbox';
-import { AntDesign } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 
 
 
@@ -42,59 +42,64 @@ function Exercise(props) {
     const [displayedExercises, setDisplayedExercise] = useState([])
 
     useEffect(() => {
-        const getExercises = async (type, user) => {
+        const getExercises = async (type) => {
             let sql = ""
-            let param = undefined
-
+            
             if (type === undefined)
                 sql = `select * from exercises`
             else if (type === 'your') {
                 sql = `select * from exercises join userExercise 
                 on exercises.id = userExercise.exercise 
                 where userExercise.user = ?`
-                param = user.id
             }
             else {
                 sql = `select * from exercises where difficulty = ?`
-                param = user.level
             }
 
             props.route.params.db.transaction((tx) => {
                 tx.executeSql(
-                    sql,
-                    [param ? param : ""],
-                    (_, result) => {
-                        for (let i = 0; i < result.rows._array.length; i++) {
-                            tx.executeSql(
-                                'select name from equipments join exerciseEquipment  on exerciseEquipment.equipment= equipments.id',
-                                [],
-                                (_, res1) => {
+                    'select * from users where id = 1',
+                    [],
+                    (_, r) => {
+                        const user = r.rows._array[0]
+                        tx.executeSql(
+                            sql,
+                            [type === 'your' ? user.id : user.level],
+                            (_, result) => {
+                                for (let i = 0; i < result.rows._array.length; i++) {
                                     tx.executeSql(
-                                        'select name from muscles join exerciseMuscle  on exerciseMuscle.muscle= muscles.id',
+                                        'select name from equipments join exerciseEquipment  on exerciseEquipment.equipment= equipments.id',
                                         [],
-                                        (_, res2) => {
-                                            setExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
-                                            setDisplayedExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
+                                        (_, res1) => {
+                                            console.log(res1.rows._array)
+                                            tx.executeSql(
+                                                'select name from muscles join exerciseMuscle  on exerciseMuscle.muscle= muscles.id',
+                                                [],
+                                                (_, res2) => {
+                                                    setExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
+                                                    setDisplayedExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
+                                                    //console.log({ ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) })
+                                                },
+                                                (_, error) => console.log(error)
+                                            )
                                         },
                                         (_, error) => console.log(error)
                                     )
-                                },
-                                (_, error) => console.log(error)
-                            )
-
-                        }
+                                }
+                            },
+                            (_, error) => console.log(error))
                     },
                     (_, error) => console.log(error)
                 );
             })
         }
-
+        
         if (pageType === 'All Exercises')
             getExercises();
         else if (pageType === 'Your Exercises')
-            getExercises('your', props.route.params.user)
+            getExercises('your')
         else
-            getExercises('suggested', props.route.params.user)
+            getExercises('suggested')
     }, [])
 
     function updateSearch(text) {
@@ -122,14 +127,15 @@ function Exercise(props) {
 
             <ScrollView style={{ marginTop: 5 }}>
                 {
-                    displayedExercises.map((e, i) => <ExerciseCard navigation={props.route.params.navigation} key={i} exercise={e}></ExerciseCard>)
+                    displayedExercises.length === 0 ? <Text style={{ fontWeight: "bold", fontSize: 30, margin: 40 }}>No exercises available</Text> :
+                        displayedExercises.map((e, i) => <ExerciseCard navigation={props.route.params.navigation} key={i} exercise={e}></ExerciseCard>)
                 }
             </ScrollView>
         </View>
     );
 }
 
-function getImage(image) { 
+function getImage(image) {
     switch (image) {
         case 'squat':
             return require('../assets/squat.png')
@@ -139,13 +145,13 @@ function getImage(image) {
             return require('../assets/pushup.png')
         case 'lift':
             return require('../assets/lift.png')
-        
+
     }
 }
 
 function ExerciseCard(props) {
     return (
-        <TouchableWithoutFeedback onPress={() => props.navigation.navigate("ExerciseDetails", { text: props.exercise.id })}>
+        <TouchableWithoutFeedback onPress={() => props.navigation.navigate("ExerciseDetails", { exercise: props.exercise })}>
             <View style={styles.exerciseCard}>
                 <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1 }}>
                     <View style={{ width: 100, height: 100, margin: 15, borderRadius: 10, backgroundColor: "white" }}>
@@ -223,17 +229,17 @@ function Filters(props) {
             <View style={{ flexDirection: 'row', margin: 3, justifyContent: 'center', alignItems: 'center', }}>
                 <TouchableWithoutFeedback onPress={() => setFilterType("equipment")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Equipment +</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Equipment</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => setFilterType("muscle")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Muscle Group +</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Muscle Group</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => setFilterType("difficulty")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Difficulty +</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Difficulty</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>

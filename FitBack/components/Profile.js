@@ -15,13 +15,14 @@ function Profile() {
 				Profile
 			</Text>
             <Ionicons name="person-circle-outline" size={200}></Ionicons>
+            <View >
             <ProfileInfo title={"Name"} text={"John"}></ProfileInfo>
             <ProfileInfo title={"Surname"} text={"Smith"}></ProfileInfo>
             <ProfileInfo title={"Height"} text={"170 cm"}></ProfileInfo>
             <ProfileInfo title={"Age"} text={"18"}></ProfileInfo>
             <ProfileInfo title={"Sex"} text={"M"}></ProfileInfo>
-            <Text style={page_styles.boldText}>Level</Text>
-            <Text style={page_styles.boldText}>INTERMEDIATE</Text>
+            <ProfileInfo title={"Level"} text={"BEGINNER"}></ProfileInfo>
+            </View>
             <MyButton onPressAction={() => navigation.navigate("EditProfile")} viewStyle={{alignSelf: "flex-end"}} style={page_styles.button} title="Edit"></MyButton>
         </View>
     )
@@ -48,10 +49,11 @@ const page_styles = StyleSheet.create({
     rowFlex: {
         flexDirection: "row",
         alignSelf: "flex-start",
+        margin: 3
     },
     button: {
         backgroundColor: colors.red,
-        marginTop: 10,
+        margin: 30,
         width: 150,
         height: 60,
         borderRadius: 10,

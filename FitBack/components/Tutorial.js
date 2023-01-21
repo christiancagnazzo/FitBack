@@ -18,8 +18,8 @@ import { WebView } from 'react-native-webview';
 function TutorialFrame(props) {
     const [type, setType] = useState(CameraType.back);
     const [permission, requestPermission] = Camera.useCameraPermissions();
-
-
+    const exercise = props.route.params.exercise
+    
     if (!permission) {
         // Camera permissions are still loading
         return <View />;
@@ -66,7 +66,7 @@ function TutorialFrame(props) {
             </WebView>
             <View style={styles.bottomView}>
                 <View style={styles.horizontalFlex}>
-                    <MyButton style={[styles.exitButton]} title="Exit" navigation={navigation} onPressAction={() => navigation.navigate("ExerciseDetails", { text: props.text })}></MyButton>
+                    <MyButton style={[styles.exitButton]} title="Exit" navigation={navigation} onPressAction={() => navigation.navigate("ExerciseDetails", { exercise: exercise })}></MyButton>
                     <View style={{
                         marginTop: 32,
                         marginBottom: 10,

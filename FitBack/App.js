@@ -43,7 +43,7 @@ export default function App() {
   const menu = <Sidebar setSidebar={setSidebar}></Sidebar>;
   const [db, setDb] = useState(null);
   const [user, setUser] = useState({});
-  
+
   useEffect(() => {
     const openDb = async function () {
       const db = await dao.openDatabase()
@@ -66,15 +66,23 @@ export default function App() {
 
   return (
     <NavigationContainer>
-    <SideMenu
-      onChange={(status) => setSidebar(status)}
-      disableGestures={true}
-      isOpen={sidebar}
-      menu={menu}
-      openMenuOffset={180}
-    >
-      {db ? <MyApp db={db} user={user} setSidebar={setSidebar}/> : null}
-    </SideMenu>
+      {
+        db ?
+          <>
+            <SideMenu
+              onChange={(status) => setSidebar(status)}
+              disableGestures={true}
+              isOpen={sidebar}
+              menu={menu}
+              openMenuOffset={180}
+            >
+              <MyApp db={db} user={user} setSidebar={setSidebar} />
+            </SideMenu>
+
+          </> : null
+      }
+
+
     </NavigationContainer>
   );
 }
@@ -104,7 +112,9 @@ function MyApp(props) {
             title: "FITBACK",
             headerStyle: styles.headerBar,
             headerTitleStyle: styles.headerText,
-            headerTitleAlign: "center",
+            headerBackTitle: "Back",
+            headerBackTitleStyle: styles.backButton,
+            headerTintColor: colors.lightGray,
 
           }}
         />
@@ -116,8 +126,9 @@ function MyApp(props) {
             title: "FITBACK",
             headerStyle: styles.headerBar,
             headerTitleStyle: styles.headerText,
-            headerTitleAlign: "center",
-
+            headerBackTitle: "Back",
+            headerBackTitleStyle: styles.backButton,
+            headerTintColor: colors.lightGray,
           }}
         />
         <Stack.Screen
@@ -128,13 +139,14 @@ function MyApp(props) {
             title: "FITBACK",
             headerStyle: styles.headerBar,
             headerTitleStyle: styles.headerText,
-            headerTitleAlign: "center",
-
+            headerBackTitle: "Back",
+            headerBackTitleStyle: styles.backButton,
+            headerTintColor: colors.lightGray,
           }}
         />
         <Stack.Screen
           name="Homepage"
-          component= {Homepage}
+          component={Homepage}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
             title: "FITBACK",
@@ -152,7 +164,7 @@ function MyApp(props) {
             headerRight: () => <View />,
           }}
         />
-        
+
         <Stack.Screen
           name="ExerciseDetails"
           component={ExerciseDetails}
@@ -267,7 +279,7 @@ function MyApp(props) {
           }}
         />
         <Stack.Screen
-          name="ExecuteExercise" 
+          name="ExecuteExercise"
           component={ExecuteExercise}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
@@ -280,8 +292,8 @@ function MyApp(props) {
             headerShown: false,
           }}
         />
-         <Stack.Screen
-          name="LevelUp" 
+        <Stack.Screen
+          name="LevelUp"
           component={LevelUp}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
@@ -305,12 +317,12 @@ function MyApp(props) {
             headerTintColor: colors.lightGray,
             headerTitleAlign: "center",
             headerShown: true,
-            headerLeft: () => ( 
-              <View />) 
+            headerLeft: () => (
+              <View />)
           }}
         />
 
       </Stack.Navigator>
-      </>
+    </>
   );
 }  

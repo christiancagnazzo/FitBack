@@ -19,6 +19,7 @@ const HardCodedSession = [
 ]
 
 function StartingSession(props) {
+    const ex = props.route.params.list
     const [exercises, setExercise] = useState(HardCodedSession) // Lascia hardcode, va bene così Ale
     const [visible, setVisible] = useState(false);
     const navigation = useNavigation();
@@ -37,7 +38,7 @@ function StartingSession(props) {
                 <View style={{ flex: 1, height: 1, backgroundColor: 'black', marginLeft: 10, marginBottom: 20 }} />
                 <ScrollView style={{ marginTop: 10 }}>
                     {
-                        exercises.map((e, i) => <ExerciseList key={i} exercise={e} navigation={props.navigation} text={e.title}></ExerciseList>)
+                        ex.map((e, i) => <ExerciseList key={i} exercise={e} navigation={props.navigation} ></ExerciseList>)
                     }
                 </ScrollView>
 
@@ -57,7 +58,7 @@ function ExerciseList(props) {
                 <View>
                     <View style={{ margin: 3, flexDirection: 'row' }}>
                         <Text style={{ fontWeight: "normal", fontSize: 20, marginLeft: 10, marginRight: 5 }}>{props.exercise.title}</Text>
-                        <Ionicons name="ios-information-circle-outline" size={24} color="black" onPress={()=>props.navigation.navigate("ExerciseDetails", { text: props.text })}/>
+                        <Ionicons name="ios-information-circle-outline" size={24} color="black" onPress={()=>props.navigation.navigate("ExerciseDetails", { exercise: props.exercise })}/>
                     </View>
                     <Text style={{ fontWeight: "normal", fontSize: 20, textAlign: 'right' }}>{props.exercise.reps}</Text>
 

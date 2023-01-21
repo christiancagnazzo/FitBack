@@ -82,21 +82,21 @@ db.serialize(function () {
 
     
     // USER
-    db.run("INSERT OR IGNORE INTO users VALUES (1, 'Antonio', 'Cassano', '170', 24, 'M', 'Intermediate', 0, 0)")
+    db.run("INSERT OR IGNORE INTO users VALUES (1, 'Antonio', 'Cassano', '170', 24, 'M', 'Beginner', 0, 0)")
     
     // EXERCISES
-    db.run("INSERT OR IGNORE INTO exercises VALUES (1, 'Squat', 'Intermediate', 'video_path', 'squat', 'Description of the exercise')")
-    db.run("INSERT OR IGNORE INTO exercises VALUES (2, 'Push-up', 'Beginner', 'video_path', 'pushup', 'Description of the exercise')")
-    db.run("INSERT OR IGNORE INTO exercises VALUES (3, 'Lunges', 'Intermediate', 'video_path', 'lunges', 'Description of the exercise')")
-    db.run("INSERT OR IGNORE INTO exercises VALUES (4, 'Lift Left arm', 'Beginner', 'video_path', 'lift', 'Description of the exercise')")
+    db.run("INSERT OR IGNORE INTO exercises VALUES (1, 'Squat', 'Beginner', 'video_path', 'squat', 'A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up. During the descent the hip and knee joints flex while the ankle joint dorsiflex. During the ascent  the hip and knee joints extend and the ankle joint plantarflexes')")
+    db.run("INSERT OR IGNORE INTO exercises VALUES (2, 'Push-up', 'Advanced', 'video_path', 'pushup', 'Push-ups are exercises where you have to keep a prone position: hands palms down under the shoulders balls of the feet on the ground back straight. In this position you pushes the body up and lets it down by an alternate straightening and bending of the arm')")
+    db.run("INSERT OR IGNORE INTO exercises VALUES (3, 'Lateral Lunges', 'Intermediate', 'video_path', 'lunges', 'The lateral lunge involves a step out to the side instead of forward or back. Muscles involvment. Because of the lateral movement pattern, the inside groin muscles (the adductors) are more active in this variation than in the other types of lunges')")
+    db.run("INSERT OR IGNORE INTO exercises VALUES (4, 'Lift Right Arm', 'Beginner', 'video_path', 'lift', 'This exercise is very simple and is used for arm muscles. It consists of lateral arm raises without weight and therefore is suitable for beginner level users')")
 
     // EXERCISES-USER
-    db.run("INSERT OR IGNORE INTO userExercise VALUES (1,2,1,50)")
+    //db.run("INSERT OR IGNORE INTO userExercise VALUES (1,2,1,50)")
    
     // MUSCLES
-    db.run("INSERT OR IGNORE INTO muscles VALUES (1, 'Dummbell', 'path')")
-    db.run("INSERT OR IGNORE INTO muscles VALUES (2, 'Kettlebell', 'path')")
-    db.run("INSERT OR IGNORE INTO muscles VALUES (3, 'Mat', 'path')")
+    db.run("INSERT OR IGNORE INTO muscles VALUES (1, 'Biceps', 'path')")
+    db.run("INSERT OR IGNORE INTO muscles VALUES (2, 'Quadriceps', 'path')")
+    db.run("INSERT OR IGNORE INTO muscles VALUES (3, 'Calf', 'path')")
 
     db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (1, 1, 1)")
     db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (2, 1, 2)")
