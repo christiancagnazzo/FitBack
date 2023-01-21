@@ -21,7 +21,7 @@ import {colors} from "../styles.js"
 import { MyButton } from "./Homepage";
 import { Ionicons } from '@expo/vector-icons';
 function ReviewsList(props) {
-	
+	/*
 	const reviewsData = [
 		{
 			id: 1,
@@ -40,8 +40,42 @@ function ReviewsList(props) {
 			title: "Revision 3",
 			date: "2020-08-29",
 		},
-	];
-	const [reviews, setReviews] = useState(reviewsData);
+	];*/
+
+	useEffect(() => {
+		let param = 1
+		let sql = `select * from reviews where user = ?`
+		props.route.params.db.transaction((tx) => {
+			tx.executeSql(
+				sql,
+				[param],
+				(_, result) => {
+					let revisions = result.rows._array.map((item) => {
+						item.uri = getPath(item.id)
+						return item
+					 });
+					 setReviews(revisions)
+				},
+				(_, error) => console.log(error)
+			);
+		})
+        
+    }, [])
+
+	function getPath (id) {
+		if (id == 1) {
+			return require("../assets/video/thumbnail.png")
+		}
+		else if (id == 2) {
+			return require("../assets/video/thumbnail.png")
+		}
+		else {
+			return require("../assets/video/thumbnail.png")
+		}
+	}
+
+	
+	const [reviews, setReviews] = useState([]);
 	const [date, setDate] = useState(null);
 	const [isSelected, setSelection] = useState(false);
 	const [showPopup, setShowPopup] = useState(true);
@@ -54,7 +88,6 @@ function ReviewsList(props) {
 				'select * from users where id = ?',
 				[1],
 				(_, res1) => {
-					console.log(res1.rows._array[0])
 					if (res1.rows._array[0].info_review == 1) {
 						setShowPopup(false)
 					}
@@ -73,7 +106,6 @@ function ReviewsList(props) {
 				'select * from users where id = ?',
 				[1],
 				(_, res1) => {
-					console.log(res1.rows._array[0])
 					if (res1.rows._array[0].info_review == 1) {
 						setShowPopup(false)
 					}
@@ -82,7 +114,6 @@ function ReviewsList(props) {
 							'update users set info_review = ? where id = ?',
 							[preference, 1],
 							(_, res1) => {
-								console.log(res1)
 							},
 							(_, error) => console.log(error)
 						)

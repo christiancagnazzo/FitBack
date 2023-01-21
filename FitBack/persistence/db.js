@@ -41,10 +41,12 @@ db.serialize(function () {
     db.run('CREATE TABLE IF NOT EXISTS "reviews"(\
                 "id"    INTEGER,\
                 "exercise"  INTEGER,\
+                "title" TEXT,\
                 "date" TEXT",\
                 "message" TEXT",\
                 "user"  INTEGER,\
                 "path_video"    TEXT,\
+                "path_thumbnail"   TEXT,\
                 FOREIGN KEY("exercise") REFERENCES "exercises"("id") on DELETE CASCADE ON UPDATE CASCADE, \
                 FOREIGN KEY("user") REFERENCES "users"("id") on DELETE CASCADE ON UPDATE CASCADE, \
                 PRIMARY KEY("id" AUTOINCREMENT))');
@@ -104,4 +106,8 @@ db.serialize(function () {
 
     db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (1, 1, 1)")
     db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (2, 1, 2)")
+
+    db.run("INSERT OR IGNORE INTO reviews(id, title, exercise, date, user, path_video, path_thumbnail) VALUES (1, 'Revision 1', 1, '2023-01-03', 1, 'video_path', '../assets/video/thumbnail.png')")
+    db.run("INSERT OR IGNORE INTO reviews(id, title, exercise, date, user, path_video, path_thumbnail) VALUES (2, 'Revision 2', 1, '2023-01-03', 1, 'video_path', '../assets/video/thumbnail.png')")
+    db.run("INSERT OR IGNORE INTO reviews(id, title, exercise, date, user, path_video, path_thumbnail) VALUES (3, 'Revision 3', 1, '2020-08-29', 1, 'video_path', 'thumbnail_path')")
 });

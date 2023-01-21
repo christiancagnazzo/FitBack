@@ -142,7 +142,6 @@ function ExecuteExercise(props) {
       r = r+1;
       if (r === totalReps)
       { 
-        console.log('dentro')
         props.navigation.navigate("ReportSession")
         clearInterval(intervalId)
       }
