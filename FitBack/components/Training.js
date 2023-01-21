@@ -18,18 +18,20 @@ import { MontSerratText } from "./Utility";
 import * as Progress from "react-native-progress";
 import { Video, AVPlaybackStatus, Audio } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
+import { usePlatformProps } from "native-base";
 
 function FrameYourself(props) {
   const [type, setType] = useState(CameraType.front);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [frameFinished, setFrameFinished] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [myTimeout, setMyTimeout]=useState(0)
   const navigation = useNavigation();
 
   useEffect(() => {
     //simulates the fact that the user has framed his self inside the rectancle
-    setTimeout(exitFromThisScreen, 3000);
+    const myTimeout2= setTimeout(exitFromThisScreen, 6000);
+    setMyTimeout(myTimeout2)
   }, []);
 
 
@@ -73,13 +75,10 @@ function FrameYourself(props) {
                   text={"Ready to start!"}
                 />
               </View>
-              <ModalSafeExit
-                modalVisible={modalVisible}
-                navigation={navigation}
-                setModalVisible={setModalVisible}
-              />
+            
             </View>
           ) : (
+            <>
             <View style={styles.externalRectangleFrameRed}>
               <View style={styles.rectangleFrameYourSelfTitle}>
                 <MontSerratText
@@ -91,11 +90,12 @@ function FrameYourself(props) {
                 modalVisible={modalVisible}
                 navigation={navigation}
                 setModalVisible={setModalVisible}
+                myTimeout = {myTimeout}
               />
-            </View>
-          )}
 
-          <View style={styles.bottomView}>
+            </View>
+
+            <View style={styles.bottomView}>
             <View style={styles.horizontalFlex}>
               <MyButton
                 style={[styles.exitButton]}
@@ -105,6 +105,10 @@ function FrameYourself(props) {
 
             </View>
           </View>
+          </>
+          )}
+
+          
         </View>
       </Camera>
     </View>
@@ -117,9 +121,10 @@ function ExecuteExercise(props) {
   let [permission, requestPermission] = Camera.useCameraPermissions();
   const [title, setTitle] = useState(props.route.params.title)
   const [type, setType] = useState(CameraType.front);
-
+ const [myInterval, setMyInterval] = useState(0)
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
+
 
   const totalReps = 7;
   const navigation = useNavigation();
@@ -129,7 +134,6 @@ function ExecuteExercise(props) {
   useEffect(() => {
     return sound
       ? () => {
-          console.log('Unloading Sound');
           sound.unloadAsync();
         }
       : undefined;
@@ -138,7 +142,7 @@ function ExecuteExercise(props) {
   useEffect(() => {
 
     const myinterval = setInterval(updateReps, 1000);
-    console.log(myinterval)
+    setMyInterval(myinterval)
 
     let r = 0;
     let title2 = title;
@@ -147,7 +151,6 @@ function ExecuteExercise(props) {
       r = r + 1;
       if (r === totalReps) {
         r = 0;
-        console.log(title2)
         switch (title2) {
           case 'Lift Left Arm':
             setTitle('Squat')
@@ -155,8 +158,6 @@ function ExecuteExercise(props) {
             setReps(0)
             break
           case 'Squat':
-            console.log('dentro case squat')
-            console.log(myinterval)
             clearInterval(myinterval)
             updateDbEndSession()
             props.navigation.navigate("ReportSession")
@@ -209,7 +210,6 @@ function ExecuteExercise(props) {
   }
 
   function toggleCameraType() {
-    console.log('cambio tipo')
     setType((current) =>
       current === CameraType.back ? CameraType.front : CameraType.back
     );
@@ -281,6 +281,7 @@ function ExecuteExercise(props) {
             modalVisible={modalVisible}
             navigation={navigation}
             setModalVisible={setModalVisible}
+            myInterval={myInterval}
           />
 
           <View style={styles.bottomView2}>
@@ -441,6 +442,8 @@ function ModalSafeExit(props) {
               style={pageStyles.turnHomeButton}
               title={"Exit"}
               onPress={() => {
+                clearTimeout(props.myTimeout)
+                clearInterval(props.myInterval)
                 props.setModalVisible(false);
                 props.navigation.navigate('Homepage')
               }}
