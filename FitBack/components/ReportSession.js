@@ -18,25 +18,20 @@ import { MontSerratText } from "./Utility";
 
 const HardCodedResults = [
   {
-    title: "PUSH-UPS",
-    attempts: "27/36",
+    title: "Lift Harm",
+    attempts: "7/7",
   },
   {
-    title: "BENCH PRESS",
-    attempts: "30/40",
+    title: "Squat",
+    attempts: "6/7",
   },
-  {
-    title: "SQUAT",
-    attempts: "35/36",
-  },
-  {
-    title: "LATERAL-LUNGES",
-    attempts: "53/100",
-  },
-];
+]
+
+
+
 
 function Report(props) {
-  const [exercises, setExercise] = useState(HardCodedResults); // temp
+  const [exercises, setExercise] = useState(HardCodedResults); // Lascia così
 
   return (
     <View>
@@ -101,7 +96,7 @@ function Report(props) {
           <MontSerratText
             style={{ fontWeight: "bold", fontSize: 30, alignSelf: "center"}}
             text={"Estimated\nevaluation"}
-            color = {colors.black}
+            color = {colors.w}
           />
           <View
             style={[styles.rectangleExerciseTitle, { marginLeft: 60, flex: 1 }]}
@@ -110,7 +105,7 @@ function Report(props) {
               //style={styles.textFrameYouself}
               style={{
                 margin: 10,
-                color: colors.black,
+                color: colors.white,
                 fontSize: 20,
                 fontWeight: "bold",
                 textAlign: "center",
@@ -121,7 +116,7 @@ function Report(props) {
         </View>
 
         <View style={{marginTop:15}}>
-        <MyButton style={[styles.exitButton]} title="Go home" onPress={()=>  props.navigation.navigate("Homepage") /*Navigate to home page without start ar training*/}></MyButton>
+        <MyButton style={[styles.exitButton]} title="Go Home" onPress={()=>  props.navigation.navigate("LevelUp") /*Navigate to home page without start ar training*/}></MyButton>
         </View>
       </View>
     </View>
