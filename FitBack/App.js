@@ -42,7 +42,7 @@ export default function App() {
   const [sidebar, setSidebar] = useState(false);
   const menu = <Sidebar setSidebar={setSidebar}></Sidebar>;
   const [db, setDb] = useState(null);
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
   
   useEffect(() => {
     const openDb = async function () {
@@ -59,7 +59,6 @@ export default function App() {
           (_, error) => console.log(error)
         );
       })
-
     }
 
     openDb()
@@ -74,7 +73,7 @@ export default function App() {
       menu={menu}
       openMenuOffset={180}
     >
-      <MyApp db={db} user={user} setSidebar={setSidebar} />
+      {db ? <MyApp db={db} user={user} setSidebar={setSidebar}/> : null}
     </SideMenu>
     </NavigationContainer>
   );
@@ -135,7 +134,7 @@ function MyApp(props) {
         />
         <Stack.Screen
           name="Homepage"
-          component={Homepage}
+          component= {Homepage}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
             title: "FITBACK",
@@ -270,6 +269,20 @@ function MyApp(props) {
         <Stack.Screen
           name="ExecuteExercise" 
           component={ExecuteExercise}
+          initialParams={{ 'db': props.db, 'user': props.user }}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerBackTitle: "Back",
+            headerBackTitleStyle: styles.backButton,
+            headerTintColor: colors.lightGray,
+            headerShown: false,
+          }}
+        />
+         <Stack.Screen
+          name="LevelUp" 
+          component={LevelUp}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
             title: "FITBACK",

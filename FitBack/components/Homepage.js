@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import {React, useEffect, useState } from 'react';
 import { Button, View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { colors, styles } from '../styles.js'
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { MontSerratText } from './Utility.js'
-function Homepage() {
+function Homepage(props) {
     const [alreadyTrained, setalreadyTrained] = useState(false);
     const [todayList, setTodayList] = useState([
         {
@@ -32,8 +32,23 @@ function Homepage() {
         },
     ]);
     const navigation = useNavigation();
-    return (
 
+    useEffect(()=>{   
+        props.route.params.db.transaction((tx) => {
+         tx.executeSql(
+        "SELECT sessiondone FROM users ", 
+        [],
+        (_, result) => { setalreadyTrained(result.rows._array[0].sessiondone) }, 
+        (_, error) => console.log(error)
+    );}
+
+    )
+
+})
+
+
+
+    return (
         <View>
         <View style={styles.homepage}>
         <MontSerratText style={[styles.titleText, {marginBottom: 10}]} text={"Welcome back John!"}/>
@@ -69,9 +84,14 @@ function TodaysTrainingComponent(props) {
                 }
 
             </View>
+            {
+            !props.alreadyTrained ?
             <View style={styles.horizontalFlexReverse}>
                 <MyButton style={[styles.startARTrainingButton]} navigation={props.navigation} onPressAction={()=>props.navigation.navigate("TodaySessionStarting", { text: props.text }) } title="Start AR training" ></MyButton>
             </View>
+            :
+            <></>
+}
         </View>
 
 
@@ -125,6 +145,7 @@ function FinishedBox() {
         </View>
     )
 }
+
 
 
 
