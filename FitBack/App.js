@@ -29,8 +29,9 @@ import {
   FrameYourself,
   ExecuteExercise,
   ExercisePaused,
+  ExecuteSingleExercise,
 } from "./components/Training.js";
-import { Report } from "./components/ReportSession.js";
+import { Report, ReportSingleExercise } from "./components/ReportSession.js";
 import { Profile } from "./components/Profile.js"
 import { EditProfile } from "./components/EditProfile.js";
 import { Settings } from "./components/Settings.js";
@@ -292,6 +293,20 @@ function MyApp(props) {
             headerShown: false,
           }}
         />
+         <Stack.Screen
+          name="ExecuteSingleExercise"
+          component={ExecuteSingleExercise}
+          initialParams={{ 'db': props.db, 'user': props.user }}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerBackTitle: "Back",
+            headerBackTitleStyle: styles.backButton,
+            headerTintColor: colors.lightGray,
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="LevelUp"
           component={LevelUp}
@@ -309,6 +324,21 @@ function MyApp(props) {
         <Stack.Screen
           name="ReportSession"
           component={Report}
+          initialParams={{ 'db': props.db, 'user': props.user }}
+          options={{
+            title: "FITBACK",
+            headerStyle: styles.headerBar,
+            headerTitleStyle: styles.headerText,
+            headerTintColor: colors.lightGray,
+            headerTitleAlign: "center",
+            headerShown: true,
+            headerLeft: () => (
+              <View />)
+          }}
+        />
+        <Stack.Screen
+          name="ReportSingleExercise"
+          component={ReportSingleExercise}
           initialParams={{ 'db': props.db, 'user': props.user }}
           options={{
             title: "FITBACK",

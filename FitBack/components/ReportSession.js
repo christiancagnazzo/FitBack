@@ -25,10 +25,7 @@ const HardCodedResults = [
     title: "Squat",
     attempts: "6/7",
   },
-]
-
-
-
+];
 
 function Report(props) {
   const [exercises, setExercise] = useState(HardCodedResults); // Lascia così
@@ -90,13 +87,13 @@ function Report(props) {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            margin:15,
+            margin: 15,
           }}
         >
           <MontSerratText
-            style={{ fontWeight: "bold", fontSize: 30, alignSelf: "center"}}
+            style={{ fontWeight: "bold", fontSize: 30, alignSelf: "center" }}
             text={"Estimated\nevaluation"}
-            color = {colors.w}
+            color={colors.w}
           />
           <View
             style={[styles.rectangleExerciseTitle, { marginLeft: 60, flex: 1 }]}
@@ -115,8 +112,17 @@ function Report(props) {
           </View>
         </View>
 
-        <View style={{marginTop:15}}>
-        <MyButton style={[styles.exitButton]} title="Go Home" onPress={()=>  props.navigation.navigate("LevelUp") /*Navigate to home page without start ar training*/}></MyButton>
+        <View style={{ marginTop: 15 }}>
+          <MyButton
+            style={[styles.exitButton]}
+            title="Go Home"
+            onPress={
+              () =>
+                props.navigation.navigate(
+                  "LevelUp"
+                ) /*Navigate to home page without start ar training*/
+            }
+          ></MyButton>
         </View>
       </View>
     </View>
@@ -146,6 +152,125 @@ function ExerciseList(props) {
   );
 }
 
+function ReportSingleExercise(props) {
+
+  function getImage(image) {
+    switch (image) {
+        case 'squat':
+            return require('../assets/squat.png')
+        case 'lunges':
+            return require('../assets/lunges.png')
+        case 'pushup':
+            return require('../assets/pushup.png')
+        case 'lift':
+            return require('../assets/lift.png')
+
+    }
+}
+
+  return (
+    <View>
+      <View style={styles.homepage}>
+        <MontSerratText
+          style={[styles.titleText, { marginBottom: 20, marginTop: 20 }]}
+          text={"Exercise Result"}
+        />
+        <MontSerratText
+          style={[
+            {
+              color: colors.red,
+              fontFamily: "MontSerratBold",
+              fontSize: 25,
+              marginBottom: 20,
+            },
+          ]}
+          text={props.route.params.exercise.title}
+        />
+
+        <Image source={getImage(props.route.params.exercise.image_path)} style={{height:100, width:100}}></Image>
+
+      <View style={{marginTop:20, marginBottom:10}}>
+      <MontSerratText
+          style={[
+            {
+              color: colors.darkGray,
+              fontFamily: "MontSerratBold",
+              fontSize: 25,
+            },
+          ]}
+          text={"Correct Attempets"}
+        />
+        <View
+            style={ {
+              margin:15,
+              borderWidth: 3,
+              borderColor: colors.black,
+              backgroundColor: colors.black,
+              borderRadius: 10,
+             }}
+          >
+            <MontSerratText
+              //style={styles.textFrameYouself}
+              style={{
+                margin: 10,
+                color: colors.white,
+                fontSize: 20,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+              text={"7/7"}
+            />
+          </View>
+
+          <MontSerratText
+          style={[
+            {
+              color: colors.darkGray,
+              fontFamily: "MontSerratBold",
+              fontSize: 25,
+              marginTop : 20,
+            },
+          ]}
+          text={"Estimated evaluation"}
+        />
+        <View
+            style={ {
+              margin:15,
+              borderWidth: 3,
+              borderColor: colors.black,
+              backgroundColor: colors.black,
+              borderRadius: 10,
+             }}
+          >
+            <MontSerratText
+              //style={styles.textFrameYouself}
+              style={{
+                margin: 10,
+                color: colors.white,
+                fontSize: 20,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+              text={"100%"}
+            />
+          </View>
+      </View>
+    </View>
+
+    <View style={styles.exerciseDetailsButtons}>
+                <MyButton style={styles.primaryButton} title={"Go Home"} onPress={() => { props.navigation.navigate("Homepage") }} />
+                <MyButton style={styles.secondaryButton} title={"Restart"} onPress={() => { props.navigation.navigate("FrameYourself", { exercise: props.route.params.exercise, singleExercise:true }) }} />
+    </View>
+
+    <View style={{alignItems:'center'}}>
+    <MyButton style={[styles.secondaryButton, ]} title={"Review Exercise"} onPress={() => {  }} />
+    </View>
+
+    </View>
+
+  );
+}
+
 function MyButton(props) {
   return (
     <View>
@@ -160,4 +285,4 @@ function MyButton(props) {
   );
 }
 
-export { Report };
+export { Report, ReportSingleExercise };

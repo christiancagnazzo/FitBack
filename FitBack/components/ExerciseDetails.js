@@ -25,7 +25,7 @@ function ExerciseDetails(props) {
     const navigation = useNavigation();
     const exercise = props.route.params.exercise
     const user = props.route.params.user
-    return (
+    return ( 
         <View style={{ flex: 1, flexDirection: "column", alignItems: "center" }}>
             <ScrollView>
                 <View style={{ flex: 1, flexDirection: "column", alignItems: "center" }}>
@@ -51,7 +51,7 @@ function ExerciseDetails(props) {
             </ScrollView>
             <View style={styles.exerciseDetailsButtons}>
                 <MyButton style={styles.secondaryButton} title={"Reviews"} onPressAction={() => { navigation.navigate("ReviewsList", { exercise: exercise }) }} />
-                <MyButton style={styles.primaryButton} title={"Start AR training"} />
+                <MyButton style={styles.primaryButton} title={"Start AR training"} onPressAction={() => { navigation.navigate("FrameYourself", { exercise: exercise, singleExercise:true }) }} />
             </View>
 
         </View>

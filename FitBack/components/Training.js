@@ -58,7 +58,11 @@ function FrameYourself(props) {
 
     //wait 1 second to let the green screen be visible than change screen
     setTimeout(() => {
-      navigation.navigate("ExecuteExercise", { title: 'Lift Left Arm' });
+      if (props.route.params.singleExercise){
+        navigation.navigate("ExecuteSingleExercise", { exercise: props.route.params.exercise })
+      } else{     
+         navigation.navigate("ExecuteExercise", { title: 'Lift Left Arm' });
+    }
     }, 1000);
 
   }
@@ -310,6 +314,145 @@ function ExecuteExercise(props) {
 }
 
 
+function ExecuteSingleExercise(props) {
+  const [reps, setReps] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  let [permission, requestPermission] = Camera.useCameraPermissions();
+  const [title, setTitle] = useState(props.route.params.exercise.title)
+  const [type, setType] = useState(CameraType.front);
+  const [myInterval, setMyInterval] = useState(0)
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
+
+
+  const totalReps = 7;
+  const navigation = useNavigation();
+  const video = React.useRef(null);
+
+
+  useEffect(() => {
+
+    const myinterval = setInterval(updateReps, 1000);
+    setMyInterval(myinterval)
+
+    let r = 0;
+
+    function updateReps() {
+      r = r + 1;
+      if (r === totalReps) {
+        r = 0;
+            clearInterval(myinterval)
+            updateDbEndSession()
+            props.navigation.navigate("ReportSingleExercise",{exercise: props.route.params.exercise})
+      }
+      else
+        setReps((current) => (current < totalReps ? current + 1 : current));
+    }
+
+  }, []);
+
+
+    //Chrinew deve cambiare database
+  function updateDbEndSession() {
+    props.route.params.db.transaction((tx) => {
+    const idExercise = props.route.params.exercise.id
+      tx.executeSql(
+        "INSERT OR IGNORE INTO userExercise VALUES (?,1,50)",
+        [idExercise],
+        (_, result) => { console.log(result) },
+        (_, error) => console.log(error)
+      );
+    
+    })
+
+  }
+
+
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View style={{ margin: 100 }}>
+    </View>;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the  camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+
+  return (
+    <View style={[styles.container3]}>
+      <Camera
+        style={{ flex: 1, width: windowWidth, height: windowHeight }}
+        type={type}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={styles.horizontalFlex}>
+            <View style={styles.rectangleExerciseTitle}>
+              <MontSerratText
+                style={styles.textFrameYouself}
+                text={title}
+              />
+            </View>
+            <View>
+              <Video
+                ref={video}
+                source={require("../assets/video/SquatTutorial.mp4")}
+                style={{ width: 150, height: 100 }}
+                resizeMode="contain"
+                shouldPlay={true}
+                isLooping={true}
+                isMuted={true}
+              ></Video>
+            </View>
+          </View>
+
+          <View style={[{ marginLeft: 80, flexDirection: "row", justifyContent: 'space-between', marginTop: 700, zIndex: 1, position: 'absolute', backgroundColor: 'black', borderRadius: 10, padding: 10 }]}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}> {"Reps="} </Text>
+              <Text style={{ color: 'white', fontSize: 25 }}> {reps + "/" + totalReps}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}> {"Sets="} </Text>
+              <Text style={{ color: 'white', fontSize: 25 }}> {"1/1"}</Text>
+            </View>
+          </View>
+
+          <ModalSafeExit
+            modalVisible={modalVisible}
+            navigation={navigation}
+            setModalVisible={setModalVisible}
+            myInterval={myInterval}
+          />
+
+          <View style={styles.bottomView2}>
+            <View style={styles.horizontalFlex}>
+              <MyButton style={[styles.exitButton]} title="Exit" onPress={() => setModalVisible(true)}></MyButton>
+              <PauseButton style={[styles.pauseButton]} onPress={() => props.navigation.navigate("PauseExercise", { reps: reps, title: title })} />
+            </View>
+
+            <View style={{ flex: 1, marginTop: 10, alignItems: "center" }}>
+              <Progress.Bar
+                progress={reps / totalReps}
+                color={colors.red}
+                borderRadius={0}
+                width={windowWidth}
+              />
+            </View>
+          </View>
+        </View>
+      </Camera>
+    </View>
+  );
+}
+
 function ExercisePaused(props) {
   const [reps, setReps] = useState(props.route.params.reps);
   const [modalVisible, setModalVisible] = useState(false);
@@ -474,4 +617,4 @@ const pageStyles = StyleSheet.create({
   },
 });
 
-export { FrameYourself, ExecuteExercise, ExercisePaused };
+export { FrameYourself, ExecuteExercise, ExercisePaused, ExecuteSingleExercise };
