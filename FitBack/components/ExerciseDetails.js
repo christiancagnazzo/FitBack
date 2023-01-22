@@ -1,11 +1,12 @@
 import { MontSerratText } from "./Utility";
-import { styles } from "../styles";
-import { View, Text, ScrollView, Button, TouchableOpacity, ImageBackground } from "react-native";
+import { styles, colors} from "../styles";
+import { View, Text, ScrollView, Button, TouchableOpacity,StyleSheet, ImageBackground, Modal } from "react-native";
 import { useState } from "react";
 import { Card } from "react-native-elements";
 import { MyButton } from "./Homepage";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+
 
 function getImage(image) {
     switch (image) {
@@ -25,12 +26,14 @@ function ExerciseDetails(props) {
     const navigation = useNavigation();
     const exercise = props.route.params.exercise
     const user = props.route.params.user
-    return ( 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    return (
         <View style={{ flex: 1, flexDirection: "column", alignItems: "center" }}>
             <ScrollView>
                 <View style={{ flex: 1, flexDirection: "column", alignItems: "center" }}>
                     <MontSerratText style={[styles.titleText, { marginVertical: 10 }]} text={exercise.title}></MontSerratText>
-                    <TouchableOpacity onPress={() => props.navigation.navigate("Tutorial", { exercise: exercise})}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate("Tutorial", { exercise: exercise })}>
 
                         <ImageBackground source={getImage(exercise.image_path)} style={{ backgroundColor: 'grey', borderWidth: 1, height: 200, width: 350, marginHorizontal: 10, justifyContent: "center", alignItems: "center" }} blurRadius={30}>
                             <AntDesign name="play" size={100} color="#BA181B" />
@@ -49,9 +52,24 @@ function ExerciseDetails(props) {
                     </View>
                 </View>
             </ScrollView>
+
+            <ModalSafeExit
+                modalVisible={modalVisible}
+                navigation={navigation}
+                setModalVisible={setModalVisible}
+                exercise={exercise}
+            />
+
             <View style={styles.exerciseDetailsButtons}>
                 <MyButton style={styles.secondaryButton} title={"Reviews"} onPressAction={() => { navigation.navigate("ReviewsList", { exercise: exercise }) }} />
-                <MyButton style={styles.primaryButton} title={"Start AR training"} onPressAction={() => { navigation.navigate("FrameYourself", { exercise: exercise, singleExercise:true }) }} />
+                <MyButton style={styles.primaryButton} title={"Start AR training"} onPressAction={() => {
+                    if (user.level === exercise.difficulty)
+                        navigation.navigate("FrameYourself", { exercise: exercise, singleExercise: true })
+                    else {
+                        setModalVisible(true)
+                    }
+                }
+                } />
             </View>
 
         </View>
@@ -85,5 +103,62 @@ function MyCard(props) {
         </View>
     )
 }
+
+
+function ModalSafeExit(props) {
+    return (
+        <Modal visible={props.modalVisible} animationType="none" transparent={true}>
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <MontSerratText
+                        style={pageStyles.whatAreReviewsText}
+                        text={"This exercise is NOT recommended to you. Are you sure that you want  to continue?"}
+                    ></MontSerratText>
+                    <View style={styles.horizontalFlex}>
+                        <MyButton
+                            style={pageStyles.continueButton}
+                            title={"Cancel"}
+                            onPressAction={() => props.setModalVisible(false)}
+                        ></MyButton>
+                        <MyButton
+                            style={pageStyles.turnHomeButton}
+                            title={"Start Training"}
+                            onPressAction={() => {
+                                props.setModalVisible(false);
+                                props.navigation.navigate("FrameYourself", { exercise: props.exercise, singleExercise: true })
+                            }}
+                        ></MyButton>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    );
+}
+
+const pageStyles = StyleSheet.create({
+    turnHomeButton: {
+      backgroundColor: colors.red,
+      marginTop: 10,
+      width: 100,
+      height: 60,
+      borderRadius: 10,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 4
+    },
+    continueButton: {
+      backgroundColor: "grey",
+      marginTop: 10,
+      width: 100,
+      height: 60,
+      borderRadius: 10,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    whatAreReviewsText: {
+      fontSize: 18,
+    },
+  });
+  
 
 export { ExerciseDetails };
