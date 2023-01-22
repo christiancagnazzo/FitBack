@@ -13,6 +13,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { colors, styles } from "../styles.js";
 import { MontSerratText } from "./Utility";
 import * as Progress from "react-native-progress";
@@ -58,11 +59,11 @@ function FrameYourself(props) {
 
     //wait 1 second to let the green screen be visible than change screen
     setTimeout(() => {
-      if (props.route.params.singleExercise){
+      if (props.route.params.singleExercise) {
         navigation.navigate("ExecuteSingleExercise", { exercise: props.route.params.exercise })
-      } else{     
-         navigation.navigate("ExecuteExercise", { title: 'Lift Left Arm' });
-    }
+      } else {
+        navigation.navigate("ExecuteExercise", { title: 'Lift Left Arm' });
+      }
     }, 1000);
 
   }
@@ -274,7 +275,43 @@ function ExecuteExercise(props) {
           </View>
           <View>
             {
-              title === 'Squat' && reps > 2 && reps < 7 ? <><Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image></>: null
+              title === 'Squat' && reps > 2 && reps < 7 ?
+                <>
+                  <View style={{
+                    zIndex: 1,
+                    backgroundColor: colors.darkGray,
+                    width: "75%",
+                    borderWidth: 2,
+                    borderColor: colors.white,
+                    borderRadius: 20,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    opacity: 0.7,
+                    marginTop: 20,
+                    marginLeft: 45 
+                  }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        paddingHorizontal: 30,
+                      }}
+                    >
+                      <Ionicons
+                        size={48}
+                        color={colors.white}
+                        name="alert-circle-outline"
+                      ></Ionicons>
+                      <MontSerratText
+                        text={"In this moment you disaligned your back!"}
+                        color={colors.white}
+                        style={{ marginLeft: 5 }}
+                      ></MontSerratText>
+                    </View>
+                  </View>
+                  <Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image>
+                </>
+                : null
             }
           </View>
           <View style={[{ marginLeft: 80, flexDirection: "row", justifyContent: 'space-between', marginTop: 700, zIndex: 1, position: 'absolute', backgroundColor: 'black', borderRadius: 10, padding: 10 }]}>
@@ -328,7 +365,7 @@ function ExecuteExercise(props) {
               <PauseButton style={[styles.pauseButton]} onPress={() => props.navigation.navigate("PauseExercise", { reps: reps, title: title })} />
             </View>
 
-            <View style={{ flex: 1, marginTop: 10, marginBottom:20, alignItems: "center" }}>
+            <View style={{ flex: 1, marginTop: 10, marginBottom: 20, alignItems: "center" }}>
               <Progress.Bar
                 progress={reps / totalReps}
                 color={colors.red}
@@ -371,9 +408,9 @@ function ExecuteSingleExercise(props) {
       r = r + 1;
       if (r === totalReps) {
         r = 0;
-            clearInterval(myinterval)
-            updateDbEndSession()
-            props.navigation.navigate("ReportSingleExercise",{exercise: props.route.params.exercise})
+        clearInterval(myinterval)
+        updateDbEndSession()
+        props.navigation.navigate("ReportSingleExercise", { exercise: props.route.params.exercise })
       }
       else
         setReps((current) => (current < totalReps ? current + 1 : current));
@@ -383,14 +420,14 @@ function ExecuteSingleExercise(props) {
 
   function updateDbEndSession() {
     props.route.params.db.transaction((tx) => {
-    const idExercise = props.route.params.exercise.id
+      const idExercise = props.route.params.exercise.id
       tx.executeSql(
         "INSERT OR IGNORE INTO userExercise(exercise, user, evaluation) VALUES (?,1,50)",
         [idExercise],
         (_, result) => { console.log(result) },
         (_, error) => console.log(error)
       );
-    
+
     })
   }
 

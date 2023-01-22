@@ -155,9 +155,10 @@ function ReviewsList(props) {
 					justifyContent: "space-between",
 					borderWidth: 0,
 					width: "100%",
+					margin: 5,
 				}}
 			>
-				<Text style={{ borderWidth: 0 }}>Select date:</Text>
+				<Text style={{ borderWidth: 0, marginLeft: 10 }}>Select date:</Text>
 				<MyDatePicker date={date} setDate={setDate}/>
 				<Button title="All dates" style={{ flex: 1 }} onPress={() => {
 					setDate(null)
@@ -168,7 +169,7 @@ function ReviewsList(props) {
 				Selected date: {date ? date.toDateString() : "All dates"}
 			</Text>
 			<SafeAreaView>
-				<FlatList
+				<FlatList style={{marginTop: 40}}
 					data={reviews.filter((review) => {
 						if (date == null) {
 							return true;

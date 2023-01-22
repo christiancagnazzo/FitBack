@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     alignSelf: 'flex-start',
+    marginLeft: 10
   },
   review: {
     marginHorizontal: 15,
@@ -534,7 +535,6 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       marginRight: 8,
       marginLeft: 8,
-      
     }
   });
 
