@@ -65,7 +65,7 @@ function ReviewsList(props) {
 
 	function getPath (id) {
 		if (id == 1) {
-			return require("../assets/video/thumbnail.png")
+			return require("../assets/squat.png")
 		}
 		else if (id == 2) {
 			return require("../assets/video/thumbnail.png")
@@ -322,7 +322,7 @@ const ReviewVideo = (props) => {
 			}}
 		>
 			<View style={styles.review}>
-				<Image source={props.uri} style={styles.reviewVideo}></Image>
+				<Image source={props.uri} style={styles.reviewVideo} blurRadius={5}></Image>
 				<Text>{props.title}</Text>
 				<Text>{props.date}</Text>
 			</View>
