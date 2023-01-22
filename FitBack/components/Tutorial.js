@@ -42,6 +42,7 @@ function TutorialFrame(props) {
     }
     const navigation = useNavigation();
 
+    console.log(exercise.title)
 
     return (
         <View style={styles.container3}>
@@ -59,10 +60,12 @@ function TutorialFrame(props) {
             </View>
             <WebView
                 style={{ marginBottom: 80 }}
+                
                 allowsInlineMediaPlayback
-                source={{ uri: 'https://mywebar.com/p/Project_0_oli5sfzewq' }}
-                //source={{ uri: 'https://reactnative.dev/docs/0.63/webview' }}
+                source={exercise.title=="Lift Left arm" ?  { uri: 'https://mywebar.com/p/Project_1_e6ndmgqykd' }:{ uri: 'https://mywebar.com/p/Project_0_oli5sfzewq' }}//SQUAT
+                //source={{ uri: 'https://mywebar.com/p/Project_1_e6ndmgqykd' }}//ARM GESTURE
             >
+                
             </WebView>
             <View style={styles.bottomView}>
                 <View style={styles.horizontalFlex}>
