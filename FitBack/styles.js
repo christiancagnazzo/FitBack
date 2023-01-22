@@ -311,6 +311,7 @@ const styles = StyleSheet.create({
     rectangleExerciseTitle: {
       flex:1,
       margin:15,
+      marginTop: 70,
       borderWidth: 3,
       borderColor: colors.black,
       backgroundColor: colors.black,
@@ -428,6 +429,7 @@ const styles = StyleSheet.create({
       borderColor: colors.red,
       flex: 1,
       margin: 20,
+      marginTop: 40,
       marginBottom: 80,
     },
     externalRectangleFrameGreen: {
@@ -435,6 +437,7 @@ const styles = StyleSheet.create({
       borderColor: colors.green,
       flex: 1,
       margin: 20,
+      marginTop: 40,
       marginBottom: 80,
     },
     rectangleFrameYourSelfTitle: {

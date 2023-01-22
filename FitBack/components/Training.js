@@ -128,7 +128,7 @@ function ExecuteExercise(props) {
   const [myInterval, setMyInterval] = useState(0)
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
-
+  const [nextExercise, setNextExercise] = useState(true);
 
   const totalReps = 7;
   const navigation = useNavigation();
@@ -160,17 +160,14 @@ function ExecuteExercise(props) {
             setTitle('Squat')
             title2 = 'Squat'
             setReps(0)
-            break
-          case 'Squat':
             clearInterval(myinterval)
-            updateDbEndSession()
-            props.navigation.navigate("ReportSession")
+            setNextExercise(false)
             break
         }
-
       }
       else
         setReps((current) => (current < totalReps ? current + 1 : current));
+
     }
 
   }, []);
@@ -261,7 +258,7 @@ function ExecuteExercise(props) {
               <Video
                 ref={video}
                 source={require("../assets/video/SquatTutorial.mp4")}
-                style={{ width: 150, height: 100 }}
+                style={{ width: 150, height: 100, marginTop: 40, marginRight: 20 }}
                 resizeMode="contain"
                 shouldPlay={true}
                 isLooping={true}
@@ -271,7 +268,7 @@ function ExecuteExercise(props) {
           </View>
           <View>
             {
-              title === 'Squat' && reps > 2 && reps < 7 ? <Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image> : null
+              title === 'Squat' && reps > 2 && reps < 7 ? <><Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image></>: null
             }
           </View>
           <View style={[{ marginLeft: 80, flexDirection: "row", justifyContent: 'space-between', marginTop: 700, zIndex: 1, position: 'absolute', backgroundColor: 'black', borderRadius: 10, padding: 10 }]}>
@@ -284,6 +281,33 @@ function ExecuteExercise(props) {
               <Text style={{ color: 'white', fontSize: 25 }}> {"1/1"}</Text>
             </View>
           </View>
+
+          {!nextExercise ? <MyButton style={{
+            backgroundColor: colors.darkGray,
+            margin: 140,
+            width: 150,
+            height: 60,
+            borderRadius: 10,
+            marginRight: 25,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "green"
+          }} title={"Next Exercise"} onPress={() => {
+            setNextExercise(true)
+            let r = 0
+            function updateReps() {
+              r = r + 1;
+              if (r === totalReps) {
+                updateDbEndSession()
+                props.navigation.navigate("ReportSession")
+              }
+              else
+                setReps((current) => (current < totalReps ? current + 1 : current));
+            }
+
+            const myinterval = setInterval(updateReps, 1000);
+            setMyInterval(myinterval)
+          }}></MyButton> : null}
 
           <ModalSafeExit
             modalVisible={modalVisible}
@@ -298,7 +322,7 @@ function ExecuteExercise(props) {
               <PauseButton style={[styles.pauseButton]} onPress={() => props.navigation.navigate("PauseExercise", { reps: reps, title: title })} />
             </View>
 
-            <View style={{ flex: 1, marginTop: 10, alignItems: "center" }}>
+            <View style={{ flex: 1, marginTop: 10, marginBottom:20, alignItems: "center" }}>
               <Progress.Bar
                 progress={reps / totalReps}
                 color={colors.red}
@@ -351,22 +375,18 @@ function ExecuteSingleExercise(props) {
 
   }, []);
 
-
-    //Chrinew deve cambiare database
   function updateDbEndSession() {
     props.route.params.db.transaction((tx) => {
     const idExercise = props.route.params.exercise.id
       tx.executeSql(
-        "INSERT OR IGNORE INTO userExercise VALUES (?,1,50)",
+        "INSERT OR IGNORE INTO userExercise(exercise, user, evaluation) VALUES (?,1,50)",
         [idExercise],
         (_, result) => { console.log(result) },
         (_, error) => console.log(error)
       );
     
     })
-
   }
-
 
   if (!permission) {
     // Camera permissions are still loading
@@ -405,7 +425,7 @@ function ExecuteSingleExercise(props) {
               <Video
                 ref={video}
                 source={require("../assets/video/SquatTutorial.mp4")}
-                style={{ width: 150, height: 100 }}
+                style={{ width: 150, height: 100, marginTop: 40, marginRight: 20 }}
                 resizeMode="contain"
                 shouldPlay={true}
                 isLooping={true}
@@ -438,7 +458,7 @@ function ExecuteSingleExercise(props) {
               <PauseButton style={[styles.pauseButton]} onPress={() => props.navigation.navigate("PauseExercise", { reps: reps, title: title })} />
             </View>
 
-            <View style={{ flex: 1, marginTop: 10, alignItems: "center" }}>
+            <View style={{ flex: 1, marginTop: 10, alignItems: "center", marginBottom: 10 }}>
               <Progress.Bar
                 progress={reps / totalReps}
                 color={colors.red}
@@ -581,7 +601,7 @@ function ModalSafeExit(props) {
           ></MontSerratText>
           <View style={styles.horizontalFlex}>
             <MyButton
-              style={pageStyles.turnHomeButton}
+              style={pageStyles.continueButton}
               title={"Continue training"}
               onPress={() => props.setModalVisible(false)}
             ></MyButton>
@@ -605,6 +625,15 @@ function ModalSafeExit(props) {
 const pageStyles = StyleSheet.create({
   turnHomeButton: {
     backgroundColor: colors.red,
+    marginTop: 10,
+    width: 100,
+    height: 60,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  continueButton: {
+    backgroundColor: "grey",
     marginTop: 10,
     width: 100,
     height: 60,
