@@ -208,6 +208,12 @@ function ExecuteExercise(props) {
         (_, error) => console.log(error)
       );
       tx.executeSql(
+        "INSERT OR IGNORE INTO reviews (exercise, title, date, message, user, pathvideo, paththumbnail ) VALUES (2, 'squatError', '2023-30-01', 'Your back was not aligned', 1, '../assets/video/Squat_review', '../assets/video/thumbnail')",
+        [],
+        (_, result) => { console.log(result) },
+        (_, error) => console.log(error)
+      );
+      tx.executeSql(
         "UPDATE users SET level='Intermediate'",
         [],
         (_, result) => { console.log(result) },
@@ -357,7 +363,7 @@ function ExecuteSingleExercise(props) {
     props.route.params.db.transaction((tx) => {
     const idExercise = props.route.params.exercise.id
       tx.executeSql(
-        "INSERT OR IGNORE INTO userExercise VALUES (?,1,50)",
+        "INSERT OR IGNORE INTO userExercise (exercise, user, evaluation) VALUES (?,1,50)",
         [idExercise],
         (_, result) => { console.log(result) },
         (_, error) => console.log(error)

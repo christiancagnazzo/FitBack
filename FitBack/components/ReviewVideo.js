@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { Video } from "expo-av";
 import { Button } from "react-native-elements";
 import { colors } from "../styles.js";
@@ -32,11 +32,11 @@ const ReviewVideo = () => {
 		<View style={styles.container}>
 			<View style={styles.overVideo1}>
 				<MontSerratText
-					text={"Exercise name"}
+					text={"Squat"}
 					color={colors.white}
 				></MontSerratText>
 				<MontSerratText
-					text={"Exercise date"}
+					text={"30-01-2023"}
 					color={colors.white}
 				></MontSerratText>
 			</View>
@@ -56,7 +56,7 @@ const ReviewVideo = () => {
 							name="alert-circle-outline"
 						></Ionicons>
 						<MontSerratText
-							text={"In this moment you disalign your elbow!"}
+							text={"In this moment you disaligned your back!"}
 							color={colors.white}
 							style={{ marginLeft: 5 }}
 						></MontSerratText>
@@ -67,12 +67,15 @@ const ReviewVideo = () => {
 			<Video
 				ref={video}
 				style={styles.video}
-				source={require("../assets/video/dancing_man.mp4")}
+				source={require("../assets/video/Squat_review.mp4")}
 				useNativeControls={false}
 				resizeMode="cover"
 				isLooping
 				onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-			/>
+				isMuted={true}
+			>
+			</Video>
+			{showError? <Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image> : <></>}
 			<View style={styles.buttons}>
 				<TouchableOpacity
 					title={status.isPlaying ? "Pause" : "Play"}

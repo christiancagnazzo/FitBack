@@ -43,13 +43,11 @@ db.serialize(function () {
                 "id"    INTEGER,\
                 "exercise"  INTEGER,\
                 "title" TEXT,\
-                "date" TEXT",\
-                "message" TEXT",\
+                "date" TEXT,\
+                "message" TEXT,\
                 "user"  INTEGER,\
-                "path_video"    TEXT,\
-                "path_thumbnail"   TEXT,\
-                FOREIGN KEY("exercise") REFERENCES "exercises"("id") on DELETE CASCADE ON UPDATE CASCADE, \
-                FOREIGN KEY("user") REFERENCES "users"("id") on DELETE CASCADE ON UPDATE CASCADE, \
+                "pathvideo"    TEXT,\
+                "paththumbnail"   TEXT,\
                 PRIMARY KEY("id" AUTOINCREMENT))');
 
     db.run('CREATE TABLE IF NOT EXISTS "equipments"(\
@@ -92,6 +90,9 @@ db.serialize(function () {
 
     // EXERCISES-USER
     //db.run("INSERT OR IGNORE INTO userExercise VALUES (1,2,1,50)")
+
+    //remove just for debug for Luca
+    //db.run("INSERT OR IGNORE INTO reviews (exercise, title, date, message, user, pathvideo, paththumbnail ) VALUES (2, 'squatError', '2023-30-01', 'Your back was not aligned', 1, '../assets/video/Squat_review', '../assets/video/thumbnail')"    )
    
     // MUSCLES
     db.run("INSERT OR IGNORE INTO muscles VALUES (1, 'Biceps', 'path')")
@@ -109,7 +110,4 @@ db.serialize(function () {
     db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (1, 1, 1)")
     db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (2, 1, 2)")
 
-    db.run("INSERT OR IGNORE INTO reviews(id, title, exercise, date, user, path_video, path_thumbnail) VALUES (1, 'Revision 1', 1, '2023-01-03', 1, 'video_path', '../assets/video/thumbnail.png')")
-    db.run("INSERT OR IGNORE INTO reviews(id, title, exercise, date, user, path_video, path_thumbnail) VALUES (2, 'Revision 2', 1, '2023-01-03', 1, 'video_path', '../assets/video/thumbnail.png')")
-    db.run("INSERT OR IGNORE INTO reviews(id, title, exercise, date, user, path_video, path_thumbnail) VALUES (3, 'Revision 3', 1, '2020-08-29', 1, 'video_path', 'thumbnail_path')")
 });
