@@ -17,7 +17,7 @@ import { styles } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import { MontSerratText } from "./Utility";
 import Checkbox from "expo-checkbox";
-import {colors} from "../styles.js"
+import { colors } from "../styles.js"
 import { MyButton } from "./Homepage";
 import { Ionicons } from '@expo/vector-icons';
 function ReviewsList(props) {
@@ -45,25 +45,25 @@ function ReviewsList(props) {
 
 	useEffect(() => {
 		let param = 1
-		let sql = `select * from reviews where user = ?`
+		let sql = `select * from reviews where user = ? and exercise = ?`
 		props.route.params.db.transaction((tx) => {
 			tx.executeSql(
 				sql,
-				[param],
+				[param, exercise.id],
 				(_, result) => {
 					let revisions = result.rows._array.map((item) => {
 						item.uri = getPath(item.id)
 						return item
-					 });
-					 setReviews(revisions)
+					});
+					setReviews(revisions)
 				},
 				(_, error) => console.log(error)
 			);
 		})
-        
-    }, [])
 
-	function getPath (id) {
+	}, [])
+
+	function getPath(id) {
 		if (id == 1) {
 			return require("../assets/squat.png")
 		}
@@ -75,14 +75,14 @@ function ReviewsList(props) {
 		}
 	}
 
-	
+
 	const [reviews, setReviews] = useState([]);
 	const [date, setDate] = useState(null);
 	const [isSelected, setSelection] = useState(false);
 	const [showPopup, setShowPopup] = useState(true);
 	const [preference, setPreference] = useState(false);
 	const [showPopupInfo, setShowPopupInfo] = useState(false);
-	
+
 	useEffect(() => {
 		props.route.params.db.transaction((tx) => {
 			tx.executeSql(
@@ -122,27 +122,27 @@ function ReviewsList(props) {
 				},
 				(_, error) => console.log(error)
 			)
-			
+
 		})
 	}, [preference])
 
 
-	
-	const clickCheckbox = function(value) {
+
+	const clickCheckbox = function (value) {
 		setSelection(value);
 	}
 	useEffect(() => {
 		// Use `setOptions` to update the button that we previously specified
 		// Now the button includes an `onPress` handler to update the count
 		props.navigation.setOptions({
-		  headerRight: () => (
-			<TouchableOpacity title="info rewiews" onPress={() => setShowPopupInfo(true)}>
-				<Ionicons name="information-circle-outline" size={38} color={colors.gray}/>
-			</TouchableOpacity>
-		  ),
+			headerRight: () => (
+				<TouchableOpacity title="info rewiews" onPress={() => setShowPopupInfo(true)}>
+					<Ionicons name="information-circle-outline" size={38} color={colors.gray} />
+				</TouchableOpacity>
+			),
 		});
-	  }, [props.navigation]);
-	
+	}, [props.navigation]);
+
 	return (
 		<View style={styles.container2}>
 			<Text style={styles.titleText}>
@@ -159,7 +159,7 @@ function ReviewsList(props) {
 				}}
 			>
 				<Text style={{ borderWidth: 0, marginLeft: 10 }}>Select date:</Text>
-				<MyDatePicker date={date} setDate={setDate}/>
+				<MyDatePicker date={date} setDate={setDate} />
 				<Button title="All dates" style={{ flex: 1 }} onPress={() => {
 					setDate(null)
 				}}></Button>
@@ -169,69 +169,87 @@ function ReviewsList(props) {
 				Selected date: {date ? date.toDateString() : "All dates"}
 			</Text>
 			<SafeAreaView>
-				<FlatList style={{marginTop: 40}}
-					data={reviews.filter((review) => {
-						if (date == null) {
-							return true;
-						}
-						if (review.date == date.toISOString().split("T")[0]) {
-							return true;
-						}
-						else {
-							return false
-						}
-					})}
-					numColumns={2}
-					renderItem={({ item }) => {
-						return (
-					
-							<ReviewVideo
-								uri={item.uri}
-								title={item.title}
-								date={item.date}
-							></ReviewVideo>
-						);
-					}}
-					keyExtractor={(item) => item.id}
-				/>
+
+				{reviews.length === 0 ?
+					<>
+						<View style={{ alignItems: 'center', marginTop: 40 }}>
+							<View style={{ width: 300, height: 300 }}>
+								<Image style={{
+									flex: 1,
+									width: null,
+									height: null,
+									resizeMode: 'contain'
+								}} source={require("../assets/noreview.png")}></Image>
+							</View>
+						</View>
+						<View style={{ alignItems: 'center',}}>
+							<Text style={{fontWeight: "bold", fontSize: 30}}>Nothing to review here!</Text>
+						</View>
+
+					</> :
+					<FlatList style={{ marginTop: 40 }}
+						data={reviews.filter((review) => {
+							if (date == null) {
+								return true;
+							}
+							if (review.date == date.toISOString().split("T")[0]) {
+								return true;
+							}
+							else {
+								return false
+							}
+						})}
+						numColumns={2}
+						renderItem={({ item }) => {
+							return (
+
+								<ReviewVideo
+									uri={item.uri}
+									title={item.title}
+									date={item.date}
+								></ReviewVideo>
+							);
+						}}
+						keyExtractor={(item) => item.id}
+					/>}
 			</SafeAreaView>
 			<Modal visible={showPopup} animationType="none" transparent={true}>
-			<View style={pageStyles.centeredView}>
-				<View style={pageStyles.modalView}>
-					<Text
-						
-						style={pageStyles.whatAreReviews}
-					>What are revisions?</Text>
-					<MontSerratText
-						style={pageStyles.whatAreReviewsText}
-						text={
-							"Revision show videos of your previous errors with a brief explanation"
-						}
-					></MontSerratText>
-					<View style={pageStyles.checkboxContainer}>
-						<Checkbox
-							pageStyles={styles.checkbox}
-							value={isSelected}
-							onValueChange={clickCheckbox}
-							color={isSelected ? "#4630EB" : undefined}
-						/>
-						<MontSerratText style={pageStyles.label} text={"Don't show this again"}>
+				<View style={pageStyles.centeredView}>
+					<View style={pageStyles.modalView}>
+						<Text
 
-						</MontSerratText>
+							style={pageStyles.whatAreReviews}
+						>What are revisions?</Text>
+						<MontSerratText
+							style={pageStyles.whatAreReviewsText}
+							text={
+								"Revision show videos of your previous errors with a brief explanation"
+							}
+						></MontSerratText>
+						<View style={pageStyles.checkboxContainer}>
+							<Checkbox
+								pageStyles={styles.checkbox}
+								value={isSelected}
+								onValueChange={clickCheckbox}
+								color={isSelected ? "#4630EB" : undefined}
+							/>
+							<MontSerratText style={pageStyles.label} text={"Don't show this again"}>
+
+							</MontSerratText>
+						</View>
+						<MyButton
+							style={pageStyles.gotItButton}
+							title={"Got it!"}
+							onPressAction={() => { setShowPopup(false); setPreference(isSelected) }}
+						></MyButton>
 					</View>
-					<MyButton
-						style={pageStyles.gotItButton}
-						title={"Got it!"}
-						onPressAction={() => {setShowPopup(false); setPreference(isSelected)}}
-					></MyButton>
 				</View>
-			</View>
-		</Modal>
+			</Modal>
 			<Modal visible={showPopupInfo} animationType="none" transparent={true}>
 				<View style={pageStyles.centeredView}>
 					<View style={pageStyles.modalView}>
 						<Text
-							
+
 							style={pageStyles.whatAreReviews}
 						>What are revisions?</Text>
 						<MontSerratText
@@ -251,8 +269,8 @@ function ReviewsList(props) {
 					</View>
 				</View>
 			</Modal>
-		
-			
+
+
 		</View>
 	);
 }
@@ -283,14 +301,14 @@ function MyDatePicker(props) {
 		if (Platform.OS === "ios") {
 			return (
 				<>
-				
-				<DateTimePicker
-					onChange={handleDateSelectedIos}
-					maximumDate={new Date()}
-					mode="date"
-					value={date ? date : new Date()}
-				/> 
-				
+
+					<DateTimePicker
+						onChange={handleDateSelectedIos}
+						maximumDate={new Date()}
+						mode="date"
+						value={date ? date : new Date()}
+					/>
+
 				</>
 			);
 		} else {
