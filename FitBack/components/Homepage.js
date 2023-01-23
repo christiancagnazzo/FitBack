@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { MontSerratText } from './Utility.js'
 function Homepage(props) {
     const [alreadyTrained, setalreadyTrained] = useState(false);
+    const [reload, setReload ] = useState(false)
     const [todayList, setTodayList] = useState([
         { "ar_video_path": "video_path", "description": "A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up. During the descent the hip and knee joints flex while the ankle joint dorsiflex. During the ascent  the hip and knee joints extend and the ankle joint plantarflexes", "difficulty": "Beginner", "equipments": ["Dummbell", "Kettlebell"], "id": 4, "image_path": "lift", "muscles": ["Dummbell", "Kettlebell"], "title": "Lift Left arm", "uri": require("../assets/lift.png")},
         { "ar_video_path": "video_path", "description": "This exercise is very simple and is used for arm muscles. It consists of lateral arm raises without weight and therefore is suitable for beginner level users", "difficulty": "Beginner", "equipments": ["Dummbell", "Kettlebell"], "id": 1, "image_path": "squat", "muscles": ["Dummbell", "Kettlebell"], "title": "Squat", "uri": require("../assets/squat.png") }
@@ -17,15 +18,27 @@ function Homepage(props) {
             tx.executeSql(
                 "SELECT sessiondone FROM users ",
                 [],
-                (_, result) => { setalreadyTrained(result.rows._array[0].sessiondone) },
+                (_, result) => {console.log('inside home page, sessione done = ' + result.rows._array[0].sessiondone); setalreadyTrained(result.rows._array[0].sessiondone) },
                 (_, error) => console.log(error)
             );
         }
 
         )
+        setReload(false)
+    },[reload])
 
+    useEffect(() => {
+        props.route.params.db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT sessiondone FROM users ",
+                [],
+                (_, result) => {console.log('inside home page, sessione done = ' + result.rows._array[0].sessiondone); setalreadyTrained(result.rows._array[0].sessiondone) },
+                (_, error) => console.log(error)
+            );
+        }
+
+        )
     })
-
 
 
     return (
@@ -35,6 +48,8 @@ function Homepage(props) {
                 <HomepageButton navigation={navigation} title="Your exercises" type={"Your Exercises"} />
                 <HomepageButton navigation={navigation} title="Suggested exercises" type={"Suggested Exercises"} />
                 <HomepageButton navigation={navigation} title="All exercises" type={"All Exercises"} />
+                <Button onPress={()=>{console.log(props); props.route.params.setResetDb(true); setReload(true)} } title={"reset"}>
+                </Button>
             </View>
             <TodaysTrainingComponent todayList={todayList} navigation={navigation} alreadyTrained={alreadyTrained} />
         </View>
@@ -60,6 +75,8 @@ function TodaysTrainingComponent(props) {
                                 <ExerciseBox exercise={item} uri={item.uri} key={item.id} text={item.title} navigation={props.navigation} />
                             )
                         })}
+                                                <MyButton style={[styles.startARTrainingButton]} navigation={props.navigation} onPressAction={() => props.navigation.navigate("TodaySessionStarting", { text: props.text, list: props.todayList })} title="Start AR training" ></MyButton>
+
                     </ScrollView>
                 }
 
