@@ -58,7 +58,7 @@ function Homepage(props) {
 function TodaysTrainingComponent(props) {
     const [todaysTrainingText, setTodaysTrainingText] = useState("Today's training session")
     return (
-        <View>
+        <View style={{ alignItems: "center" }}>
             <View style={styles.centerAligned}>
                 <MontSerratText color={colors.black} style={styles.titleText} text={todaysTrainingText}> </MontSerratText>
             </View>
@@ -67,7 +67,7 @@ function TodaysTrainingComponent(props) {
                     <FinishedBox>
                     </FinishedBox>
                     :
-                    <View style={{alignContent: "center", alignItems: "center", flexDirection: 'row', marginLeft: 60}} horizontal={true}>
+                    <View style={{ alignContent: "center", alignItems: "center", flexDirection: 'row' }} horizontal={true}>
                         {props.todayList.map((item) => {
                             return (
                                 <ExerciseBox exercise={item} uri={item.uri} key={item.id} text={item.title} navigation={props.navigation} />
@@ -77,13 +77,20 @@ function TodaysTrainingComponent(props) {
                     </View>
                 }
 
+
             </View>
 
             {
                 !props.alreadyTrained ?
-                    <View style={{ alignItems: "center"}}>
-                        <MyButton style={[styles.startARTrainingButton]} navigation={props.navigation} onPressAction={() => props.navigation.navigate("TodaySessionStarting", { text: props.text, list: props.todayList })} title="Start AR training" ></MyButton>
-                    </View>
+                    <MyButton style={{
+                        backgroundColor: colors.red,
+                        marginTop: 35,
+                        width: 150,
+                        height: 60,
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: "center",
+                    }} navigation={props.navigation} onPressAction={() => props.navigation.navigate("TodaySessionStarting", { text: props.text, list: props.todayList })} title="Start AR training" ></MyButton>
                     :
                     <></>
             }
