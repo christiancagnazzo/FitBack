@@ -4,7 +4,6 @@ import { styles, colors } from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
 import { Homepage } from "./components/Homepage.js";
 import { HomepageAfterSession } from "./components/HomepageAfterSession";
-
 import {
   Navbar,
   MyStatusBar,
@@ -37,17 +36,19 @@ import { EditProfile } from "./components/EditProfile.js";
 import { Settings } from "./components/Settings.js";
 import dao from './persistence/dao';
 import * as SQLite from 'expo-sqlite';
-
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [sidebar, setSidebar] = useState(false);
-  const menu = <Sidebar setSidebar={setSidebar}></Sidebar>;
   const [db, setDb] = useState(SQLite.openDatabase('fitback.db'));
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [resetDb, setResetDb] = useState(false)
+  const menu = <Sidebar setSidebar={setSidebar} user={user}></Sidebar>;
 
 
 /*
@@ -132,8 +133,6 @@ export default function App() {
   
     setResetDb(false)
     }
-
-    console.log('creo tabelle')
     
     db.transaction(tx => {
       tx.executeSql('CREATE TABLE IF NOT EXISTS "exercises"(\
@@ -285,12 +284,32 @@ export default function App() {
       });
 
       db.transaction(tx => {
-        tx.executeSql("INSERT OR IGNORE INTO exerciseMuscle VALUES (1, 1, 1)")
+        tx.executeSql("INSERT OR IGNORE INTO exerciseMuscle VALUES (1, 1, 2)")
       });
 
       db.transaction(tx => {
         tx.executeSql(   
-          "INSERT OR IGNORE INTO exerciseMuscle VALUES (2, 1, 2)")
+          "INSERT OR IGNORE INTO exerciseMuscle VALUES (2, 1, 3)")
+      });
+
+      db.transaction(tx => {
+        tx.executeSql(   
+          "INSERT OR IGNORE INTO exerciseMuscle VALUES (3, 2, 1)")
+      });
+
+      db.transaction(tx => {
+        tx.executeSql(   
+          "INSERT OR IGNORE INTO exerciseMuscle VALUES (4, 3, 2)")
+      });
+
+      db.transaction(tx => {
+        tx.executeSql(   
+          "INSERT OR IGNORE INTO exerciseMuscle VALUES (5, 3, 3)")
+      });
+
+      db.transaction(tx => {
+        tx.executeSql(   
+          "INSERT OR IGNORE INTO exerciseMuscle VALUES (6, 4, 1)")
       });
 
       db.transaction(tx => {
@@ -306,11 +325,19 @@ export default function App() {
       });
 
       db.transaction(tx => {
-        tx.executeSql("INSERT OR IGNORE INTO exerciseEquipment VALUES (1, 1, 1)")
+        tx.executeSql("INSERT OR IGNORE INTO exerciseEquipment VALUES (1, 2, 3)")
       });
 
       db.transaction(tx => {
-        tx.executeSql("INSERT OR IGNORE INTO exerciseEquipment VALUES (2, 1, 2)")
+        tx.executeSql("INSERT OR IGNORE INTO exerciseEquipment VALUES (2, 3, 3)")
+      });
+
+      db.transaction(tx => {
+        tx.executeSql("INSERT OR IGNORE INTO exerciseEquipment VALUES (3, 1, 2)")
+      });
+
+      db.transaction(tx => {
+        tx.executeSql("INSERT OR IGNORE INTO exerciseEquipment VALUES (4, 4, 3)")
       });
    
 
@@ -330,10 +357,9 @@ export default function App() {
   }, [db, resetDb]);
 
   if (isLoading) {
-    console.log('dentro isLoading = true')
     return (
       <View style={styles.container}>
-        <Text>Loading names...</Text>
+        <Text>Loading...</Text>
       </View>
     );
   }
@@ -424,7 +450,7 @@ function MyApp(props) {
             headerStyle: styles.headerBar,
             headerTitleStyle: styles.headerText,
             headerTitleAlign: "center",
-
+          
             headerLeft: () => (
               <MyMenu
                 setSidebar={props.setSidebar}
@@ -448,7 +474,7 @@ function MyApp(props) {
             headerBackTitle: "Back",
             headerBackTitleStyle: styles.backButton,
             headerTintColor: colors.lightGray,
-          }}
+          }}  
         />
         <Stack.Screen
           name="ReviewsList"

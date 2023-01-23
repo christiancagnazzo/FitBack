@@ -41,19 +41,21 @@ function Exercise(props) {
     const [exercises, setExercise] = useState([])
     const [displayedExercises, setDisplayedExercise] = useState([])
 
+
+    // title, ar_video_path, description, difficulty, exercise, user, image_path, evaluation
     useEffect(() => {
         const getExercises = async (type) => {
             let sql = ""
             
             if (type === undefined)
-                sql = `select * from exercises`
+                sql = `select title, ar_video_path, description, difficulty, id as exercise, image_path from exercises`
             else if (type === 'your') {
-                sql = `select * from exercises join userExercise 
+                sql = `select distinct title, ar_video_path, description, difficulty, exercise, user, image_path, evaluation from exercises join userExercise 
                 on exercises.id = userExercise.exercise 
                 where userExercise.user = ?`
             }
             else {
-                sql = `select * from exercises where difficulty = ?`
+                sql = `select title, ar_video_path, description, difficulty, id as exercise, image_path from exercises where difficulty = ?`
             }
 
             props.route.params.db.transaction((tx) => {
@@ -66,19 +68,20 @@ function Exercise(props) {
                             sql,
                             [type === 'your' ? user.id : user.level],
                             (_, result) => {
+                                //console.log(result.rows)
                                 for (let i = 0; i < result.rows._array.length; i++) {
                                     tx.executeSql(
-                                        'select name from equipments join exerciseEquipment  on exerciseEquipment.equipment= equipments.id',
-                                        [],
+                                        'select name from equipments join exerciseEquipment  on exerciseEquipment.equipment= equipments.id where exerciseEquipment.exercise = ?',
+                                        [result.rows._array[i].exercise],
                                         (_, res1) => {
-                                            console.log(res1.rows._array)
+                                            //console.log(res1.rows._array)
                                             tx.executeSql(
-                                                'select name from muscles join exerciseMuscle  on exerciseMuscle.muscle= muscles.id',
-                                                [],
+                                                'select name from muscles join exerciseMuscle  on exerciseMuscle.muscle= muscles.id where exerciseMuscle.exercise = ?',
+                                                [result.rows._array[i].exercise],
                                                 (_, res2) => {
                                                     setExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
                                                     setDisplayedExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
-                                                    //console.log({ ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) })
+                                                    console.log({ ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) })
                                                 },
                                                 (_, error) => console.log(error)
                                             )
@@ -498,6 +501,7 @@ function Filters(props) {
                                         <Pressable style={btstyles.apply_button} onPress={() => {
                                             setFilterType("")
                                             setPrevEquipment(equipment)
+                                            console.log(equipment)
                                             props.setDisplayedExercise(props.exercises.filter((ex) => {
                                                 for (let i = 0; i < ex.equipments.length; i++) {
                                                     if (equipment.includes(ex.equipments[i]))

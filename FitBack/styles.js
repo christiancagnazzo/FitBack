@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   reviewVideo: {
     height: 288,
-    width: 162,
+    width: 300,
     borderWidth: 1,
     borderColor: colors.darkGray,
     borderRadius: 10,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   review: {
-    marginHorizontal: 15,
+    marginHorizontal: 0,
     flexDirection: "column",
     alignItems: 'center',
   },
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
   startARTrainingButton: {
     backgroundColor: colors.red,
-    marginTop: 10,
+    marginTop: 5,
     width: 150,
     height: 60,
     borderRadius: 10,
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       color: 'black',
       margin: 35,
-      alignSelf: "center"
+      alignSelf: "center",
     },
     textRotateToSee: {
       margin: 10,
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       marginTop:1,
-      backgroundColor: '#D3D3D3'
+      backgroundColor: '#D3D3D3',
     },
     buttonContainer: {
       flex: 1,

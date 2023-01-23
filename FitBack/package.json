@@ -28,6 +28,7 @@
     "expo-av": "^13.0.2",
     "expo-camera": "^13.1.0",
     "expo-checkbox": "^2.2.2",
+    "expo-file-system": "~15.1.1",
     "expo-gl": "^12.0.1",
     "expo-linear-gradient": "~12.0.1",
     "expo-media-library": "~15.0.0",
@@ -40,6 +41,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-calendars": "^1.1293.0",
     "react-native-date-picker": "^4.2.6",
     "react-native-draggable-panel": "^1.2.3",
     "react-native-elements": "^3.4.3",
@@ -54,11 +56,10 @@
     "react-native-switch": "^1.5.1",
     "react-native-video": "^5.2.1",
     "react-native-web": "~0.18.9",
+    "react-native-webview": "11.23.1",
     "react-three-fiber": "^6.0.13",
     "sqlite3": "^5.1.4",
-    "three": "^0.145.0",
-    "expo-file-system": "~15.1.1",
-    "react-native-webview": "11.23.1"
+    "three": "^0.145.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

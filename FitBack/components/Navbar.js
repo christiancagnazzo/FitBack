@@ -3,12 +3,13 @@ import { View, Text, TouchableOpacity, Button } from "react-native";
 import { styles, colors } from "../styles";
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from "@react-navigation/native";
 
 function Navbar() {
     return (
         <View style={[styles.horizontalFlex, styles.headerBar]}>
           <MyMenu/>
-          <Text style={styles.headerText}>FITBACK</Text>
+          <Text style={styles.headerText}>FITBACK</Text>      
           <MyMenu hidden={true}/>
     </View>
     );

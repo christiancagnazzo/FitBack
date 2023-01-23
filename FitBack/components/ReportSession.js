@@ -42,7 +42,7 @@ function Report(props) {
           }}
           text={"Well Done!"}
         />
-        <View style={{ margin: 5, flexDirection: "row" }}>
+        <View style={{ margin: 5, marginLeft: 10, flexDirection: "row" }}>
           <Text style={{ fontWeight: "bold", fontSize: 25, marginLeft: 10 }}>
             {"Exercise"}
           </Text>
@@ -51,7 +51,7 @@ function Report(props) {
               fontWeight: "bold",
               fontSize: 25,
               textAlign: "right",
-              marginStart: 50,
+              marginStart: 65,
             }}
           >
             {"Correct Attempts"}
@@ -96,12 +96,12 @@ function Report(props) {
             color={colors.w}
           />
           <View
-            style={[styles.rectangleExerciseTitle, { marginLeft: 60, flex: 1 }]}
+            style={[styles.rectangleExerciseTitle, { marginLeft: 60, marginTop: 15, flex: 1 }]}
           >
             <MontSerratText
               //style={styles.textFrameYouself}
               style={{
-                margin: 10,
+                margin: 15,
                 color: colors.white,
                 fontSize: 20,
                 fontWeight: "bold",
@@ -156,17 +156,17 @@ function ReportSingleExercise(props) {
 
   function getImage(image) {
     switch (image) {
-        case 'squat':
-            return require('../assets/squat.png')
-        case 'lunges':
-            return require('../assets/lunges.png')
-        case 'pushup':
-            return require('../assets/pushup.png')
-        case 'lift':
-            return require('../assets/lift.png')
+      case 'squat':
+        return require('../assets/squat.png')
+      case 'lunges':
+        return require('../assets/lunges.png')
+      case 'pushup':
+        return require('../assets/pushup.png')
+      case 'lift':
+        return require('../assets/lift.png')
 
     }
-}
+  }
 
   return (
     <View>
@@ -187,27 +187,27 @@ function ReportSingleExercise(props) {
           text={props.route.params.exercise.title}
         />
 
-        <Image source={getImage(props.route.params.exercise.image_path)} style={{height:100, width:100}}></Image>
+        <Image source={getImage(props.route.params.exercise.image_path)} style={{ height: 100, width: 100 }}></Image>
 
-      <View style={{marginTop:20, marginBottom:10}}>
-      <MontSerratText
-          style={[
-            {
-              color: colors.darkGray,
-              fontFamily: "MontSerratBold",
-              fontSize: 25,
-            },
-          ]}
-          text={"Correct Attempets"}
-        />
-        <View
-            style={ {
-              margin:15,
+        <View style={{ marginTop: 20, marginBottom: 10 }}>
+          <MontSerratText
+            style={[
+              {
+                color: colors.darkGray,
+                fontFamily: "MontSerratBold",
+                fontSize: 25,
+              },
+            ]}
+            text={"Correct Attempets"}
+          />
+          <View
+            style={{
+              margin: 15,
               borderWidth: 3,
               borderColor: colors.black,
               backgroundColor: colors.black,
               borderRadius: 10,
-             }}
+            }}
           >
             <MontSerratText
               //style={styles.textFrameYouself}
@@ -223,24 +223,24 @@ function ReportSingleExercise(props) {
           </View>
 
           <MontSerratText
-          style={[
-            {
-              color: colors.darkGray,
-              fontFamily: "MontSerratBold",
-              fontSize: 25,
-              marginTop : 20,
-            },
-          ]}
-          text={"Estimated evaluation"}
-        />
-        <View
-            style={ {
-              margin:15,
+            style={[
+              {
+                color: colors.darkGray,
+                fontFamily: "MontSerratBold",
+                fontSize: 25,
+                marginTop: 20,
+              },
+            ]}
+            text={"Estimated evaluation"}
+          />
+          <View
+            style={{
+              margin: 15,
               borderWidth: 3,
               borderColor: colors.black,
               backgroundColor: colors.black,
               borderRadius: 10,
-             }}
+            }}
           >
             <MontSerratText
               //style={styles.textFrameYouself}
@@ -254,14 +254,14 @@ function ReportSingleExercise(props) {
               text={"100%"}
             />
           </View>
+        </View>
       </View>
-    </View>
 
-    <View style={styles.exerciseDetailsButtons}>
-                <MyButton style={styles.primaryButton} title={"Go Home"} onPress={() => { props.navigation.navigate("Homepage") }} />
-                <MyButton style={[styles.secondaryButton, ]} title={"Review Exercise"} onPress={() => { props.navigation.navigate("ReviewsList", {exercise: props.route.params.exercise })}} />
+      <View style={styles.exerciseDetailsButtons}>
+        <MyButton style={styles.primaryButton} title={"Go Home"} onPress={() => { props.navigation.navigate("Homepage") }} />
+        <MyButton style={[styles.secondaryButton,]} title={"Revision Exercise"} onPress={() => { props.navigation.navigate("ReviewsList", { exercise: props.route.params.exercise }) }} />
 
-    </View>
+      </View>
 
     </View>
 

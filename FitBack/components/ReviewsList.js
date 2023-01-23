@@ -10,8 +10,10 @@ import {
 	Platform,
 	Modal,
 	StyleSheet,
-	Image
+	Image,
+	ImageBackground
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { styles } from "../styles";
 import { useNavigation } from "@react-navigation/native";
@@ -20,6 +22,9 @@ import Checkbox from "expo-checkbox";
 import { colors } from "../styles.js"
 import { MyButton } from "./Homepage";
 import { Ionicons } from '@expo/vector-icons';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import DraggablePanel from "react-native-draggable-panel";
 function ReviewsList(props) {
 	const exercise = props.route.params.exercise
 	/*
@@ -44,12 +49,13 @@ function ReviewsList(props) {
 	];*/
 
 	useEffect(() => {
+		console.log("id: " + exercise.exercise)
 		let param = 1
 		let sql = `select * from reviews where user = ? and exercise = ?`
 		props.route.params.db.transaction((tx) => {
 			tx.executeSql(
 				sql,
-				[param, exercise.id],
+				[param, exercise.exercise],
 				(_, result) => {
 					let revisions = result.rows._array.map((item) => {
 						item.uri = getPath(item.id)
@@ -82,6 +88,7 @@ function ReviewsList(props) {
 	const [showPopup, setShowPopup] = useState(true);
 	const [preference, setPreference] = useState(false);
 	const [showPopupInfo, setShowPopupInfo] = useState(false);
+	const [showCalendar, setShowCalendar] = useState(false)
 
 	useEffect(() => {
 		props.route.params.db.transaction((tx) => {
@@ -148,14 +155,32 @@ function ReviewsList(props) {
 			<Text style={styles.titleText}>
 				{exercise.title}
 			</Text>
-			<View
+			<TouchableWithoutFeedback style={{ marginTop: 20 }} onPress={() => setShowCalendar(true)}>
+				<View style={styles.filterCard}>
+					<Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>FILTER FOR DATE</Text>
+				</View>
+			</TouchableWithoutFeedback>
+
+			<Text style={{ fontSize: 17, fontStyle: "italic" }}>
+				Selected date: {date ? date : "All dates"}
+			</Text>
+
+			<DraggablePanel borderRadius={10} visible={showCalendar} onDismiss={() => setShowCalendar(false)}>
+				<Calendar onDayPress={day => {
+					setShowCalendar(false)
+					console.log(day)
+					setDate(day.dateString);
+				}}></Calendar>
+				<Button onPress={() => { setDate(null); setShowCalendar(false) }} title="All Dates"></Button>
+			</DraggablePanel>
+			{/*<View
 				style={{
 					flexDirection: "row",
 					alignItems: "center",
 					justifyContent: "space-between",
 					borderWidth: 0,
 					width: "100%",
-					margin: 5,
+					margin: 10,
 				}}
 			>
 				<Text style={{ borderWidth: 0, marginLeft: 10 }}>Select date:</Text>
@@ -167,7 +192,7 @@ function ReviewsList(props) {
 
 			<Text style={styles.datePicker}>
 				Selected date: {date ? date.toDateString() : "All dates"}
-			</Text>
+			</Text>*/}
 			<SafeAreaView>
 
 				{reviews.length === 0 ?
@@ -182,17 +207,32 @@ function ReviewsList(props) {
 								}} source={require("../assets/noreview.png")}></Image>
 							</View>
 						</View>
-						<View style={{ alignItems: 'center',}}>
-							<Text style={{fontWeight: "bold", fontSize: 30}}>Nothing to review here!</Text>
+						<View style={{ alignItems: 'center', }}>
+							<Text style={{ fontWeight: "bold", fontSize: 30 }}>Nothing to review here!</Text>
 						</View>
 
 					</> :
 					<FlatList style={{ marginTop: 40 }}
+						ListEmptyComponent={<>
+							<View style={{ alignItems: 'center', marginTop: 40 }}>
+								<View style={{ width: 300, height: 300 }}>
+									<Image style={{
+										flex: 1,
+										width: null,
+										height: null,
+										resizeMode: 'contain'
+									}} source={require("../assets/noreview.png")}></Image>
+								</View>
+							</View>
+							<View style={{ alignItems: 'center', }}>
+								<Text style={{ fontWeight: "bold", fontSize: 30 }}>Nothing to review here!</Text>
+							</View>
+						</>}
 						data={reviews.filter((review) => {
 							if (date == null) {
 								return true;
 							}
-							if (review.date == date.toISOString().split("T")[0]) {
+							if (review.date == date) {
 								return true;
 							}
 							else {
@@ -341,9 +381,19 @@ const ReviewVideo = (props) => {
 			}}
 		>
 			<View style={styles.review}>
-				<Image source={props.uri} style={styles.reviewVideo} blurRadius={5}></Image>
-				<Text>{props.title}</Text>
-				<Text>{props.date}</Text>
+				<ImageBackground source={props.uri} style={{
+					height: 288,
+					backgroundColor: 'grey',
+					width: 300,
+					borderWidth: 1,
+					borderColor: colors.darkGray,
+					borderRadius: 10,
+					justifyContent: "center", alignItems: "center"
+				}} blurRadius={10}>
+					<AntDesign name="play" size={100} color="#BA181B" />
+				</ImageBackground>
+				<Text style={{ fontSize: 20, fontWeight: "bold" }}>{props.title}</Text>
+				<Text style={{ fontSize: 15 }}>{props.date}</Text>
 			</View>
 		</TouchableOpacity>
 	);

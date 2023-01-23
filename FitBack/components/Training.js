@@ -48,7 +48,9 @@ function FrameYourself(props) {
         <Text style={{ textAlign: "center" }}>
           We need your permission to show the camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <View style={{ marginTop: 50 }}>
+          <Button onPress={requestPermission} title="Grant permission" />
+        </View>
       </View>
     );
   }
@@ -62,7 +64,7 @@ function FrameYourself(props) {
       if (props.route.params.singleExercise) {
         navigation.navigate("ExecuteSingleExercise", { exercise: props.route.params.exercise })
       } else {
-        navigation.navigate("ExecuteExercise", { title: 'Lift Left Arm' });
+        navigation.navigate("ExecuteExercise", { title: 'Lift Right Arm' });
       }
     }, 1000);
 
@@ -120,6 +122,20 @@ function FrameYourself(props) {
   );
 }
 
+function getTutorial(exercise) {
+  switch (exercise) {
+    case 'Squat':
+      return require('../assets/tutorialsquat.gif')
+    case 'Lift Right Arm':
+      return require('../assets/lift_arm.gif')
+    case 'Lateral Lunges':
+      return require('../assets/lateral-lunges.gif')
+    case 'Push-up':
+      return require('../assets/pushup.gif')
+  }
+}
+
+
 function ExecuteExercise(props) {
   const [reps, setReps] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
@@ -130,11 +146,18 @@ function ExecuteExercise(props) {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
   const [nextExercise, setNextExercise] = useState(true);
+  const [isPaused, setIsPaused] = useState(false)
 
   const totalReps = 7;
   const navigation = useNavigation();
   const video = React.useRef(null);
   const [sound, setSound] = React.useState();
+ 
+  useEffect(() => {
+    if (reps === 3 && title === 'Squat'){
+      playSound()
+    }
+  }, [reps])
 
   useEffect(() => {
     return sound
@@ -146,7 +169,7 @@ function ExecuteExercise(props) {
 
   useEffect(() => {
 
-    const myinterval = setInterval(updateReps, 1000);
+    const myinterval = setInterval(updateReps, 2000);
     setMyInterval(myinterval)
 
     let r = 0;
@@ -157,7 +180,7 @@ function ExecuteExercise(props) {
       if (r === totalReps) {
         r = 0;
         switch (title2) {
-          case 'Lift Left Arm':
+          case 'Lift Right Arm':
             setTitle('Squat')
             title2 = 'Squat'
             setReps(0)
@@ -181,8 +204,6 @@ function ExecuteExercise(props) {
     await sound.playAsync();
   }
 
-  if (reps === 3 && title === 'Squat')
-    playSound()
 
   function updateDbEndSession() {
     props.route.params.db.transaction((tx) => {
@@ -206,7 +227,7 @@ function ExecuteExercise(props) {
         (_, error) => console.log(error)
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO reviews (exercise, title, date, message, user, pathvideo, paththumbnail ) VALUES (2, 'squatError', '2023-30-01', 'Your back was not aligned', 1, '../assets/video/Squat_review', '../assets/video/thumbnail')",
+        "INSERT OR IGNORE INTO reviews (exercise, title, date, message, user, pathvideo, paththumbnail ) VALUES (1, 'Squat Error', '2023-01-30', 'Your back was not aligned', 1, '../assets/video/Squat_review', '../assets/video/thumbnail')",
         [],
         (_, result) => { console.log(result) },
         (_, error) => console.log(error)
@@ -241,11 +262,12 @@ function ExecuteExercise(props) {
         <Text style={{ textAlign: "center" }}>
           We need your permission to show the  camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <View style={{ marginTop: 50 }}>
+          <Button onPress={requestPermission} title="Grant permission" />
+        </View>
       </View>
     );
-  }
-
+  }  
 
   return (
     <View style={[styles.container3]}>
@@ -255,27 +277,29 @@ function ExecuteExercise(props) {
       >
         <View style={{ flex: 1 }}>
           <View style={styles.horizontalFlex}>
-            <View style={styles.rectangleExerciseTitle}>
+            <View style={{
+              flex: 1,
+              margin: 15,
+              marginLeft: 20,
+              marginTop: -10,
+              borderWidth: 3,
+              borderColor: colors.black,
+              backgroundColor: colors.black,
+              borderRadius: 10,
+              width: '40%'
+            }}>
               <MontSerratText
                 style={styles.textFrameYouself}
                 text={title}
               />
             </View>
             <View>
-              <Video
-                ref={video}
-                source={require("../assets/video/SquatTutorial.mp4")}
-                style={{ width: 150, height: 100, marginTop: 40, marginRight: 20 }}
-                resizeMode="contain"
-                shouldPlay={true}
-                isLooping={true}
-                isMuted={true}
-              ></Video>
+              <Image style={{ width: 200, height: 200, marginTop: 40 }} source={getTutorial(title)}></Image>
             </View>
           </View>
           <View>
             {
-              title === 'Squat' && reps > 2 && reps < 7 ?
+              title === 'Squat' && reps > 2 && reps < 7 && !isPaused ?
                 <>
                   <View style={{
                     zIndex: 1,
@@ -288,7 +312,7 @@ function ExecuteExercise(props) {
                     paddingVertical: 10,
                     opacity: 0.7,
                     marginTop: 20,
-                    marginLeft: 45 
+                    marginLeft: 45
                   }}>
                     <View
                       style={{
@@ -297,6 +321,7 @@ function ExecuteExercise(props) {
                         paddingHorizontal: 30,
                       }}
                     >
+
                       <Ionicons
                         size={48}
                         color={colors.white}
@@ -307,6 +332,7 @@ function ExecuteExercise(props) {
                         color={colors.white}
                         style={{ marginLeft: 5 }}
                       ></MontSerratText>
+
                     </View>
                   </View>
                   <Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image>
@@ -314,6 +340,43 @@ function ExecuteExercise(props) {
                 : null
             }
           </View>
+
+          {
+            isPaused ?
+              <View style={{ alignItems: "center", marginTop: 100 }}>
+                <PlayButton onPress={() => {
+                  setIsPaused(false)
+                  let r = reps
+                  function updateReps() {
+                    r = r + 1;
+                    if (r === totalReps) {
+                      r = 0;
+                      switch (title) {
+                        case 'Lift Right Arm':
+                          setTitle('Squat')
+                          setReps(0)
+                          clearInterval(myinterval)
+                          setNextExercise(false)
+                          break
+                        case 'Squat':
+                          updateDbEndSession()
+                          clearInterval(myinterval)
+                          props.navigation.navigate("ReportSession")
+                      }
+                    }
+                    else
+                      setReps((current) => (current < totalReps ? current + 1 : current));
+
+
+                  }
+
+                  const myinterval = setInterval(updateReps, 2000);
+                  setMyInterval(myinterval)
+                }} />
+              </View> : null
+
+          }
+
           <View style={[{ marginLeft: 80, flexDirection: "row", justifyContent: 'space-between', marginTop: 700, zIndex: 1, position: 'absolute', backgroundColor: 'black', borderRadius: 10, padding: 10 }]}>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}> {"Reps="} </Text>
@@ -325,32 +388,50 @@ function ExecuteExercise(props) {
             </View>
           </View>
 
-          {!nextExercise ? <MyButton style={{
-            backgroundColor: colors.darkGray,
-            margin: 140,
-            width: 150,
-            height: 60,
-            borderRadius: 10,
-            marginRight: 25,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "green"
-          }} title={"Next Exercise"} onPress={() => {
-            setNextExercise(true)
-            let r = 0
-            function updateReps() {
-              r = r + 1;
-              if (r === totalReps) {
-                updateDbEndSession()
-                props.navigation.navigate("ReportSession")
-              }
-              else
-                setReps((current) => (current < totalReps ? current + 1 : current));
-            }
+          {!nextExercise ? <>
+            <TouchableOpacity onPress={() => {
+                setNextExercise(true)
+                let r = 0
+                function updateReps() {
+                  r = r + 1;
+                  if (r === totalReps) {
+                    updateDbEndSession()
+                    props.navigation.navigate("ReportSession")
+                  }
+                  else
+                    setReps((current) => (current < totalReps ? current + 1 : current));
+                }
 
-            const myinterval = setInterval(updateReps, 1000);
-            setMyInterval(myinterval)
-          }}></MyButton> : null}
+                const myinterval = setInterval(updateReps, 2000);
+                setMyInterval(myinterval)
+              }} style={{ alignContent: "center", alignItems: "center" }}>
+              <Image style={{height:150, width:150}} source={require('../assets/arrow_next_exercise.gif')}></Image>
+              <MyButton style={{
+                backgroundColor: colors.darkGray,
+                width: 150,
+                height: 60,
+                borderRadius: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "grey"
+              }} title={"Start Squat"} onPress={() => {
+                setNextExercise(true)
+                let r = 0
+                function updateReps() {
+                  r = r + 1;
+                  if (r === totalReps) {
+                    updateDbEndSession()
+                    props.navigation.navigate("ReportSession")
+                  }
+                  else
+                    setReps((current) => (current < totalReps ? current + 1 : current));
+                }
+
+                const myinterval = setInterval(updateReps, 2000);
+                setMyInterval(myinterval)
+              }}></MyButton>
+            </TouchableOpacity>
+          </> : null}
 
           <ModalSafeExit
             modalVisible={modalVisible}
@@ -362,7 +443,7 @@ function ExecuteExercise(props) {
           <View style={styles.bottomView2}>
             <View style={styles.horizontalFlex}>
               <MyButton style={[styles.exitButton]} title="Exit" onPress={() => setModalVisible(true)}></MyButton>
-              <PauseButton style={[styles.pauseButton]} onPress={() => props.navigation.navigate("PauseExercise", { reps: reps, title: title })} />
+              {!isPaused ? <PauseButton style={[styles.pauseButton]} onPress={() => { clearInterval(myInterval); setIsPaused(true) }} /> : null}
             </View>
 
             <View style={{ flex: 1, marginTop: 10, marginBottom: 20, alignItems: "center" }}>
@@ -390,6 +471,7 @@ function ExecuteSingleExercise(props) {
   const [myInterval, setMyInterval] = useState(0)
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
+  const [isPaused, setIsPaused] = useState(false)
 
 
   const totalReps = 7;
@@ -399,7 +481,7 @@ function ExecuteSingleExercise(props) {
 
   useEffect(() => {
 
-    const myinterval = setInterval(updateReps, 1000);
+    const myinterval = setInterval(updateReps, 2000);
     setMyInterval(myinterval)
 
     let r = 0;
@@ -420,9 +502,9 @@ function ExecuteSingleExercise(props) {
 
   function updateDbEndSession() {
     props.route.params.db.transaction((tx) => {
-      const idExercise = props.route.params.exercise.id
+      const idExercise = props.route.params.exercise.exercise
       tx.executeSql(
-        "INSERT OR IGNORE INTO userExercise(exercise, user, evaluation) VALUES (?,1,50)",
+        "INSERT OR IGNORE INTO userExercise(exercise, user, evaluation) VALUES (?,1,70)",
         [idExercise],
         (_, result) => { console.log(result) },
         (_, error) => console.log(error)
@@ -444,7 +526,9 @@ function ExecuteSingleExercise(props) {
         <Text style={{ textAlign: "center" }}>
           We need your permission to show the  camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <View style={{ marginTop: 50 }}>
+          <Button onPress={requestPermission} title="Grant permission" />
+        </View>
       </View>
     );
   }
@@ -465,17 +549,37 @@ function ExecuteSingleExercise(props) {
               />
             </View>
             <View>
-              <Video
-                ref={video}
-                source={require("../assets/video/SquatTutorial.mp4")}
-                style={{ width: 150, height: 100, marginTop: 40, marginRight: 20 }}
-                resizeMode="contain"
-                shouldPlay={true}
-                isLooping={true}
-                isMuted={true}
-              ></Video>
+              <Image style={{ width: 200, height: 200, marginTop: 40 }} source={getTutorial(title)}></Image>
             </View>
           </View>
+
+          {
+            isPaused ?
+              <View style={{ alignItems: "center", marginTop: 100 }}>
+                <PlayButton onPress={() => {
+                  setIsPaused(false)
+                  let r = reps
+                  function updateReps() {
+                    r = r + 1;
+                    if (r === totalReps) {
+
+                      updateDbEndSession()
+                      clearInterval(myinterval)
+                      props.navigation.navigate("ReportSingleExercise", { exercise: props.route.params.exercise })
+
+                    }
+                    else
+                      setReps((current) => (current < totalReps ? current + 1 : current));
+
+
+                  }
+
+                  const myinterval = setInterval(updateReps, 2000);
+                  setMyInterval(myinterval)
+                }} />
+              </View> : null
+
+          }
 
           <View style={[{ marginLeft: 80, flexDirection: "row", justifyContent: 'space-between', marginTop: 700, zIndex: 1, position: 'absolute', backgroundColor: 'black', borderRadius: 10, padding: 10 }]}>
             <View style={{ flexDirection: 'row' }}>
@@ -498,7 +602,7 @@ function ExecuteSingleExercise(props) {
           <View style={styles.bottomView2}>
             <View style={styles.horizontalFlex}>
               <MyButton style={[styles.exitButton]} title="Exit" onPress={() => setModalVisible(true)}></MyButton>
-              <PauseButton style={[styles.pauseButton]} onPress={() => props.navigation.navigate("PauseExercise", { reps: reps, title: title })} />
+              {!isPaused ? <PauseButton style={[styles.pauseButton]} onPress={() => { clearInterval(myInterval); setIsPaused(true) }} /> : null}
             </View>
 
             <View style={{ flex: 1, marginTop: 10, alignItems: "center", marginBottom: 10 }}>

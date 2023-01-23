@@ -99,15 +99,21 @@ db.serialize(function () {
     db.run("INSERT OR IGNORE INTO muscles VALUES (2, 'Quadriceps', 'path')")
     db.run("INSERT OR IGNORE INTO muscles VALUES (3, 'Calf', 'path')")
 
+    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (2, 1, 3)")
+    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (3, 2, 1)")
     db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (1, 1, 1)")
-    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (2, 1, 2)")
+    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (4, 3, 2)")
+    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (5, 3, 3)")
+    db.run("INSERT OR IGNORE INTO exerciseMuscle VALUES (6, 4, 1)")
 
     // EQUIPMENTS
     db.run("INSERT OR IGNORE INTO equipments VALUES (1, 'Dummbell', 'path')")
     db.run("INSERT OR IGNORE INTO equipments VALUES (2, 'Kettlebell', 'path')")
     db.run("INSERT OR IGNORE INTO equipments VALUES (3, 'Mat', 'path')")
 
-    db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (1, 1, 1)")
-    db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (2, 1, 2)")
+    db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (1, 2, 3)")
+    db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (2, 3, 3)")
+    db.run("INSERT OR IGNORE INTO exerciseEquipment VALUES (3, 1, 2)")
+
 
 });

@@ -47,8 +47,8 @@ function TutorialFrame(props) {
     return (
         <View style={styles.container3}>
             <View style={{
-                marginTop: 32,
-                marginBottom: 10,
+                marginTop: 50,
+                marginBottom:10,
                 marginLeft: 20,
                 marginRight: 20,
                 alignItems: "center",
@@ -62,7 +62,7 @@ function TutorialFrame(props) {
                 style={{ marginBottom: 80 }}
                 
                 allowsInlineMediaPlayback
-                source={exercise.title=="Lift Left arm" ?  { uri: 'https://mywebar.com/p/Project_1_e6ndmgqykd' }:{ uri: 'https://mywebar.com/p/Project_0_oli5sfzewq' }}//SQUAT
+                source={exercise.title=="Lift Right arm" ?  { uri: 'https://mywebar.com/p/Project_1_e6ndmgqykd' }:{ uri: 'https://mywebar.com/p/Project_0_oli5sfzewq' }}//SQUAT
                 //source={{ uri: 'https://mywebar.com/p/Project_1_e6ndmgqykd' }}//ARM GESTURE
             >
                 
@@ -82,7 +82,7 @@ function TutorialFrame(props) {
                             fontWeight: "bold",
                             textAlign: "center",
                             marginRight:50
-                        }} text={"Squat AR tutorial"} />
+                        }} text={"Squat AR Tutorial"} />
                     </View>
                 </View>
 

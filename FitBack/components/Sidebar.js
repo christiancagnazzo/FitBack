@@ -5,6 +5,7 @@ import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handl
 import { useNavigation } from '@react-navigation/native';
 
 function Sidebar(props) {
+    console.log(props)
     const navigation = useNavigation();
 
     return (
