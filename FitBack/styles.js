@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     homepageButton: {
       backgroundColor: colors.darkGray,
       marginBottom: 30,
-      width: 250,
+      width: 300,
       height: 90,
       borderRadius: 10,
       justifyContent: "center",

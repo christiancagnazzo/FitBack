@@ -11,9 +11,9 @@ function HomepageAfterSession() {
         <View>
             <View style={styles.homepage}>
                 <MontSerratText style={[styles.titleText, { marginBottom: 10 }]} text={"Welcome back John!"} />
-                <HomepageButton title="Your exercises" />
-                <HomepageButton title="Suggested exercises" />
-                <HomepageButton title="All exercises" />
+                <HomepageButton title="Already Executed Exercises" />
+                <HomepageButton title="Exercises For Your Level" />
+                <HomepageButton title="All Exercises" />
             </View>
             <TodaysTrainingComponent />
         </View>

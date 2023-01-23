@@ -45,9 +45,9 @@ function Homepage(props) {
         <View>
             <View style={styles.homepage}>
                 <MontSerratText style={[styles.titleText, { marginBottom: 20, marginTop: 20 }]} text={"Welcome back John!"} />
-                <HomepageButton navigation={navigation} title="Your exercises" type={"Your Exercises"} />
-                <HomepageButton navigation={navigation} title="Suggested exercises" type={"Suggested Exercises"} />
-                <HomepageButton navigation={navigation} title="All exercises" type={"All Exercises"} />
+                <HomepageButton navigation={navigation} title="Already Executed Exercises" type={"Your Exercises"} />
+                <HomepageButton navigation={navigation} title="Exercises For Your Level " type={"Suggested Exercises"} />
+                <HomepageButton navigation={navigation} title="All Exercises" type={"All Exercises"} />
             </View>
             <TodaysTrainingComponent setResetDb={props.route.params.setResetDb} setReload={setReload} todayList={todayList} navigation={navigation} alreadyTrained={alreadyTrained} />
         </View>
