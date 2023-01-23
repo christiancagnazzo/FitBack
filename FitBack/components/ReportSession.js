@@ -259,11 +259,8 @@ function ReportSingleExercise(props) {
 
     <View style={styles.exerciseDetailsButtons}>
                 <MyButton style={styles.primaryButton} title={"Go Home"} onPress={() => { props.navigation.navigate("Homepage") }} />
-                <MyButton style={styles.secondaryButton} title={"Restart"} onPress={() => { props.navigation.navigate("FrameYourself", { exercise: props.route.params.exercise, singleExercise:true }) }} />
-    </View>
+                <MyButton style={[styles.secondaryButton, ]} title={"Review Exercise"} onPress={() => { props.navigation.navigate("ReviewsList", {exercise: props.route.params.exercise })}} />
 
-    <View style={{alignItems:'center'}}>
-    <MyButton style={[styles.secondaryButton, ]} title={"Review Exercise"} onPress={() => {  }} />
     </View>
 
     </View>
