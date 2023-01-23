@@ -335,7 +335,7 @@ function ExecuteExercise(props) {
 
                     </View>
                   </View>
-                  <Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image>
+                  <Image style={{ width: 250, height: 250, marginTop: 0, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image>
                 </>
                 : null
             }

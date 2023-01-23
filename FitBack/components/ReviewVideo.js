@@ -75,7 +75,7 @@ const ReviewVideo = () => {
 				isMuted={true}
 			>
 			</Video>
-			{showError? <Image style={{ width: 150, height: 150, marginTop: 80, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image> : <></>}
+			{showError? <Image style={{ width: 250, height: 250, marginTop: 30, marginLeft: 0, marginRight: 200 }} source={require("../assets/giphy.gif")} ></Image> : <></>}
 			<View style={styles.buttons}>
 				<TouchableOpacity
 					title={status.isPlaying ? "Pause" : "Play"}

@@ -67,21 +67,21 @@ function TodaysTrainingComponent(props) {
                     <FinishedBox>
                     </FinishedBox>
                     :
-                    <ScrollView horizontal={true}>
+                    <View style={{alignContent: "center", alignItems: "center", flexDirection: 'row', marginLeft: 60}} horizontal={true}>
                         {props.todayList.map((item) => {
                             return (
                                 <ExerciseBox exercise={item} uri={item.uri} key={item.id} text={item.title} navigation={props.navigation} />
                             )
                         })}
 
-                    </ScrollView>
+                    </View>
                 }
 
             </View>
 
             {
                 !props.alreadyTrained ?
-                    <View style={styles.horizontalFlexReverse}>
+                    <View style={{ alignItems: "center"}}>
                         <MyButton style={[styles.startARTrainingButton]} navigation={props.navigation} onPressAction={() => props.navigation.navigate("TodaySessionStarting", { text: props.text, list: props.todayList })} title="Start AR training" ></MyButton>
                     </View>
                     :
