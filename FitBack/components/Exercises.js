@@ -4,7 +4,7 @@ import { SearchBar } from 'react-native-elements';
 import { styles } from "../styles.js";
 import DraggablePanel from 'react-native-draggable-panel';
 import Checkbox from 'expo-checkbox';
-import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 
@@ -99,7 +99,7 @@ function Exercise(props) {
         
         if (pageType === 'All Exercises')
             getExercises();
-        else if (pageType === 'Your Exercises')
+        else if (pageType === 'Already Executed Exercises')
             getExercises('your')
         else
             getExercises('suggested')
@@ -124,7 +124,7 @@ function Exercise(props) {
                 />
             </View>
 
-            <Text style={{ fontSize: 24, margin: 10, textAlign: "center", fontFamily: "BebasNeue" }}>Filters</Text>
+            <Text style={{ fontSize: 24, margin: 10, textAlign: "center", fontFamily: "BebasNeue" }}>Filters Type</Text>
             <Filters db={props.route.params.db} setDisplayedExercise={setDisplayedExercise} exercises={exercises}></Filters>
 
 
@@ -220,9 +220,9 @@ function Filters(props) {
     let [difficulty, setDifficulty] = useState(["Super Novice", "Novice", "Beginner", "Intermediate", "Advanced", "Expert"]);
     let [muscle, setMuscle] = useState(["Biceps", "Quadriceps", "Calf"]);
     let [equipment, setEquipment] = useState(["Dummbell", "Kettlebell", "Mat"]);
-    let [prevDifficulty, setPrevDifficulty] = useState([]);
-    let [prevMuscle, setPrevMuscle] = useState([]);
-    let [prevEquipment, setPrevEquipment] = useState([]);
+    let [prevDifficulty, setPrevDifficulty] = useState(["Super Novice", "Novice", "Beginner", "Intermediate", "Advanced", "Expert"]);
+    let [prevMuscle, setPrevMuscle] = useState(["Biceps", "Quadriceps", "Calf"]);
+    let [prevEquipment, setPrevEquipment] = useState(["Dummbell", "Kettlebell", "Mat"]);
 
     return (
         <>
@@ -232,17 +232,17 @@ function Filters(props) {
             <View style={{ flexDirection: 'row', margin: 3, justifyContent: 'center', alignItems: 'center', }}>
                 <TouchableWithoutFeedback onPress={() => setFilterType("equipment")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Equipment</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Equipment <FontAwesome5 name="chevron-circle-up" size={17} color="black" /></Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => setFilterType("muscle")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Muscle Group</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Muscle Group <FontAwesome5 name="chevron-circle-up" size={17} color="black" /></Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => setFilterType("difficulty")}>
                     <View style={styles.filterCard}>
-                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Difficulty</Text>
+                        <Text style={{ fontSize: 18, textAlign: "center", marginTop: 10, fontFamily: "BebasNeue" }}>Difficulty <FontAwesome5 name="chevron-circle-up" size={17} color="black" /></Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
