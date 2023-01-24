@@ -61,7 +61,7 @@ function ExerciseDetails(props) {
             />
 
             <View style={styles.exerciseDetailsButtons}>
-                <MyButton style={styles.secondaryButton} title={"Reviews"} onPressAction={() => { navigation.navigate("ReviewsList", { exercise: exercise }) }} />
+                <MyButton style={styles.secondaryButton} title={"Revisions"} onPressAction={() => { navigation.navigate("ReviewsList", { exercise: exercise }) }} />
                 <MyButton style={styles.primaryButton} title={"Start AR training"} onPressAction={() => {
                     if (user.level === exercise.difficulty)
                         navigation.navigate("FrameYourself", { exercise: exercise, singleExercise: true })
