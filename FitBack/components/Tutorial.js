@@ -82,7 +82,7 @@ function TutorialFrame(props) {
                             fontWeight: "bold",
                             textAlign: "center",
                             marginRight:50
-                        }} text={"Squat AR Tutorial"} />
+                        }} text={exercise.title } />
                     </View>
                 </View>
 
