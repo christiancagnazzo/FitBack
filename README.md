@@ -5,11 +5,13 @@ FitBack is a *prototype* of an AR application written in **React Native** that h
 The project was implemented in a group team, for the "Human Computer Interaction" university course.
 
 ## Screenshot
-![Homepage](img/home.jpeg)
-![SuggestedExercises](img/suggested.jpeg)
-![Filters](img/filters.jpeg)
-![ExerciseDescription](img/description.jpeg)
-![ErrorReview](img/error.jpeg)
+<img src="img/home.jpeg" alt="homepage" width="200" height="400">
+<img src="img/suggested.jpeg" alt="suggested" width="200" height="400">
+<img src="img/filters.jpeg" alt="filters" width="200" height="400">
+<img src="img/description.jpeg" alt="description" width="200" height="400">
+<img src="img/error.jpeg" alt="error" width="200" height="400">
+<img src="img/ar.jpeg" alt="ar" width="200" height="400">
+<img src="img/notice.jpg" alt="notice" width="200" height="400">
 
 ### Requirment
 
