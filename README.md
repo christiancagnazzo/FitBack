@@ -1,12 +1,23 @@
 # FitBack
 
-# Requirment
+FitBack is a *prototype* of an AR application written in **React Native** that helps people who want to train at home without a human personal trainer. It tries to teach the correct way to perform physical exercises. FitBack can interact with the user while he is performing an exercise and correct him. 
+
+The project was implemented in a group team, for the "Human Computer Interaction" university course.
+
+## Screenshot
+![Homepage](img/home.jpeg)
+![SuggestedExercises](img/suggested.jpeg)
+![Filters](img/filters.jpeg)
+![ExerciseDescription](img/description.jpeg)
+![ErrorReview](img/error.jpeg)
+
+### Requirment
 
 - `sudo npm i -g expo-cli`
 
 - Download `Expo Client` in your phone from AppStore\PlayStore
 
-# Usage 
+### Usage 
 
 Run 
 
