@@ -31,7 +31,7 @@ function FrameYourself(props) {
 
   useEffect(() => {
     //simulates the fact that the user has framed his self inside the rectancle
-    const myTimeout2 = setTimeout(exitFromThisScreen, 6000);
+    const myTimeout2 = setTimeout(exitFromThisScreen, 9000);
     setMyTimeout(myTimeout2)
   }, []);
 
@@ -502,7 +502,8 @@ function ExecuteSingleExercise(props) {
 
   function updateDbEndSession() {
     props.route.params.db.transaction((tx) => {
-      const idExercise = props.route.params.exercise.exercise
+      const idExercise = props.route.params.exercise.exercise !== undefined ? props.route.params.exercise.exercise : props.route.params.exercise.id
+      console.log(idExercise)
       tx.executeSql(
         "INSERT OR IGNORE INTO userExercise(exercise, user, evaluation) VALUES (?,1,70)",
         [idExercise],

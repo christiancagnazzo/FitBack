@@ -8,8 +8,8 @@ function Homepage(props) {
     const [alreadyTrained, setalreadyTrained] = useState(false);
     const [reload, setReload] = useState(false)
     const [todayList, setTodayList] = useState([
-        { "ar_video_path": "video_path", "description": "A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up. During the descent the hip and knee joints flex while the ankle joint dorsiflex. During the ascent  the hip and knee joints extend and the ankle joint plantarflexes", "difficulty": "Beginner", "equipments": ["Dummbell", "Kettlebell"], "id": 4, "image_path": "lift", "muscles": ["Dummbell", "Kettlebell"], "title": "Lift Right arm", "uri": require("../assets/lift.png") },
-        { "ar_video_path": "video_path", "description": "This exercise is very simple and is used for arm muscles. It consists of lateral arm raises without weight and therefore is suitable for beginner level users", "difficulty": "Beginner", "equipments": ["Dummbell", "Kettlebell"], "id": 1, "image_path": "squat", "muscles": ["Dummbell", "Kettlebell"], "title": "Squat", "uri": require("../assets/squat.png") }
+        { "ar_video_path": "video_path", "description": "This exercise is very simple and is used for arm muscles. It consists of lateral arm raises without weight and therefore is suitable for beginner level users", "difficulty": "Beginner", "equipments": ["Dummbell", "Kettlebell"], "id": 4, "image_path": "lift", "muscles": ["Dummbell", "Kettlebell"], "title": "Lift Right arm", "uri": require("../assets/lift.png") },
+        { "ar_video_path": "video_path", "description": "A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up. During the descent the hip and knee joints flex while the ankle joint dorsiflex. During the ascent  the hip and knee joints extend and the ankle joint plantarflexes", "difficulty": "Beginner", "equipments": ["Dummbell", "Kettlebell"], "id": 1, "image_path": "squat", "muscles": ["Dummbell", "Kettlebell"], "title": "Squat", "uri": require("../assets/squat.png") }
     ]);
     const navigation = useNavigation();
 

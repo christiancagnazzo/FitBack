@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const HardCodedSession = [
     {
-        "title": "Lift Harm",
+        "title": "Lift Right Arm",
         "reps": "1x7",
     },
     {
@@ -20,6 +20,7 @@ const HardCodedSession = [
 
 function StartingSession(props) {
     const ex = props.route.params.list
+    console.log(ex)
     const [exercises, setExercise] = useState(HardCodedSession) // Lascia hardcode, va bene così Ale
     const [visible, setVisible] = useState(false);
     const navigation = useNavigation();

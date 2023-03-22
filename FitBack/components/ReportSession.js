@@ -18,12 +18,12 @@ import { MontSerratText } from "./Utility";
 
 const HardCodedResults = [
   {
-    title: "Lift Harm",
+    title: "Lift Right Arm",
     attempts: "7/7",
   },
   {
     title: "Squat",
-    attempts: "6/7",
+    attempts: "3/7",
   },
 ];
 
@@ -107,7 +107,7 @@ function Report(props) {
                 fontWeight: "bold",
                 textAlign: "center",
               }}
-              text={"68%"}
+              text={"71%"}
             />
           </View>
         </View>
@@ -198,7 +198,7 @@ function ReportSingleExercise(props) {
                 fontSize: 25,
               },
             ]}
-            text={"Correct Attempets"}
+            text={"Correct Attempts"}
           />
           <View
             style={{

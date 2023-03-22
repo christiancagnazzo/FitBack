@@ -93,7 +93,7 @@ function MyCard(props) {
                 <Text >
                     {
                         props.user.level === props.exercise.difficulty ?
-                            "This exercise is suitable for you because you’ve already learned basic rules and uses only part of your bodyweight." :
+                            "This exercise is suitable for you because it is based on simple movements and there is not risk to get hurt" :
                             "This exercise is not suitable for you because it uses 75% of your body weight, that is too much for your level. You should do exercise of your level before."
                     }
 

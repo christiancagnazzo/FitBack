@@ -50,9 +50,9 @@ function Exercise(props) {
             if (type === undefined)
                 sql = `select title, ar_video_path, description, difficulty, id as exercise, image_path from exercises`
             else if (type === 'your') {
-                sql = `select distinct title, ar_video_path, description, difficulty, exercise, user, image_path, evaluation from exercises join userExercise 
+                sql = `select title, ar_video_path, description, difficulty, exercise, user, image_path, evaluation from exercises join userExercise 
                 on exercises.id = userExercise.exercise 
-                where userExercise.user = ?`
+                where userExercise.user = ? group by title`
             }
             else {
                 sql = `select title, ar_video_path, description, difficulty, id as exercise, image_path from exercises where difficulty = ?`
@@ -68,7 +68,7 @@ function Exercise(props) {
                             sql,
                             [type === 'your' ? user.id : user.level],
                             (_, result) => {
-                                //console.log(result.rows)
+                                console.log(result.rows)
                                 for (let i = 0; i < result.rows._array.length; i++) {
                                     tx.executeSql(
                                         'select name from equipments join exerciseEquipment  on exerciseEquipment.equipment= equipments.id where exerciseEquipment.exercise = ?',
@@ -81,7 +81,7 @@ function Exercise(props) {
                                                 (_, res2) => {
                                                     setExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
                                                     setDisplayedExercise((ex) => [...ex, { ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) }])
-                                                    console.log({ ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) })
+                                                    //console.log({ ...result.rows._array[i], "equipments": res1.rows._array.map(e => e.name), "muscles": res2.rows._array.map(e => e.name) })
                                                 },
                                                 (_, error) => console.log(error)
                                             )
